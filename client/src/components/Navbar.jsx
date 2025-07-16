@@ -57,10 +57,7 @@ const Navbar = () => {
             className="text-3xl font-extrabold text-white tracking-wide cursor-pointer"
             onClick={() => navigate("/")}
           >
-            <span className="bg-white text-indigo-700 px-2 py-1 rounded-lg shadow">
-              Edu
-            </span>
-            <span className="ml-1">Hub</span>
+            📚 ITMS Nepal
           </div>
 
           <div className="space-x-6 flex items-center">

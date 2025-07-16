@@ -17,7 +17,6 @@ import Footer from "./components/Footer";
 import MyCourses from "./student/MyCourses";
 import Jobs from "./pages/Jobs";
 import Blogs from "./pages/Blogs";
-import Blog from "./pages/Blog";
 
 import JobApplicationForm from "./pages/JobApplicationForm";
 import MyApplications from "./student/MyApplications";
@@ -64,7 +63,7 @@ const App = () => {
         <Route path="/courseDetail/:courseId" element={<CourseDetail />} />
         <Route path="/jobs" element={<Jobs />} />
         <Route path="/blogs" element={<Blogs />} />
-        <Route path="/blog/:blogId" element={<Blog />} />
+        <Route path="/blog/:blogId" element={<BlogDetail />} />
         <Route path="/job/:jobId" element={<JobApplicationForm />} />
         <Route path="/testimonials" element={<Testimonials />} />
         <Route path="/register" element={<Register />} />
