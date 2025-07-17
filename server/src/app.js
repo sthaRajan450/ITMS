@@ -11,9 +11,17 @@ const orderRouter = require("./routes/order.route");
 const messageRouter = require("./routes/message.route");
 const resourceRouter = require("./routes/resource.route");
 const assignmentRouter = require("./routes/assignment.route");
+const allowedOrigins = process.env.CORS_ORIGIN.split(",");
+
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN,
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   })
 );
