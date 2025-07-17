@@ -1,9 +1,14 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthProvider";
 import { BASE_URL } from "../config/api";
+import { Menu, X } from "lucide-react"; // You can use any icon library
 
 const Navbar = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const { isAuth, user } = useContext(AuthContext);
+  const navigate = useNavigate();
+
   const commonLinks = [
     { path: "/", label: "Home" },
     { path: "/courses", label: "Courses" },
@@ -15,23 +20,17 @@ const Navbar = () => {
   ];
 
   const studentLinks = [{ path: "/student", label: "Dashboard" }];
-
-  const instructorLinks = [{ path: "/instructor", label: "Dashboard" }, ,];
-
+  const instructorLinks = [{ path: "/instructor", label: "Dashboard" }];
   const adminLinks = [{ path: "/admin", label: "Admin Dashboard" }];
 
-  const navigate = useNavigate();
-  const { isAuth, user } = useContext(AuthContext);
-
-  // dynamically pick role links
   const roleLinks =
     user?.role === "Student"
       ? studentLinks
       : user?.role === "Instructor"
-        ? instructorLinks
-        : user?.role === "Admin"
-          ? adminLinks
-          : [];
+      ? instructorLinks
+      : user?.role === "Admin"
+      ? adminLinks
+      : [];
 
   const logoutUser = async () => {
     try {
@@ -42,7 +41,7 @@ const Navbar = () => {
       if (response.ok) {
         const data = await response.json();
         alert(data.message);
-        window.location.reload(); // to refresh navbar state after logout
+        window.location.reload();
       }
     } catch (error) {
       console.log("Error while logging out user", error);
@@ -52,92 +51,139 @@ const Navbar = () => {
   return (
     <nav className="sticky top-0 z-50 bg-blue-600 shadow-lg">
       <div className="container mx-auto px-6 py-3 flex justify-between items-center">
-        {/* Brand + Common Links */}
-        <div className="flex items-center gap-x-12">
-          <div
-            className="text-3xl font-extrabold text-white tracking-wide cursor-pointer"
-            onClick={() => navigate("/")}
-          >
-            📚 ITMS Nepal
-          </div>
+        {/* Logo and Brand */}
+        <div
+          className="text-3xl font-extrabold text-white tracking-wide cursor-pointer"
+          onClick={() => navigate("/")}
+        >
+          📚 ITMS Nepal
+        </div>
 
-          <div className="space-x-6 flex items-center">
-            {commonLinks.map((link, index) => (
+        {/* Hamburger Menu (Mobile) */}
+        <div className="md:hidden">
+          <button onClick={() => setIsOpen(!isOpen)} className="text-white">
+            {isOpen ? <X size={28} /> : <Menu size={28} />}
+          </button>
+        </div>
+
+        {/* Links (Desktop) */}
+        <div className="hidden md:flex space-x-6 items-center">
+          {[...commonLinks, ...(isAuth ? roleLinks : [])].map((link, index) => (
+            <NavLink
+              key={index}
+              to={link.path}
+              className={({ isActive }) =>
+                `text-white text-lg font-inter transition hover:text-green-300 ${
+                  isActive ? "border-b-2 border-green-300 pb-1" : ""
+                }`
+              }
+            >
+              {link.label}
+            </NavLink>
+          ))}
+        </div>
+
+        {/* Auth Buttons (Desktop) */}
+        <div className="hidden md:flex gap-x-5 items-center">
+          {isAuth ? (
+            <>
+              <button
+                onClick={logoutUser}
+                className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition"
+              >
+                Logout
+              </button>
+              <NavLink to="/profile">
+                <img
+                  src={user.avatar}
+                  alt="Avatar"
+                  className="w-10 h-10 rounded-full border-2 border-white hover:border-green-300 transition"
+                />
+              </NavLink>
+            </>
+          ) : (
+            <>
               <NavLink
-                key={index}
-                to={link.path}
+                to="/login"
                 className={({ isActive }) =>
-                  `text-white text-lg font-inter transition duration-300 ease-in-out hover:text-green-300 ${
+                  `text-white text-lg font-medium transition hover:text-green-300 ${
                     isActive ? "border-b-2 border-green-300 pb-1" : ""
                   }`
                 }
               >
-                {link.label}
+                Login
               </NavLink>
-            ))}
+              <NavLink
+                to="/register"
+                className={({ isActive }) =>
+                  `text-white text-lg font-medium transition hover:text-green-300 ${
+                    isActive ? "border-b-2 border-green-300 pb-1" : ""
+                  }`
+                }
+              >
+                Register
+              </NavLink>
+            </>
+          )}
+        </div>
+      </div>
 
-            {/* Render role links if logged in */}
-            {isAuth &&
-              roleLinks.map((link, index) => (
-                <NavLink
-                  key={index}
-                  to={link.path}
-                  className={({ isActive }) =>
-                    `text-white text-lg font-inter transition duration-300 ease-in-out hover:text-green-300 ${
-                      isActive ? "border-b-2 border-green-300 pb-1" : ""
-                    }`
-                  }
+      {/* Mobile Menu */}
+      {isOpen && (
+        <div className="md:hidden bg-blue-700 px-6 pb-4 space-y-2">
+          {[...commonLinks, ...(isAuth ? roleLinks : [])].map((link, index) => (
+            <NavLink
+              key={index}
+              to={link.path}
+              onClick={() => setIsOpen(false)}
+              className={({ isActive }) =>
+                `block text-white text-base py-1 font-medium transition hover:text-green-300 ${
+                  isActive ? "border-b-2 border-green-300 pb-1" : ""
+                }`
+              }
+            >
+              {link.label}
+            </NavLink>
+          ))}
+
+          <div className="mt-4 space-y-2">
+            {isAuth ? (
+              <>
+                <button
+                  onClick={logoutUser}
+                  className="w-full text-left text-white bg-red-600 px-4 py-2 rounded-lg hover:bg-red-700 transition"
                 >
-                  {link.label}
+                  Logout
+                </button>
+                <NavLink to="/profile" onClick={() => setIsOpen(false)}>
+                  <img
+                    src={user.avatar}
+                    alt="Avatar"
+                    className="w-10 h-10 rounded-full border-2 border-white hover:border-green-300 transition"
+                  />
                 </NavLink>
-              ))}
+              </>
+            ) : (
+              <>
+                <NavLink
+                  to="/login"
+                  onClick={() => setIsOpen(false)}
+                  className="block text-white text-base py-1 hover:text-green-300"
+                >
+                  Login
+                </NavLink>
+                <NavLink
+                  to="/register"
+                  onClick={() => setIsOpen(false)}
+                  className="block text-white text-base py-1 hover:text-green-300"
+                >
+                  Register
+                </NavLink>
+              </>
+            )}
           </div>
         </div>
-
-        {/* Auth Buttons */}
-        {isAuth ? (
-          <div className="flex gap-x-5 items-center">
-            <button
-              onClick={() => {
-                logoutUser();
-              }}
-              className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition"
-            >
-              Logout
-            </button>
-            <NavLink to="/profile">
-              <img
-                src={user.avatar}
-                alt="Avatar"
-                className="w-12 h-12 rounded-full border-2 border-white hover:border-green-300 transition"
-              />
-            </NavLink>
-          </div>
-        ) : (
-          <div className="flex gap-x-6 items-center">
-            <NavLink
-              to="/login"
-              className={({ isActive }) =>
-                `text-white text-lg font-medium transition duration-300 ease-in-out hover:text-green-300 ${
-                  isActive ? "border-b-2 border-green-300 pb-1" : ""
-                }`
-              }
-            >
-              Login
-            </NavLink>
-            <NavLink
-              to="/register"
-              className={({ isActive }) =>
-                `text-white text-lg font-medium transition duration-300 ease-in-out hover:text-green-300 ${
-                  isActive ? "border-b-2 border-green-300 pb-1" : ""
-                }`
-              }
-            >
-              Register
-            </NavLink>
-          </div>
-        )}
-      </div>
+      )}
     </nav>
   );
 };

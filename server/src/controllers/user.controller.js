@@ -36,7 +36,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
   const isExist = await User.findOne({ email });
   if (isExist) {
-    throw new ApiError(409, "User already exists"); // 409 Conflict is more appropriate
+    throw new ApiError(409, "User already exists");
   }
 
   const avatarLocalPath = req.file?.path;
