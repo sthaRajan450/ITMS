@@ -2,11 +2,14 @@ import React, { useContext, useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { CartContext } from "../context/CartProvider";
 import { BASE_URL } from "../config/api";
+import { AuthContext } from "../context/AuthProvider";
 
 const Courses = () => {
   const [courses, setCourses] = useState([]);
   const { dispatch } = useContext(CartContext);
   const navigate = useNavigate();
+
+  const { isAuth } = useContext(AuthContext);
   const getCourses = async () => {
     try {
       const response = await fetch(`${BASE_URL}/course/getAllCourses`, {
@@ -65,6 +68,10 @@ const Courses = () => {
 
                   <button
                     onClick={() => {
+                      if (!isAuth) {
+                        navigate("/login");
+                        return;
+                      }
                       dispatch({ type: "add", payload: course });
                     }}
                     className="px-5 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"

@@ -91,6 +91,10 @@ const CourseDetail = () => {
           <div className="flex gap-4 mt-6">
             <button
               onClick={() => {
+                if (!isAuth) {
+                  navigate("/login");
+                  return;
+                }
                 dispatch({ type: "add", payload: course });
                 navigate("/cart");
               }}
@@ -101,6 +105,10 @@ const CourseDetail = () => {
 
             <button
               onClick={() => {
+                if (!isAuth) {
+                  navigate("/login");
+                  return;
+                }
                 dispatch({ type: "add", payload: course });
               }}
               className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition shadow-md"
