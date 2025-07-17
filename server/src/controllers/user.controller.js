@@ -110,6 +110,7 @@ const loginUser = asyncHandler(async (req, res) => {
   const options = {
     httpOnly: true,
     secure: true,
+    samesite: "None", // Adjust based on your deployment
   };
 
   return res
