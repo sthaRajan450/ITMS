@@ -90,40 +90,36 @@ const loginUser = asyncHandler(async (req, res) => {
 
   const user = await User.findOne({ email });
   if (!user) {
-    throw new ApiError(404, "User does not exist ");
+    throw new ApiError(404, "User does not exist");
   }
 
   const isPasswordValid = await user.isPasswordCorrect(password);
-
   if (!isPasswordValid) {
     throw new ApiError(404, "Incorrect password");
   }
 
-  const { accessToken, refreshToken } = await generateAccessAndRefreshToken(
-    user._id
-  );
+  const { accessToken, refreshToken } = await generateAccessAndRefreshToken(user._id);
 
-  const loggedInUser = await User.findById(user._id).select(
-    "-password -refreshToken"
-  );
+  const loggedInUser = await User.findById(user._id).select("-password -refreshToken");
 
   const options = {
     httpOnly: true,
-    secure: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "None", 
+    maxAge: 7 * 24 * 60 * 60 * 1000 
   };
 
   return res
     .cookie("accessToken", accessToken, options)
     .cookie("refreshToken", refreshToken, options)
     .status(200)
-    .json(
-      new ApiResponse(200, "User logged in successfully", {
-        user: loggedInUser,
-        accessToken,
-        refreshToken,
-      })
-    );
+    .json(new ApiResponse(200, "User logged in successfully", {
+      user: loggedInUser,
+      accessToken,
+      refreshToken,
+    }));
 });
+
 
 const logoutUser = asyncHandler(async (req, res) => {
   User.findByIdAndUpdate(
