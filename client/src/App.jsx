@@ -11,7 +11,7 @@ import CourseDetail from "./pages/CourseDetail";
 import Testimonials from "./pages/Testimonials";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
-import Profile from "./pages/profile";
+import Profile from "./pages/Profile";
 import LocomotiveScroll from "locomotive-scroll";
 import Footer from "./components/Footer";
 import MyCourses from "./student/MyCourses";
