@@ -171,7 +171,14 @@ const getMe = asyncHandler(async (req, res) => {
 });
 
 const getAllUsers = asyncHandler(async (req, res) => {
-  if (req.user.role == "Instructor") {
+  const role = req.user.role;
+
+  if (!["Instructor", "Admin"].includes(role)) {
+    throw new ApiError(403, "You are not authorized to access this resource");
+  }
+
+  // Instructor role logic
+  if (role === "Instructor") {
     const courses = await Course.find({ instructor: req.user._id });
 
     if (!courses.length) {
@@ -185,17 +192,23 @@ const getAllUsers = asyncHandler(async (req, res) => {
       enrolledCourses: { $in: courseIds },
     }).select("fullName email phone avatar enrolledCourses");
 
-    if (!students.length) {
-      throw new ApiError(404, "No students enrolled in your courses yet");
-    }
-
     return res
       .status(200)
-      .json(new ApiResponse(200, "Students fetched successfully", students));
+      .json(
+        new ApiResponse(
+          200,
+          students.length
+            ? "Students fetched successfully"
+            : "No students enrolled in your courses yet",
+          students
+        )
+      );
   }
 
-  if (req.user.role == "Admin") {
+  // Admin role logic
+  if (role === "Admin") {
     const users = await User.find().select("-password");
+
     if (!users.length) {
       throw new ApiError(400, "No users exist");
     }
