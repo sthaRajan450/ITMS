@@ -13,8 +13,6 @@ const resourceRouter = require("./routes/resource.route");
 const assignmentRouter = require("./routes/assignment.route");
 app.use(
   cors({
-    // Allow requests from the specified origin
-    
     origin: process.env.CORS_ORIGIN,
     credentials: true,
   })
