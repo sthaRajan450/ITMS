@@ -19,7 +19,7 @@ const Register = () => {
       return;
     }
 
-    console.log(fullName, email);
+    console.log(fullName, email,avatar);
 
     const formData = new FormData();
     formData.append("fullName", fullName);
