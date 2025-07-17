@@ -1,10 +1,11 @@
 import React, { useContext } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthProvider";
+import { BASE_URL } from "../config/api";
 
 const logoutUser = async () => {
   try {
-    const response = await fetch("http://localhost:9000/api/v1/user/logout", {
+    const response = await fetch(`${BASE_URL}/user/logout`, {
       method: "POST",
       credentials: "include",
     });
