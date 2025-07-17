@@ -3,22 +3,6 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthProvider";
 import { BASE_URL } from "../config/api";
 
-const logoutUser = async () => {
-  try {
-    const response = await fetch(`${BASE_URL}/user/logout`, {
-      method: "POST",
-      credentials: "include",
-    });
-    if (response.ok) {
-      const data = await response.json();
-      alert(data.message);
-      window.location.reload(); // to refresh navbar state after logout
-    }
-  } catch (error) {
-    console.log("Error while logging out user", error);
-  }
-};
-
 const Navbar = () => {
   const commonLinks = [
     { path: "/", label: "Home" },
@@ -48,6 +32,23 @@ const Navbar = () => {
         : user?.role === "Admin"
           ? adminLinks
           : [];
+
+  const logoutUser = async () => {
+    try {
+      const response = await fetch(`${BASE_URL}/user/logout`, {
+        method: "POST",
+        credentials: "include",
+      });
+      if (response.ok) {
+        const data = await response.json();
+        alert(data.message);
+        window.location.reload(); // to refresh navbar state after logout
+        navigate("/login");
+      }
+    } catch (error) {
+      console.log("Error while logging out user", error);
+    }
+  };
 
   return (
     <nav className="sticky top-0 z-50 bg-blue-600 shadow-lg">
@@ -100,7 +101,6 @@ const Navbar = () => {
             <button
               onClick={() => {
                 logoutUser();
-                navigate("/login");
               }}
               className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition"
             >
