@@ -19,6 +19,8 @@ const Register = () => {
       return;
     }
 
+    console.log(fullName, email);
+
     const formData = new FormData();
     formData.append("fullName", fullName);
     formData.append("email", email);
