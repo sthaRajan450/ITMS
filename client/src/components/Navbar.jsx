@@ -43,7 +43,6 @@ const Navbar = () => {
         const data = await response.json();
         alert(data.message);
         window.location.reload(); // to refresh navbar state after logout
-        navigate("/login");
       }
     } catch (error) {
       console.log("Error while logging out user", error);
