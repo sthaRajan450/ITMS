@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-
+import { BASE_URL } from "../config/api";
 const AssignmentManagement = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -12,13 +12,10 @@ const AssignmentManagement = () => {
 
   const fetchAssignments = async () => {
     try {
-      const res = await fetch(
-        `http://localhost:9000/api/v1/assignment/course/${courseId}`,
-        {
-          method: "GET",
-          credentials: "include",
-        }
-      );
+      const res = await fetch(`${BASE_URL}/assignment/course/${courseId}`, {
+        method: "GET",
+        credentials: "include",
+      });
       const data = await res.json();
       console.log(data.data);
       setAssignments(data.data);

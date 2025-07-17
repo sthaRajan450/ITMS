@@ -1,19 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { BASE_URL } from "../config/api";
 const CourseManagement = () => {
   const navigate = useNavigate();
   const [myCourses, setMyCourses] = useState([]);
 
   const getMyCourses = async () => {
     try {
-      const response = await fetch(
-        "http://localhost:9000/api/v1/course/getMyCourses",
-        {
-          method: "GET",
-          credentials: "include",
-        }
-      );
+      const response = await fetch(`${BASE_URL}/course/getMyCourses`, {
+        method: "GET",
+        credentials: "include",
+      });
       if (response.ok) {
         const data = await response.json();
         setMyCourses(data.data);
@@ -27,13 +24,10 @@ const CourseManagement = () => {
     if (!window.confirm("Are you sure you want to delete this course?")) return;
 
     try {
-      const response = await fetch(
-        `http://localhost:9000/api/v1/course/delete/${courseId}`,
-        {
-          method: "DELETE",
-          credentials: "include",
-        }
-      );
+      const response = await fetch(`${BASE_URL}/course/delete/${courseId}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
       if (response.ok) {
         const data = await response.json();
         alert(data.message);
@@ -81,7 +75,8 @@ const CourseManagement = () => {
                   <span className="font-medium">Level:</span> {course.level}
                 </div>
                 <div className="text-sm text-gray-500 mb-1">
-                  <span className="font-medium">Duration:</span> {course.duration}
+                  <span className="font-medium">Duration:</span>{" "}
+                  {course.duration}
                 </div>
                 <div className="text-lg font-bold text-blue-600 mt-3">
                   NPR {course.price}
@@ -96,13 +91,17 @@ const CourseManagement = () => {
                   ✏️ Update Course
                 </button>
                 <button
-                  onClick={() => navigate(`/instructor/resourceManagement/${course._id}`)}
+                  onClick={() =>
+                    navigate(`/instructor/resourceManagement/${course._id}`)
+                  }
                   className="text-sm py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
                 >
                   📂 Manage Resources
                 </button>
                 <button
-                  onClick={() => navigate(`/instructor/assignmentManagement/${course._id}`)}
+                  onClick={() =>
+                    navigate(`/instructor/assignmentManagement/${course._id}`)
+                  }
                   className="text-sm py-2 bg-green-600 text-white rounded hover:bg-green-700"
                 >
                   📑 Manage Assignments

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { BASE_URL } from "../config/api";
 
 const UserManagement = () => {
   const [users, setUsers] = useState([]);
@@ -7,7 +8,7 @@ const UserManagement = () => {
 
   const getUsers = async () => {
     try {
-      const response = await fetch("http://localhost:9000/api/v1/user/all", {
+      const response = await fetch(`${BASE_URL}/user/all`, {
         method: "GET",
         credentials: "include",
       });
@@ -22,13 +23,10 @@ const UserManagement = () => {
 
   const handleDelete = async (userId) => {
     try {
-      const response = await fetch(
-        `http://localhost:9000/api/v1/user/delete/${userId}`,
-        {
-          method: "DELETE",
-          credentials: "include",
-        }
-      );
+      const response = await fetch(`${BASE_URL}/user/delete/${userId}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
       if (response.ok) {
         const data = await response.json();
         alert(data.message);

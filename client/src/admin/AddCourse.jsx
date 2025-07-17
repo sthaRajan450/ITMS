@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthProvider";
+import { BASE_URL } from "../config/api";
 
 const AddCourse = () => {
   const [title, setTitle] = useState("");
@@ -42,14 +43,11 @@ const AddCourse = () => {
     formData.append("instructor", instructor);
 
     try {
-      const response = await fetch(
-        "http://localhost:9000/api/v1/course/admin/create",
-        {
-          method: "POST",
-          credentials: "include",
-          body: formData,
-        }
-      );
+      const response = await fetch(`${BASE_URL}/course/admin/create`, {
+        method: "POST",
+        credentials: "include",
+        body: formData,
+      });
 
       if (response.ok) {
         const data = await response.json();

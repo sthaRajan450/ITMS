@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../context/AuthProvider";
 import { CartContext } from "../context/CartProvider";
+import { BASE_URL } from "../config/api";
 
 const CourseDetail = () => {
   const { courseId } = useParams();
@@ -9,12 +10,10 @@ const CourseDetail = () => {
   const { isAuth } = useContext(AuthContext);
   const navigate = useNavigate();
   const { dispatch } = useContext(CartContext);
-  
+
   const getCourse = async () => {
     try {
-      const response = await fetch(
-        `http://localhost:9000/api/v1/course/${courseId}`
-      );
+      const response = await fetch(`${BASE_URL}/course/${courseId}`);
       if (response.ok) {
         const data = await response.json();
         console.log(data.data);

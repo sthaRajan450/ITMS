@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { CartContext } from "../context/CartProvider";
 import { useNavigate } from "react-router-dom";
+import { BASE_URL } from "../config/api";
 
 const Cart = () => {
   const { state, dispatch } = useContext(CartContext);
@@ -17,20 +18,17 @@ const Cart = () => {
       quantity: course.quantity,
     }));
     try {
-      const response = await fetch(
-        `http://localhost:9000/api/v1/order/create`,
-        {
-          method: "POST",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(course),
-        }
-      );
+      const response = await fetch(`${BASE_URL}/order/create`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(course),
+      });
       if (response.ok) {
         const data = await response.json();
-        console.log(data.data)
+        console.log(data.data);
         alert(data.message);
         let order_id = data.data._id;
         navigate("/payment", { state: { order_id, totalAmount } });

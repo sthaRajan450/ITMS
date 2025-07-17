@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { BASE_URL } from "../config/api";
 
 const MyAssignments = () => {
   const [assignments, setAssignments] = useState([]);
@@ -7,7 +8,7 @@ const MyAssignments = () => {
   const getMyAssignments = async () => {
     try {
       const response = await fetch(
-        `http://localhost:9000/api/v1/assignment/submitted/all`,
+        `${BASE_URL}/assignment/submitted/all`,
         {
           method: "GET",
           credentials: "include",

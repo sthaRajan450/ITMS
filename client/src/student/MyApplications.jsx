@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { BASE_URL } from "../config/api";
 
 const MyApplications = () => {
   const [myApplications, setMyApplications] = useState([]);
@@ -6,7 +7,7 @@ const MyApplications = () => {
   const getMyApplications = async () => {
     try {
       const response = await fetch(
-        "http://localhost:9000/api/v1/job/myApplications",
+       `${BASE_URL}/job/myApplications`,
         {
           method: "GET",
           credentials: "include",

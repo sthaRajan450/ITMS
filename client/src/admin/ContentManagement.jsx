@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { BASE_URL } from "../config/api";
 
 const ContentManagement = () => {
   const [courses, setCourses] = useState([]);
@@ -11,7 +12,7 @@ const ContentManagement = () => {
   const getCourses = async () => {
     try {
       const response = await fetch(
-        "http://localhost:9000/api/v1/course/getAllCourses",
+       `${BASE_URL}/course/getAllCourses`,
         {
           method: "GET",
           credentials: "include",
@@ -31,13 +32,10 @@ const ContentManagement = () => {
     if (!window.confirm("Are you sure you want to delete this course?")) return;
 
     try {
-      const response = await fetch(
-        `http://localhost:9000/api/v1/course/delete/${courseId}`,
-        {
-          method: "DELETE",
-          credentials: "include",
-        }
-      );
+      const response = await fetch(`${BASE_URL}/course/delete/${courseId}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
       if (response.ok) {
         const data = await response.json();
         alert(data.message);
@@ -50,7 +48,7 @@ const ContentManagement = () => {
 
   const getBlogs = async () => {
     try {
-      const response = await fetch("http://localhost:9000/api/v1/blog/all", {
+      const response = await fetch(`${BASE_URL}/blog/all`, {
         method: "GET",
       });
       if (response.ok) {
@@ -65,13 +63,10 @@ const ContentManagement = () => {
 
   const deleteBlog = async (blogId) => {
     try {
-      const response = await fetch(
-        `http://localhost:9000/api/v1/blog/${blogId}`,
-        {
-          method: "DELETE",
-          credentials: "include",
-        }
-      );
+      const response = await fetch(`${BASE_URL}/blog/${blogId}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
       if (response.ok) {
         const data = await response.json();
         alert(data.message);
@@ -84,7 +79,7 @@ const ContentManagement = () => {
 
   const getJobs = async () => {
     try {
-      const response = await fetch("http://localhost:9000/api/v1/job/all", {
+      const response = await fetch(`${BASE_URL}/job/all`, {
         method: "GET",
       });
       if (response.ok) {
@@ -98,13 +93,10 @@ const ContentManagement = () => {
   };
   const deleteJob = async (jobId) => {
     try {
-      const response = await fetch(
-        `http://localhost:9000/api/v1/job/${jobId}`,
-        {
-          method: "DELETE",
-          credentials: "include",
-        }
-      );
+      const response = await fetch(`${BASE_URL}/job/${jobId}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
       if (response.ok) {
         const data = await response.json();
         alert(data.message);
@@ -118,7 +110,7 @@ const ContentManagement = () => {
   const getApplications = async () => {
     try {
       const response = await fetch(
-        "http://localhost:9000/api/v1/job/applications",
+        `${BASE_URL}/job/applications`,
         {
           method: "GET",
           credentials: "include",
@@ -137,7 +129,7 @@ const ContentManagement = () => {
   const acceptOrRejectApplication = async (applicationId, action) => {
     try {
       const response = await fetch(
-        `http://localhost:9000/api/v1/job/application/${action}/${applicationId}`,
+        `${BASE_URL}/job/application/${action}/${applicationId}`,
         {
           method: "POST",
           credentials: "include",

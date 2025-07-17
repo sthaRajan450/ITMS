@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { BASE_URL } from "../config/api";
 
 const EditJob = () => {
   const { jobId } = useParams();
@@ -14,7 +15,7 @@ const EditJob = () => {
   useEffect(() => {
     const fetchJob = async () => {
       try {
-        const response = await fetch(`http://localhost:9000/api/v1/job/${jobId}`, {
+        const response = await fetch(`${BASE_URL}/job/${jobId}`, {
           credentials: "include",
         });
         if (response.ok) {
@@ -42,7 +43,7 @@ const EditJob = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:9000/api/v1/job/${jobId}`, {
+      const response = await fetch(`${BASE_URL}/job/${jobId}`, {
         method: "PUT",
         credentials: "include",
         headers: {

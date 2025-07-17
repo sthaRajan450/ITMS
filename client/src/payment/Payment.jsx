@@ -2,6 +2,7 @@ import React from "react";
 import { useLocation } from "react-router-dom";
 import CryptoJS from "crypto-js";
 import { v4 as uuidv4 } from "uuid";
+import { BASE_URL } from "../config/api";
 
 const Payment = () => {
   const location = useLocation();
@@ -40,7 +41,7 @@ const Payment = () => {
           <input
             type="hidden"
             name="success_url"
-            value="http://localhost:9000/api/v1/order/success"
+            value={`${BASE_URL}/order/success`}
           />
           <input
             type="hidden"

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { BASE_URL } from "../config/api";
 
 const EditBlog = () => {
   const { blogId } = useParams();
@@ -14,12 +15,9 @@ const EditBlog = () => {
   useEffect(() => {
     const fetchBlog = async () => {
       try {
-        const response = await fetch(
-          `http://localhost:9000/api/v1/blog/${blogId}`,
-          {
-            credentials: "include",
-          }
-        );
+        const response = await fetch(`${BASE_URL}/blog/${blogId}`, {
+          credentials: "include",
+        });
         if (response.ok) {
           const data = await response.json();
           setTitle(data.data.title);
@@ -43,14 +41,11 @@ const EditBlog = () => {
     if (image) formData.append("image", image);
 
     try {
-      const response = await fetch(
-        `http://localhost:9000/api/v1/blog/${blogId}`,
-        {
-          method: "PUT",
-          credentials: "include",
-          body: formData,
-        }
-      );
+      const response = await fetch(`${BASE_URL}/blog/${blogId}`, {
+        method: "PUT",
+        credentials: "include",
+        body: formData,
+      });
 
       if (response.ok) {
         const data = await response.json();
@@ -59,8 +54,7 @@ const EditBlog = () => {
         setContent("");
         setCategory("");
         setImage(null);
-        navigate('/admin/contentManagement')
-
+        navigate("/admin/contentManagement");
       } else {
         const err = await response.json();
         alert(err.message || "Something went wrong");

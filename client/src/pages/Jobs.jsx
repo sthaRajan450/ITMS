@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthProvider";
+import { BASE_URL } from "../config/api";
 
 const Jobs = () => {
   const [jobs, setJobs] = useState([]);
@@ -8,7 +9,7 @@ const Jobs = () => {
   const { isAuth } = useContext(AuthContext);
   const getJobs = async () => {
     try {
-      const response = await fetch("http://localhost:9000/api/v1/job/all");
+      const response = await fetch(`${BASE_URL}/job/all`);
       if (response.ok) {
         const data = await response.json();
         setJobs(data.data);

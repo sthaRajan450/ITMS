@@ -1,19 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
-
+import { BASE_URL } from "../config/api";
 const AssignmentList = () => {
   const { courseId } = useParams();
   const [assignments, setAssignments] = useState([]);
   const navigate = useNavigate();
   const getAssignments = async () => {
     try {
-      const res = await fetch(
-        `http://localhost:9000/api/v1/assignment/course/${courseId}`,
-        {
-          method: "GET",
-          credentials: "include",
-        }
-      );
+      const res = await fetch(`${BASE_URL}/assignment/course/${courseId}`, {
+        method: "GET",
+        credentials: "include",
+      });
       const data = await res.json();
       console.log(data.data);
       setAssignments(data.data);

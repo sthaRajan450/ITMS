@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-
+import { BASE_URL } from "../config/api";
 const SendMessage = ({ receiverId, courseId }) => {
   const [message, setMessage] = useState("");
 
   const handleSend = async () => {
     if (!message) return alert("Message cannot be empty");
 
-    const response = await fetch("http://localhost:9000/api/v1/message/send", {
+    const response = await fetch(`${BASE_URL}/message/send`, {
       method: "POST",
       credentials: "include",
       headers: { "Content-Type": "application/json" },
@@ -30,7 +30,10 @@ const SendMessage = ({ receiverId, courseId }) => {
         className="border w-full p-2"
         placeholder="Type feedback here..."
       />
-      <button onClick={handleSend} className="bg-blue-600 text-white px-4 py-2 mt-2 rounded">
+      <button
+        onClick={handleSend}
+        className="bg-blue-600 text-white px-4 py-2 mt-2 rounded"
+      >
         Send Feedback
       </button>
     </div>

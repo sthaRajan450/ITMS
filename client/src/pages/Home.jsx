@@ -4,6 +4,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import { BASE_URL } from "../config/api";
 
 const testimonials = [
   {
@@ -50,13 +51,10 @@ const Home = () => {
 
   const getCourses = async () => {
     try {
-      const response = await fetch(
-        "http://localhost:9000/api/v1/course/getAllCourses",
-        {
-          method: "GET",
-          credentials: "include",
-        }
-      );
+      const response = await fetch(`${BASE_URL}/course/getAllCourses`, {
+        method: "GET",
+        credentials: "include",
+      });
       if (response.ok) {
         const data = await response.json();
         setCourses(data.data);

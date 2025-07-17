@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { BASE_URL } from "../config/api";
 
 const BlogDetail = () => {
   const { blogId } = useParams();
@@ -8,7 +9,7 @@ const BlogDetail = () => {
   const getBlog = async () => {
     try {
       const response = await fetch(
-        `http://localhost:9000/api/v1/blog/${blogId}`,
+        `${BASE_URL}/blog/${blogId}`,
         {
           method: "GET",
           credentials: "include",

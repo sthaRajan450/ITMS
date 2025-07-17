@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import SendMessage from "./SendMessage";
-
+import { BASE_URL } from "../config/api";
 const StudentManagement = () => {
   const [students, setStudents] = useState([]);
 
   const getUsers = async () => {
     try {
-      const response = await fetch("http://localhost:9000/api/v1/user/all", {
+      const response = await fetch(`${BASE_URL}/user/all`, {
         method: "GET",
         credentials: "include",
       });

@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthProvider";
+import { BASE_URL } from "../config/api";
 
 const Blogs = () => {
   const [blogs, setBlogs] = useState([]);
@@ -8,7 +9,7 @@ const Blogs = () => {
   const { isAuth } = useContext(AuthContext);
   const getBlogs = async () => {
     try {
-      const response = await fetch("http://localhost:9000/api/v1/blog/all");
+      const response = await fetch(`${BASE_URL}/blog/all`);
       if (response.ok) {
         const data = await response.json();
         setBlogs(data.data);

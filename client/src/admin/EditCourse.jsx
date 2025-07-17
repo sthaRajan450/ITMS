@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../context/AuthProvider";
+import { BASE_URL } from "../config/api";
 
 const EditCourse = () => {
   const [title, setTitle] = useState("");
@@ -21,9 +22,7 @@ const EditCourse = () => {
 
   const getCourse = async () => {
     try {
-      const response = await fetch(
-        `http://localhost:9000/api/v1/course/${courseId}`
-      );
+      const response = await fetch(`${BASE_URL}/course/${courseId}`);
       if (response.ok) {
         const data = await response.json();
 
@@ -74,14 +73,11 @@ const EditCourse = () => {
     }
 
     try {
-      const response = await fetch(
-        `http://localhost:9000/api/v1/course/update/${courseId}`,
-        {
-          method: "PUT",
-          credentials: "include",
-          body: formData,
-        }
-      );
+      const response = await fetch(`${BASE_URL}/course/update/${courseId}`, {
+        method: "PUT",
+        credentials: "include",
+        body: formData,
+      });
 
       if (response.ok) {
         const data = await response.json();

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { BASE_URL } from "../config/api";
 
 const Success = () => {
   const [order, setOrder] = useState(null);
@@ -8,13 +9,10 @@ const Success = () => {
 
   const getOrder = async () => {
     try {
-      const response = await fetch(
-        `http://localhost:9000/api/v1/order/${orderId}`,
-        {
-          method: "GET",
-          credentials: "include",
-        }
-      );
+      const response = await fetch(`${BASE_URL}/order/${orderId}`, {
+        method: "GET",
+        credentials: "include",
+      });
       if (response.ok) {
         const data = await response.json();
         console.log(data.data);
@@ -27,13 +25,10 @@ const Success = () => {
 
   const handleEnroll = async (courseId) => {
     try {
-      const response = await fetch(
-        `http://localhost:9000/api/v1/course/enroll/${courseId}`,
-        {
-          method: "POST",
-          credentials: "include",
-        }
-      );
+      const response = await fetch(`${BASE_URL}/course/enroll/${courseId}`, {
+        method: "POST",
+        credentials: "include",
+      });
       if (response.ok) {
         const data = await response.json();
         console.log(`Enrolled in course ${courseId}:`, data.message);

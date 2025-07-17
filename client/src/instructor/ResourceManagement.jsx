@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-
+import { BASE_URL } from "../config/api";
 const ResourceManagement = () => {
   const { courseId } = useParams();
   const [resources, setResources] = useState([]);
@@ -10,13 +10,10 @@ const ResourceManagement = () => {
   // Fetch resources for this course
   const fetchResources = async () => {
     try {
-      const res = await fetch(
-        `http://localhost:9000/api/v1/resource/course/${courseId}`,
-        {
-          method: "GET",
-          credentials: "include",
-        }
-      );
+      const res = await fetch(`${BASE_URL}/resource/course/${courseId}`, {
+        method: "GET",
+        credentials: "include",
+      });
       const data = await res.json();
       console.log(data.data);
       setResources(data.data);
@@ -40,7 +37,7 @@ const ResourceManagement = () => {
     formData.append("courseId", courseId);
 
     try {
-      const res = await fetch(`http://localhost:9000/api/v1/resource/upload`, {
+      const res = await fetch(`${BASE_URL}/resource/upload`, {
         method: "POST",
         credentials: "include",
         body: formData,
@@ -58,13 +55,10 @@ const ResourceManagement = () => {
   // Delete a resource
   const handleDelete = async (resourceId) => {
     try {
-      const res = await fetch(
-        `http://localhost:9000/api/v1/resource/delete/${resourceId}`,
-        {
-          method: "DELETE",
-          credentials: "include",
-        }
-      );
+      const res = await fetch(`${BASE_URL}/resource/delete/${resourceId}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
       const data = await res.json();
       alert(data.message);
       fetchResources();

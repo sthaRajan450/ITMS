@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { BASE_URL } from "../config/api";
 
 const SubmitAssignment = () => {
   const { assignmentId } = useParams();
@@ -21,14 +22,11 @@ const SubmitAssignment = () => {
     formData.append("courseId", courseId);
 
     try {
-      const res = await fetch(
-        `http://localhost:9000/api/v1/assignment/submit`,
-        {
-          method: "POST",
-          credentials: "include",
-          body: formData,
-        }
-      );
+      const res = await fetch(`${BASE_URL}/assignment/submit`, {
+        method: "POST",
+        credentials: "include",
+        body: formData,
+      });
 
       const data = await res.json();
       if (res.ok) {

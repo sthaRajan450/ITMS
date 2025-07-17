@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { BASE_URL } from "../config/api";
 
 const MyCourses = () => {
   const [myCourses, setMyCourses] = useState([]);
 
   const getMyCourses = async () => {
     try {
-      const response = await fetch(
-        "http://localhost:9000/api/v1/course/getMyCourses",
-        {
-          method: "GET",
-          credentials: "include",
-        }
-      );
+      const response = await fetch(`${BASE_URL}/course/getMyCourses`, {
+        method: "GET",
+        credentials: "include",
+      });
       if (response.ok) {
         const data = await response.json();
         setMyCourses(data.data);

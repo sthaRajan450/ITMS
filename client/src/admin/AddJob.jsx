@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { BASE_URL } from "../config/api";
 
 const AddJob = () => {
   const { jobId } = useParams();
@@ -15,7 +16,7 @@ const AddJob = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch(`http://localhost:9000/api/v1/job/create`, {
+      const response = await fetch(`${BASE_URL}/job/create`, {
         method: "POST",
         credentials: "include",
         headers: {

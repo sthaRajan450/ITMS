@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { CartContext } from "../context/CartProvider";
+import { BASE_URL } from "../config/api";
 
 const Courses = () => {
   const [courses, setCourses] = useState([]);
@@ -8,12 +9,9 @@ const Courses = () => {
   const navigate = useNavigate();
   const getCourses = async () => {
     try {
-      const response = await fetch(
-        "http://localhost:9000/api/v1/course/getAllCourses",
-        {
-          method: "GET",
-        }
-      );
+      const response = await fetch(`${BASE_URL}/course/getAllCourses`, {
+        method: "GET",
+      });
 
       if (response.ok) {
         const data = await response.json();

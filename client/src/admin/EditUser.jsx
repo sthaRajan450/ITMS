@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { BASE_URL } from "../config/api";
 
 const EditUser = () => {
   const { userId } = useParams();
@@ -14,7 +15,7 @@ const EditUser = () => {
   const fetchUserDetails = async () => {
     try {
       const response = await fetch(
-        `http://localhost:9000/api/v1/user/${userId}`,
+        `${BASE_URL}/user/${userId}`,
         {
           method: "GET",
           credentials: "include",
@@ -52,7 +53,7 @@ const EditUser = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:9000/api/v1/user/update/${userId}`,
+        `${BASE_URL}/user/update/${userId}`,
         {
           method: "PUT",
           credentials: "include",

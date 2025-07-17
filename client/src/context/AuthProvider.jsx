@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect } from "react";
-
+import { BASE_URL } from "../config/api";
 export const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
@@ -9,7 +9,7 @@ const AuthProvider = ({ children }) => {
 
   const getUser = async () => {
     try {
-      let response = await fetch("http://localhost:9000/api/v1/user/me", {
+      let response = await fetch(`${BASE_URL}/user/me`, {
         method: "GET",
         credentials: "include",
       });

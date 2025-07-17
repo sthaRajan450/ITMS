@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { BASE_URL } from "../config/api";
 
 const AddBlog = () => {
   const [title, setTitle] = useState("");
@@ -19,7 +20,7 @@ const AddBlog = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:9000/api/v1/blog/create`,
+        `${BASE_URL}/blog/create`,
         {
           method: "POST",
           credentials: "include",

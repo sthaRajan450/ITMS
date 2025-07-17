@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { BASE_URL } from "../config/api";
 
 const FinancialManagement = () => {
   const [orders, setOrders] = useState([]);
 
   const getOrders = async () => {
     try {
-      const response = await fetch("http://localhost:9000/api/v1/order/all", {
+      const response = await fetch(`${BASE_URL}/order/all`, {
         method: "GET",
         credentials: "include", // if using cookies for auth
       });

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { BASE_URL } from "../config/api";
 
 const JobApplicationForm = () => {
   const { jobId } = useParams();
@@ -20,14 +21,11 @@ const JobApplicationForm = () => {
     formData.append("resume", resume);
 
     try {
-      const response = await fetch(
-        `http://localhost:9000/api/v1/job/apply/${jobId}`,
-        {
-          method: "POST",
-          credentials: "include",
-          body: formData,
-        }
-      );
+      const response = await fetch(`${BASE_URL}/job/apply/${jobId}`, {
+        method: "POST",
+        credentials: "include",
+        body: formData,
+      });
 
       if (response.ok) {
         const data = await response.json();
