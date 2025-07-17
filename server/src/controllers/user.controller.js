@@ -35,22 +35,21 @@ const registerUser = asyncHandler(async (req, res) => {
 
   const isExist = await User.findOne({ email });
   if (isExist) {
-    throw new ApiError(401, "User already exist");
+    throw new ApiError(409, "User already exists"); // 409 Conflict is more appropriate
   }
 
   const avatarLocalPath = req.file?.path;
-  // console.log(avatarLocalPath);
 
   if (!avatarLocalPath) {
     throw new ApiError(400, "Avatar file is required");
   }
 
   const avatar = await uploadOnCloudinary(avatarLocalPath);
-  // console.log(avatar);
   if (!avatar) {
-    throw new ApiError(400, "Failed to upload file on cloudinary");
+    throw new ApiError(500, "Failed to upload file on Cloudinary");
   }
 
+  // Create user with avatar URL from Cloudinary
   const userInstance = await User.create({
     fullName,
     email,
@@ -63,20 +62,23 @@ const registerUser = asyncHandler(async (req, res) => {
     "-password -refreshToken"
   );
   if (!createdUser) {
-    throw new ApiError(404, "Something went wrong while registering user");
+    throw new ApiError(500, "Something went wrong while registering user");
   }
 
   const { accessToken, refreshToken } = await generateAccessAndRefreshToken(
     createdUser._id
   );
 
-  const options = {
+  const cookieOptions = {
     httpOnly: true,
-    secure: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "None",
+    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
   };
+
   return res
-    .cookie("accessToken", accessToken, options)
-    .cookie("refreshToken", refreshToken, options)
+    .cookie("accessToken", accessToken, cookieOptions)
+    .cookie("refreshToken", refreshToken, cookieOptions)
     .status(201)
     .json(new ApiResponse(201, "User registered successfully", createdUser));
 });
