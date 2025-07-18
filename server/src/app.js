@@ -13,6 +13,14 @@ const resourceRouter = require("./routes/resource.route");
 const assignmentRouter = require("./routes/assignment.route");
 const allowedOrigins = process.env.CORS_ORIGIN.split(",");
 
+const fs = require("fs");
+const path = require("path");
+const tempPath = path.join(__dirname, "public", "temp");
+if (!fs.existsSync(tempPath)) {
+  fs.mkdirSync(tempPath, { recursive: true });
+  console.log("✅ Created public/temp directory");
+}
+
 app.use(
   cors({
     origin: function (origin, callback) {
