@@ -77,7 +77,7 @@ const success = asyncHandler(async (req, res) => {
     }
   );
 
-  res.redirect(`https://itms-chi.vercel.app/${data.transaction_uuid}`);
+  res.redirect(`https://itms-chi.vercel.app/success/${data.transaction_uuid}`);
 });
 
 module.exports = {
