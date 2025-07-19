@@ -133,7 +133,7 @@ const Home = () => {
       </section>
 
       {/* Stats Section */}
-      <section className="bg-gray-100 text-black py-20">
+      <section className="bg-purple-100/50 text-black py-20">
         <div className="max-w-7xl mx-auto grid md:grid-cols-3 gap-12 text-center px-6">
           {[
             { value: "5,000+", label: "Students Trained" },
@@ -240,9 +240,7 @@ const Home = () => {
                   <p className="text-gray-600 italic mb-4">
                     "{testimonial.feedback}"
                   </p>
-                  <p className=" font-semibold">
-                    - {testimonial.name}
-                  </p>
+                  <p className=" font-semibold">- {testimonial.name}</p>
                 </div>
               </div>
             ))}
