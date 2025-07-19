@@ -5,6 +5,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { BASE_URL } from "../config/api";
+import Hero from "./Hero";
 
 const testimonials = [
   {
@@ -98,25 +99,12 @@ const Home = () => {
   return (
     <div className="bg-gray-50 font-inter">
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-blue-700 to-purple-700 text-white py-32 text-center">
-        <h1 className="text-5xl md:text-6xl font-extrabold mb-4 drop-shadow-lg">
-          Transform Your IT Career
-        </h1>
-        <p className="text-xl md:text-2xl mb-8 max-w-2xl mx-auto">
-          Join 5,000+ learners and master in-demand skills with top instructors.
-        </p>
-        <Link
-          to="/courses"
-          className="bg-white text-blue-700 font-bold py-3 px-8 rounded-full hover:bg-gray-200 shadow-lg transition"
-        >
-          📚 Browse Courses
-        </Link>
-      </section>
+      <Hero />
 
       {/* Why Learn Section */}
       <section className="py-20 px-6 max-w-7xl mx-auto">
-        <h2 className="text-4xl font-extrabold text-gray-800 text-center mb-14">
-          🚀 Why Learn With Us?
+        <h2 className="text-5xl font-semibold text-gray-700 text-center mb-14">
+          Why Learn With Us?
         </h2>
         <div className="grid md:grid-cols-3 gap-8">
           {[
@@ -137,9 +125,7 @@ const Home = () => {
               key={idx}
               className="bg-white p-8 rounded-2xl shadow-xl text-center hover:scale-105 transition-transform duration-300"
             >
-              <h3 className="text-2xl font-bold text-blue-700 mb-3">
-                {item.title}
-              </h3>
+              <h3 className="text-2xl font-bold mb-3">{item.title}</h3>
               <p className="text-gray-600">{item.desc}</p>
             </div>
           ))}
@@ -147,7 +133,7 @@ const Home = () => {
       </section>
 
       {/* Stats Section */}
-      <section className="bg-gradient-to-r from-purple-600 to-blue-600 text-white py-20">
+      <section className="bg-gray-100 text-black py-20">
         <div className="max-w-7xl mx-auto grid md:grid-cols-3 gap-12 text-center px-6">
           {[
             { value: "5,000+", label: "Students Trained" },
@@ -155,7 +141,7 @@ const Home = () => {
             { value: "20+", label: "Corporate Partners" },
           ].map((stat, idx) => (
             <div key={idx}>
-              <h3 className="text-5xl font-extrabold mb-2 drop-shadow">
+              <h3 className="text-5xl font-semibold mb-2 drop-shadow">
                 {stat.value}
               </h3>
               <p className="text-lg opacity-90">{stat.label}</p>
@@ -166,7 +152,7 @@ const Home = () => {
 
       {/* Course Search Section */}
       <section className="py-20 px-6 max-w-6xl mx-auto">
-        <h2 className="text-4xl font-bold text-gray-800 text-center mb-10">
+        <h2 className="text-4xl font-semibold text-gray-800 text-center mb-10">
           🔍 Find Your Perfect Course
         </h2>
         <form
@@ -193,7 +179,7 @@ const Home = () => {
           <select
             value={level}
             onChange={(e) => setLevel(e.target.value)}
-            className="flex-1 md:w-52 px-5 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:outline-none text-lg"
+            className="flex-1 md:w-52 px-5 py-3 border border-gray-300  rounded-xl focus:ring-2 focus:ring-blue-600 focus:outline-none text-lg"
           >
             <option value="">Skill Level</option>
             <option value="Beginner">Beginner</option>
@@ -202,7 +188,7 @@ const Home = () => {
           </select>
           <button
             type="submit"
-            className="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-8 py-3 rounded-xl font-bold hover:opacity-90 transition"
+            className="bg-gradient-to-r from-purple-400  to-blue-400 text-[18px]  cursor-pointer text-white px-8 py-3 rounded-xl hover:opacity-90 transition"
           >
             🔎 Search
           </button>
@@ -254,7 +240,7 @@ const Home = () => {
                   <p className="text-gray-600 italic mb-4">
                     "{testimonial.feedback}"
                   </p>
-                  <p className="text-blue-700 font-semibold">
+                  <p className=" font-semibold">
                     - {testimonial.name}
                   </p>
                 </div>

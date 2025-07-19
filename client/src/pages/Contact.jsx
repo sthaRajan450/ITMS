@@ -22,9 +22,12 @@ const Contact = () => {
   return (
     <div className="bg-gray-50 min-h-screen py-20 px-6 font-inter">
       <div className="max-w-5xl mx-auto text-center mb-14">
-        <h1 className="text-5xl font-extrabold text-blue-700 mb-6">📞 Get in Touch</h1>
+        <h1 className="text-5xl font-semibold text-gray-700 mb-6">
+          📞 Get in Touch
+        </h1>
         <p className="text-gray-700 text-lg leading-relaxed">
-          Questions, feedback or collaboration proposals? Drop us a message or reach out through our contact details.
+          Questions, feedback or collaboration proposals? Drop us a message or
+          reach out through our contact details.
         </p>
       </div>
 
@@ -46,7 +49,9 @@ const Contact = () => {
 
       {/* Contact Form */}
       <div className="max-w-2xl mx-auto bg-white p-8 rounded-2xl shadow-lg">
-        <h2 className="text-3xl font-bold text-gray-800 mb-8">📝 Send a Message</h2>
+        <h2 className="text-3xl font-bold text-gray-800 mb-8">
+          📝 Send a Message
+        </h2>
         <form onSubmit={handleSubmit} className="space-y-6">
           <input
             type="text"
@@ -77,7 +82,7 @@ const Contact = () => {
           ></textarea>
           <button
             type="submit"
-            className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-3 rounded-xl text-lg font-bold hover:opacity-90 transition"
+            className="w-full bg-gradient-to-r from-purple-400 to-blue-400 text-white py-3 rounded-xl text-lg font-bold hover:opacity-90 transition"
           >
             📤 Send Message
           </button>

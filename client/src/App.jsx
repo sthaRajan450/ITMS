@@ -1,10 +1,14 @@
 import React from "react";
+import { Route, Routes, useLocation } from "react-router-dom";
+import { AnimatePresence } from "framer-motion";
+
 import Navbar from "./components/Navbar";
-import { Route, Routes } from "react-router-dom";
+import Footer from "./components/Footer";
+import PageWrapper from "./components/PageWrapper";
+
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
-
 import BlogDetail from "./pages/BlogDetail";
 import Courses from "./pages/Courses";
 import CourseDetail from "./pages/CourseDetail";
@@ -12,12 +16,9 @@ import Testimonials from "./pages/Testimonials";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Profile from "./pages/Profile";
-import LocomotiveScroll from "locomotive-scroll";
-import Footer from "./components/Footer";
 import MyCourses from "./student/MyCourses";
 import Jobs from "./pages/Jobs";
 import Blogs from "./pages/Blogs";
-
 import JobApplicationForm from "./pages/JobApplicationForm";
 import MyApplications from "./student/MyApplications";
 import InstrcutorDashboard from "./instructor/InstrcutorDashboard";
@@ -48,76 +49,392 @@ import AddCourses from "./instructor/AddCourses";
 import SendMessage from "./instructor/SendMessage";
 import AssignmentList from "./pages/AssignmentList";
 import SubmitAssignment from "./student/SubmitAssignment";
+// import Feedbacks from "./student/Feedbacks";
+import LocomotiveScroll from "locomotive-scroll";
 
 const App = () => {
+  const location = useLocation();
   const locomotiveScroll = new LocomotiveScroll();
+
   return (
     <div>
       <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/blogDetail" element={<BlogDetail />} />
-        <Route path="/courses" element={<Courses />} />
-        <Route path="/courseDetail/:courseId" element={<CourseDetail />} />
-        <Route path="/jobs" element={<Jobs />} />
-        <Route path="/blogs" element={<Blogs />} />
-        <Route path="/blog/:blogId" element={<BlogDetail />} />
-        <Route path="/job/:jobId" element={<JobApplicationForm />} />
-        <Route path="/testimonials" element={<Testimonials />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/payment" element={<Payment />} />
-        <Route path="/success/:orderId" element={<Success />} />
-        <Route path="/cart" element={<Cart />} />
-        //student routes
-        <Route path="/student/" element={<StudentDashboard />}>
-          <Route index element={<MyCourses />} />
-          <Route path="myCourses" element={<MyCourses />} />
-          <Route path="myApplications" element={<MyApplications />} />
-          <Route path="myCertificates" element={<MyCertificates />} />
-          <Route path="myProgress" element={<MyProgress />} />
-          <Route path="myAssignments" element={<MyAssignments />} />
-        </Route>
-        <Route path="/assignments/:courseId" element={<AssignmentList />} />
-        <Route
-          path="/submitAssignment/:assignmentId"
-          element={<SubmitAssignment />}
-        />
-        //instructor routes
-        <Route path="/instructor/" element={<InstrcutorDashboard />}>
-          <Route index element={<CourseManagement />} />
-          <Route path="courseManagement" element={<CourseManagement />} />
-          <Route path="studentManagement" element={<StudentManagement />} />
+      <AnimatePresence mode="wait">
+        <Routes location={location} key={location.pathname}>
           <Route
-            path="resourceManagement/:courseId"
-            element={<ResourceManagement />}
+            path="/"
+            element={
+              <PageWrapper>
+                <Home />
+              </PageWrapper>
+            }
           />
           <Route
-            path="assignmentManagement/:courseId"
-            element={<AssignmentManagement />}
+            path="/about"
+            element={
+              <PageWrapper>
+                <About />
+              </PageWrapper>
+            }
           />
-        </Route>
-        <Route path="/addCourses" element={<AddCourses />} />
-        <Route path="/sendMessage" element={<SendMessage />} />
-        //admin routes
-        <Route path="/admin/" element={<AdminDashboard />}>
-          <Route index element={<UserManagement />} />
-          <Route path="userManagement" element={<UserManagement />} />
-          <Route path="contentManagement" element={<ContentManagement />} />
-          <Route path="financialManagement" element={<FinancialManagement />} />
-        </Route>
-        <Route path="/updateUser/:userId" element={<EditUser />} />
-        <Route path="/updateCourse/:courseId" element={<EditCourse />} />
-        <Route path="/updateBlog/:blogId" element={<EditBlog />} />
-        <Route path="/updateJob/:jobId" element={<EditJob />} />
-        <Route path="/addUser" element={<AddUser />} />
-        <Route path="/addCourse" element={<AddCourse />} />
-        <Route path="/addBlog" element={<AddBlog />} />
-        <Route path="/addJob" element={<AddJob />} />
-      </Routes>
+          <Route
+            path="/contact"
+            element={
+              <PageWrapper>
+                <Contact />
+              </PageWrapper>
+            }
+          />
+          <Route
+            path="/blogDetail"
+            element={
+              <PageWrapper>
+                <BlogDetail />
+              </PageWrapper>
+            }
+          />
+          <Route
+            path="/courses"
+            element={
+              <PageWrapper>
+                <Courses />
+              </PageWrapper>
+            }
+          />
+          <Route
+            path="/courseDetail/:courseId"
+            element={
+              <PageWrapper>
+                <CourseDetail />
+              </PageWrapper>
+            }
+          />
+          <Route
+            path="/jobs"
+            element={
+              <PageWrapper>
+                <Jobs />
+              </PageWrapper>
+            }
+          />
+          <Route
+            path="/blogs"
+            element={
+              <PageWrapper>
+                <Blogs />
+              </PageWrapper>
+            }
+          />
+          <Route
+            path="/blog/:blogId"
+            element={
+              <PageWrapper>
+                <BlogDetail />
+              </PageWrapper>
+            }
+          />
+          <Route
+            path="/job/:jobId"
+            element={
+              <PageWrapper>
+                <JobApplicationForm />
+              </PageWrapper>
+            }
+          />
+          <Route
+            path="/testimonials"
+            element={
+              <PageWrapper>
+                <Testimonials />
+              </PageWrapper>
+            }
+          />
+          <Route
+            path="/register"
+            element={
+              <PageWrapper>
+                <Register />
+              </PageWrapper>
+            }
+          />
+          <Route
+            path="/login"
+            element={
+              <PageWrapper>
+                <Login />
+              </PageWrapper>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <PageWrapper>
+                <Profile />
+              </PageWrapper>
+            }
+          />
+          <Route
+            path="/payment"
+            element={
+              <PageWrapper>
+                <Payment />
+              </PageWrapper>
+            }
+          />
+          <Route
+            path="/success/:orderId"
+            element={
+              <PageWrapper>
+                <Success />
+              </PageWrapper>
+            }
+          />
+          <Route
+            path="/cart"
+            element={
+              <PageWrapper>
+                <Cart />
+              </PageWrapper>
+            }
+          />
+
+          {/* Student routes */}
+          <Route path="/student/" element={<StudentDashboard />}>
+            <Route
+              index
+              element={
+                <PageWrapper>
+                  <MyCourses />
+                </PageWrapper>
+              }
+            />
+            <Route
+              path="myCourses"
+              element={
+                <PageWrapper>
+                  <MyCourses />
+                </PageWrapper>
+              }
+            />
+            <Route
+              path="myApplications"
+              element={
+                <PageWrapper>
+                  <MyApplications />
+                </PageWrapper>
+              }
+            />
+            <Route
+              path="myCertificates"
+              element={
+                <PageWrapper>
+                  <MyCertificates />
+                </PageWrapper>
+              }
+            />
+            <Route
+              path="myProgress"
+              element={
+                <PageWrapper>
+                  <MyProgress />
+                </PageWrapper>
+              }
+            />
+            <Route
+              path="myAssignments"
+              element={
+                <PageWrapper>
+                  <MyAssignments />
+                </PageWrapper>
+              }
+            />
+            {/* <Route
+              path="feebacks"
+              element={
+                <PageWrapper>
+                  <Feedbacks />
+                </PageWrapper>
+              }
+            /> */}
+          </Route>
+          <Route
+            path="/assignments/:courseId"
+            element={
+              <PageWrapper>
+                <AssignmentList />
+              </PageWrapper>
+            }
+          />
+          <Route
+            path="/submitAssignment/:assignmentId"
+            element={
+              <PageWrapper>
+                <SubmitAssignment />
+              </PageWrapper>
+            }
+          />
+
+          {/* Instructor routes */}
+          <Route path="/instructor/" element={<InstrcutorDashboard />}>
+            <Route
+              index
+              element={
+                <PageWrapper>
+                  <CourseManagement />
+                </PageWrapper>
+              }
+            />
+            <Route
+              path="courseManagement"
+              element={
+                <PageWrapper>
+                  <CourseManagement />
+                </PageWrapper>
+              }
+            />
+            <Route
+              path="studentManagement"
+              element={
+                <PageWrapper>
+                  <StudentManagement />
+                </PageWrapper>
+              }
+            />
+            <Route
+              path="resourceManagement/:courseId"
+              element={
+                <PageWrapper>
+                  <ResourceManagement />
+                </PageWrapper>
+              }
+            />
+            <Route
+              path="assignmentManagement/:courseId"
+              element={
+                <PageWrapper>
+                  <AssignmentManagement />
+                </PageWrapper>
+              }
+            />
+          </Route>
+          <Route
+            path="/addCourses"
+            element={
+              <PageWrapper>
+                <AddCourses />
+              </PageWrapper>
+            }
+          />
+          <Route
+            path="/sendMessage"
+            element={
+              <PageWrapper>
+                <SendMessage />
+              </PageWrapper>
+            }
+          />
+
+          {/* Admin routes */}
+          <Route path="/admin/" element={<AdminDashboard />}>
+            <Route
+              index
+              element={
+                <PageWrapper>
+                  <UserManagement />
+                </PageWrapper>
+              }
+            />
+            <Route
+              path="userManagement"
+              element={
+                <PageWrapper>
+                  <UserManagement />
+                </PageWrapper>
+              }
+            />
+            <Route
+              path="contentManagement"
+              element={
+                <PageWrapper>
+                  <ContentManagement />
+                </PageWrapper>
+              }
+            />
+            <Route
+              path="financialManagement"
+              element={
+                <PageWrapper>
+                  <FinancialManagement />
+                </PageWrapper>
+              }
+            />
+          </Route>
+          <Route
+            path="/updateUser/:userId"
+            element={
+              <PageWrapper>
+                <EditUser />
+              </PageWrapper>
+            }
+          />
+          <Route
+            path="/updateCourse/:courseId"
+            element={
+              <PageWrapper>
+                <EditCourse />
+              </PageWrapper>
+            }
+          />
+          <Route
+            path="/updateBlog/:blogId"
+            element={
+              <PageWrapper>
+                <EditBlog />
+              </PageWrapper>
+            }
+          />
+          <Route
+            path="/updateJob/:jobId"
+            element={
+              <PageWrapper>
+                <EditJob />
+              </PageWrapper>
+            }
+          />
+          <Route
+            path="/addUser"
+            element={
+              <PageWrapper>
+                <AddUser />
+              </PageWrapper>
+            }
+          />
+          <Route
+            path="/addCourse"
+            element={
+              <PageWrapper>
+                <AddCourse />
+              </PageWrapper>
+            }
+          />
+          <Route
+            path="/addBlog"
+            element={
+              <PageWrapper>
+                <AddBlog />
+              </PageWrapper>
+            }
+          />
+          <Route
+            path="/addJob"
+            element={
+              <PageWrapper>
+                <AddJob />
+              </PageWrapper>
+            }
+          />
+        </Routes>
+      </AnimatePresence>
       <Footer />
     </div>
   );

@@ -62,7 +62,7 @@ const FinancialManagement = () => {
               return (
                 <tr key={order._id} className="text-center">
                   <td className="p-2 border">{order._id}</td>
-                  <td className="p-2 border">{order.user.email}</td>
+                  <td className="p-2 border">{order.user?.email}</td>
                   <td className="p-2 border">
                     {order.course.map((item) => (
                       <div key={item._id}>
