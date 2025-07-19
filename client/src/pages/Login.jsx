@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthProvider";
 import { BASE_URL } from "../config/api";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -29,14 +30,15 @@ const Login = () => {
       if (response.ok) {
         const data = await response.json();
         // console.log(data.data.user);
-        alert(data.message || "Login successful");
+
+        toast.success(data.message || "Login successful");
         setEmail("");
         setPassword("");
         navigate("/");
         setIsAuth(true);
         setUser(data.data.user);
       } else {
-        alert(data.message || "Login failed");
+        toast.error(data.message || "Login failed");
       }
     } catch (error) {
       console.error("Error while logging in:", error);

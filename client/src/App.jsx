@@ -51,6 +51,7 @@ import AssignmentList from "./pages/AssignmentList";
 import SubmitAssignment from "./student/SubmitAssignment";
 // import Feedbacks from "./student/Feedbacks";
 import LocomotiveScroll from "locomotive-scroll";
+import { ToastContainer } from "react-toastify";
 
 const App = () => {
   const location = useLocation();
@@ -59,6 +60,7 @@ const App = () => {
   return (
     <div>
       <Navbar />
+      <ToastContainer position="top-right" autoClose={3000} />
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
           <Route

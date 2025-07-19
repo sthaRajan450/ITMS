@@ -1,7 +1,7 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
 import CryptoJS from "crypto-js";
-import { v4 as uuidv4 } from "uuid";
+
 import { BASE_URL } from "../config/api";
 
 const Payment = () => {
