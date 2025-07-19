@@ -1,4 +1,5 @@
 import React, { createContext, useReducer } from "react";
+import { toast } from "react-toastify";
 
 export const CartContext = createContext();
 
@@ -16,7 +17,7 @@ const reducer = (state, action) => {
         return state;
       } else {
         const newCart = [...state.cartItems, action.payload];
-        alert("Course is added to cart");
+        toast.info(`${action.payload.title} is added to cart`);
         return {
           cartItems: newCart,
         };

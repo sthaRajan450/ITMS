@@ -25,8 +25,8 @@ const Blogs = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-6">
-      <h1 className="text-4xl font-bold text-center text-blue-700 mb-10">
-        📝 Latest Blogs
+      <h1 className="text-4xl font-bold text-center text-gray-700 mb-10">
+        📝 Blogs
       </h1>
 
       {blogs.length > 0 ? (

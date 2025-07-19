@@ -210,7 +210,7 @@ const Home = () => {
                     className="w-full h-48 object-cover rounded-t-xl"
                   />
                   <div className="p-5">
-                    <h3 className="text-xl font-semibold text-blue-700">
+                    <h3 className="text-xl font-semibold text-gray-700">
                       {course.title}
                     </h3>
                     <p className="text-gray-600 mt-2">💰 NPR {course.price}</p>

@@ -4,7 +4,7 @@ const About = () => {
   return (
     <div className="bg-gray-50 min-h-screen py-20 px-6 font-inter">
       <div className="max-w-5xl mx-auto text-center mb-14">
-        <h1 className="text-5xl font-semibold text-gray-700 mb-6">
+        <h1 className="text-5xl font-semibold text-gray-600 mb-6">
           About Our IT Training Management System
         </h1>
         <p className="text-gray-700 text-lg leading-relaxed">
