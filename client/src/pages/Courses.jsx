@@ -3,7 +3,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 import { CartContext } from "../context/CartProvider";
 import { BASE_URL } from "../config/api";
 import { AuthContext } from "../context/AuthProvider";
-
+import { FaCartShopping } from "react-icons/fa6";
 const Courses = () => {
   const [courses, setCourses] = useState([]);
   const [Loading, setLoading] = useState(false);
@@ -65,22 +65,28 @@ const Courses = () => {
                       className="w-full h-40 object-cover cursor-pointer"
                     />
                     <div className="p-5">
-                      <h2 className="text-xl font-semibold mb-2">
+                      <h2 className="text-xl font-semibold mb-2 hover:text-blue-500">
                         {course.title}
                       </h2>
-                      <p className="text-gray-600 mb-2">{course.description}</p>
+                      <p className="text-gray-600 mb-2 hover:text-blue-500">
+                        {course.description}
+                      </p>
                       <div className="text-sm text-gray-500 mb-2">
-                        <span className="font-medium">Level:</span>{" "}
-                        {course.level}
+                        <span>Level:&nbsp;</span>
+                        <span className="hover:text-blue-500 font-medium">
+                          {course.level}
+                        </span>
                       </div>
                       <div className="text-sm text-gray-500 mb-2">
-                        <span className="font-medium">Duration:</span>{" "}
-                        {course.duration}
+                        <span>Duration:&nbsp;</span>
+                        <span className="hover:text-blue-500 font-medium">
+                          {course.duration}
+                        </span>
                       </div>
                     </div>
                   </div>
                   <div className="flex justify-between items-center  px-5 py-3">
-                    <div className="text-xl font-bold text-orange-500">
+                    <div className="text-xl font-semibold text-orange-500">
                       NPR {course.price}
                     </div>
 
@@ -92,9 +98,9 @@ const Courses = () => {
                         }
                         dispatch({ type: "add", payload: course });
                       }}
-                      className="px-4 py-2 bg-purple-500 text-white rounded-md hover:opacity-90 transition"
+                      className="px-4 py-2 bg-transparent flex  justify-center items-center  gap-x-3 text-purple-700 border-2 rounded-md hover:bg-purple-700 hover:text-white transition"
                     >
-                      Add To Cart
+                      <FaCartShopping /> Add To Cart
                     </button>
                   </div>
                 </div>

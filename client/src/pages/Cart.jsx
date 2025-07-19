@@ -39,7 +39,7 @@ const Cart = () => {
   };
   return (
     <div className="min-h-screen bg-gray-50 py-10 px-5">
-      <h1 className="text-3xl font-bold text-center mb-8 text-blue-700">
+      <h1 className="text-4xl font-semibold text-center mb-8 text-gray-600">
         🛒 Your Cart
       </h1>
 
@@ -110,7 +110,7 @@ const Cart = () => {
             No items in cart yet.
           </div>
           <button
-            className="bg-blue-500 text-white p-4 rounded-lg hover:bg-blue-700"
+            className="bg-gradient-to-r from-purple-400 to-blue-400 text-white p-4 rounded-lg hover:opacity-90"
             onClick={() => {
               navigate("/courses");
             }}

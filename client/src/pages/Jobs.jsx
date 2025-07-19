@@ -25,7 +25,7 @@ const Jobs = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-6">
-      <h1 className="text-4xl font-bold text-center text-blue-700 mb-10">
+      <h1 className="text-4xl font-semibold text-center text-gray-600 mb-10">
         💼 Available Job Openings
       </h1>
 

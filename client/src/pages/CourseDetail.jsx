@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../context/AuthProvider";
 import { CartContext } from "../context/CartProvider";
 import { BASE_URL } from "../config/api";
+import { FaCartShopping } from "react-icons/fa6";
 
 const CourseDetail = () => {
   const { courseId } = useParams();
@@ -98,7 +99,7 @@ const CourseDetail = () => {
                 dispatch({ type: "add", payload: course });
                 navigate("/cart");
               }}
-              className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition shadow-md"
+              className="px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-green-700 transition shadow-md"
             >
               Enroll Now
             </button>
@@ -111,9 +112,9 @@ const CourseDetail = () => {
                 }
                 dispatch({ type: "add", payload: course });
               }}
-              className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition shadow-md"
+              className="px-4 py-2 bg-transparent flex  justify-center items-center  gap-x-3 text-purple-700 border-2 rounded-md hover:bg-purple-700 hover:text-white transition"
             >
-              Add to Cart 🛒
+              <FaCartShopping /> Add To Cart
             </button>
           </div>
         </div>
