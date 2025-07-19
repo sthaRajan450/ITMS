@@ -15,9 +15,8 @@ const Register = () => {
   const { setIsAuth, setUser } = useContext(AuthContext);
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!avatar) {
-      alert("Please select an avatar image.");
+    if (!fullName || !email || !password || !phone || !avatar) {
+      toast.warning("All fields are required");
       return;
     }
 
@@ -30,28 +29,33 @@ const Register = () => {
     formData.append("avatar", avatar);
 
     try {
-      let response = await fetch(`${BASE_URL}/user/register`, {
+      const response = await fetch(`${BASE_URL}/user/register`, {
         method: "POST",
         credentials: "include",
         body: formData,
       });
 
-      if (response.ok) {
-        const data = await response.json();
-        console.log(" Registration successful:", data);
-        toast.success(data.message);
-        setFullName("");
-        setEmail("");
-        setPassword("");
-        setPhone("");
-        setAvatar(null);
-        setIsAuth(true);
-        setUser(data.data);
-        navigate("/");
+      if (!response.ok) {
+        const errorData = await response.json();
+        toast.error(errorData.message || "Registration failed");
+        return;
       }
+
+      const data = await response.json();
+      toast.success(data.message);
+      setFullName("");
+      setEmail("");
+      setPassword("");
+      setPhone("");
+      setAvatar(null);
+      setIsAuth(true);
+      setUser(data.data);
+      navigate("/");
     } catch (error) {
       console.log("Error while registering:", error);
       toast.error("Failed to register");
+    } finally {
+      setLoading(false);
     }
   };
 

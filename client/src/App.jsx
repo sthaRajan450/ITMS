@@ -60,7 +60,7 @@ const App = () => {
   return (
     <div>
       <Navbar />
-      <ToastContainer position="top-center" autoClose={3000} />
+      <ToastContainer position="top-center" autoClose={2000} />
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
           <Route

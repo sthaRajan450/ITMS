@@ -14,7 +14,7 @@ const Login = () => {
     e.preventDefault();
 
     if (!email || !password) {
-      alert("Please enter both email and password.");
+      toast.warning("Please enter both email and password.");
       return;
     }
     setLoading(true);
