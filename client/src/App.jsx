@@ -52,6 +52,7 @@ import SubmitAssignment from "./student/SubmitAssignment";
 // import Feedbacks from "./student/Feedbacks";
 import LocomotiveScroll from "locomotive-scroll";
 import { ToastContainer } from "react-toastify";
+import Course from "./pages/Course";
 
 const App = () => {
   const location = useLocation();
@@ -250,14 +251,14 @@ const App = () => {
                 </PageWrapper>
               }
             />
-            {/* <Route
-              path="feebacks"
+            <Route
+              path="course"
               element={
                 <PageWrapper>
-                  <Feedbacks />
+                  <Course />
                 </PageWrapper>
               }
-            /> */}
+            />
           </Route>
           <Route
             path="/assignments/:courseId"

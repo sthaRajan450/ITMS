@@ -7,7 +7,8 @@ const links = [
   { path: "/student/myApplications", label: " Applications" },
   { path: "/student/myProgress", label: " Progress" },
   { path: "/student/myAssignments", label: "Assignments" },
-  { path: "/student/feebacks", label: "Feedbacks" },
+  
+  
 ];
 
 const StudentDashboard = () => {
@@ -15,7 +16,7 @@ const StudentDashboard = () => {
     <div className="flex min-h-screen bg-gray-100">
       {/* Sidebar */}
       <aside className="w-70 bg-white shadow-lg p-6 space-y-4">
-        <h2 className="text-2xl font-bold text-blue-700 mb-6">🎓 Dashboard</h2>
+        <h2 className="text-2xl font-bold text-gray-600 mb-6">🎓 Dashboard</h2>
         {links.map((link, index) => (
           <NavLink
             key={index}
@@ -23,7 +24,7 @@ const StudentDashboard = () => {
             className={({ isActive }) =>
               `block px-4 py-2 rounded-lg ${
                 isActive
-                  ? "bg-blue-600 text-white"
+                  ? "bg-gradient-to-r from-red-400 to-orange-400 text-white"
                   : "text-gray-800 hover:bg-gray-200"
               } transition`
             }

@@ -110,7 +110,7 @@ const Cart = () => {
             No items in cart yet.
           </div>
           <button
-            className="bg-gradient-to-r from-purple-400 to-blue-400 text-white p-4 rounded-lg hover:opacity-90"
+            className="bg-gradient-to-r from-red-400 to-orange-400 text-white p-4 rounded-lg hover:opacity-90"
             onClick={() => {
               navigate("/courses");
             }}

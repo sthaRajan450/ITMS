@@ -188,7 +188,7 @@ const Home = () => {
           </select>
           <button
             type="submit"
-            className="bg-gradient-to-r from-purple-400  to-blue-400 text-[18px]  cursor-pointer text-white px-8 py-3 rounded-xl hover:opacity-90 transition"
+            className="bg-gradient-to-r from-red-400  to-orange-400 text-[18px]  cursor-pointer text-white px-8 py-3 rounded-xl hover:opacity-90 transition"
           >
             🔎 Search
           </button>

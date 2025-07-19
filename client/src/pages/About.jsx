@@ -41,15 +41,15 @@ const About = () => {
 
       {/* Success Metrics */}
       <div className="max-w-5xl mx-auto grid md:grid-cols-3 gap-10 text-center mb-20">
-        <div className="bg-blue-500 text-white p-8 rounded-2xl shadow-xl">
+        <div className="bg-red-400 text-white p-8 rounded-2xl shadow-xl">
           <h3 className="text-4xl font-extrabold mb-2">5,000+</h3>
           <p className="text-lg">Students Trained</p>
         </div>
-        <div className="bg-purple-500 text-white p-8 rounded-2xl shadow-xl">
-          <h3 className="text-4xl font-extrabold mb-2">1,500+</h3>
+        <div className="bg-orange-400 text-white p-8 rounded-2xl shadow-xl">
+          <h3 className="text-4xl font-extrabold mb-2">1,400+</h3>
           <p className="text-lg">Job Placements</p>
         </div>
-        <div className="bg-blue-500 text-white p-8 rounded-2xl shadow-xl">
+        <div className="bg-red-400 text-white p-8 rounded-2xl shadow-xl">
           <h3 className="text-4xl font-extrabold mb-2">20+</h3>
           <p className="text-lg">Corporate Partners</p>
         </div>

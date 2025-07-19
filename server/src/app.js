@@ -11,7 +11,6 @@ const orderRouter = require("./routes/order.route");
 const messageRouter = require("./routes/message.route");
 const resourceRouter = require("./routes/resource.route");
 const assignmentRouter = require("./routes/assignment.route");
-const allowedOrigins = process.env.CORS_ORIGIN.split(",");
 
 const fs = require("fs");
 const path = require("path");
@@ -21,6 +20,7 @@ if (!fs.existsSync(tempPath)) {
   console.log("✅ Created public/temp directory");
 }
 
+const allowedOrigins = process.env.CORS_ORIGIN.split(",");
 app.use(
   cors({
     origin: function (origin, callback) {

@@ -91,7 +91,7 @@ const Navbar = () => {
             <>
               <button
                 onClick={logoutUser}
-                className="bg-red-600  p-3 px-4 text-center  rounded-full text-white cursor-pointer hover:opacity-90 transition"
+                className="bg-red-600  p-3 px-7 text-center  rounded-full text-white cursor-pointer hover:opacity-80 transition"
               >
                 Logout
               </button>
@@ -108,7 +108,7 @@ const Navbar = () => {
               <NavLink
                 to="/login"
                 className={({ isActive }) =>
-                  `text-lg font-medium transition bg-blue-500 text-white p-3 rounded-full w-30 text-center hover:bg-purple-200 hover:text-blue-700
+                  `text-lg font-medium transition bg-orange-500 text-white p-3 rounded-full w-30 text-center hover:bg-red-100 hover:text-orange-700
                  `
                 }
               >
@@ -117,7 +117,7 @@ const Navbar = () => {
               <NavLink
                 to="/register"
                 className={({ isActive }) =>
-                  ` text-lg font-medium transition  bg-purple-200 text-blue-700 p-3 rounded-full w-30 text-center hover:bg-blue-500 hover:text-white `
+                  ` text-lg font-medium transition  bg-red-100 text-orange-700 p-3 rounded-full w-30 text-center hover:bg-orange-500 hover:text-white `
                 }
               >
                 Register

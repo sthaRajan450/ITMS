@@ -70,10 +70,12 @@ const registerUser = asyncHandler(async (req, res) => {
     createdUser._id
   );
 
+  const isProduction = process.env.NODE_ENV === "production";
+
   const cookieOptions = {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "None",
+    secure: isProduction, // only true in production (HTTPS)
+    sameSite: isProduction ? "None" : "Lax", // 'Lax' works on localhost
     maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
   };
 
@@ -109,16 +111,17 @@ const loginUser = asyncHandler(async (req, res) => {
     "-password -refreshToken"
   );
 
-  const options = {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "None",
-    maxAge: 7 * 24 * 60 * 60 * 1000,
-  };
+  const isProduction = process.env.NODE_ENV === "production";
 
+  const cookieOptions = {
+    httpOnly: true,
+    secure: isProduction, // only true in production (HTTPS)
+    sameSite: isProduction ? "None" : "Lax", // 'Lax' works on localhost
+    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+  };
   return res
-    .cookie("accessToken", accessToken, options)
-    .cookie("refreshToken", refreshToken, options)
+    .cookie("accessToken", accessToken, cookieOptions)
+    .cookie("refreshToken", refreshToken, cookieOptions)
     .status(200)
     .json(
       new ApiResponse(200, "User logged in successfully", {

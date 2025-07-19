@@ -68,20 +68,28 @@ const Courses = () => {
                       <h2 className="text-xl font-semibold mb-2 hover:text-blue-500">
                         {course.title}
                       </h2>
-                      <p className="text-gray-600 mb-2 hover:text-blue-500">
+                      <p className="text-sm text-gray-600 mb-2">
+                        Category:
+                        <span className="font-medium text-gray-800 hover:text-blue-500">
+                          {course.category}
+                        </span>
+                      </p>
+                      <p className="text-gray-600 mb-2 hover:text-blue-500 capitalize font-semibold">
                         {course.description}
                       </p>
-                      <div className="text-sm text-gray-500 mb-2">
-                        <span>Level:&nbsp;</span>
-                        <span className="hover:text-blue-500 font-medium">
-                          {course.level}
-                        </span>
-                      </div>
-                      <div className="text-sm text-gray-500 mb-2">
-                        <span>Duration:&nbsp;</span>
-                        <span className="hover:text-blue-500 font-medium">
-                          {course.duration}
-                        </span>
+                      <div className="flex gap-x-4">
+                        <div className="text-sm text-gray-500 mb-2">
+                          <span>Level:&nbsp;</span>
+                          <span className="hover:text-blue-500 font-medium">
+                            {course.level}
+                          </span>
+                        </div>
+                        <div className="text-sm text-gray-500 mb-2">
+                          <span>Duration:&nbsp;</span>
+                          <span className="hover:text-blue-500 font-medium">
+                            {course.duration}
+                          </span>
+                        </div>
                       </div>
                     </div>
                   </div>
