@@ -90,7 +90,7 @@ const Navbar = () => {
             <>
               <button
                 onClick={logoutUser}
-                className="bg-red-600  p-3 text-center  rounded-full text-white cursor-pointer hover:opacity-90 transition"
+                className="bg-red-600  p-3 px-4 text-center  rounded-full text-white cursor-pointer hover:opacity-90 transition"
               >
                 Logout
               </button>

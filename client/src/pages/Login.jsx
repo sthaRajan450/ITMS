@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 
 const Login = () => {
   const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const { setIsAuth, setUser } = useContext(AuthContext);
@@ -16,7 +17,7 @@ const Login = () => {
       alert("Please enter both email and password.");
       return;
     }
-
+    setLoading(true);
     try {
       let response = await fetch(`${BASE_URL}/user/login`, {
         method: "POST",
@@ -41,8 +42,10 @@ const Login = () => {
         toast.error(data.message || "Login failed");
       }
     } catch (error) {
-      console.error("Error while logging in:", error);
-      alert("Something went wrong.");
+      // console.error("Error while logging in:", error);
+      toast.error("Something went wrong.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -90,9 +93,10 @@ const Login = () => {
 
           <button
             type="submit"
+            disabled={loading}
             className="w-full bg-gradient-to-r from-purple-400 to-blue-400 text-white py-2 rounded-lg font-semibold hover:opacity-90  transition duration-300"
           >
-            Login
+            {loading ? "Logging in..." : "Login"}
           </button>
         </form>
 

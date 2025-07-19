@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthProvider";
 import { BASE_URL } from "../config/api";
+import { toast } from "react-toastify";
 
 const Register = () => {
   const [fullName, setFullName] = useState("");
@@ -9,6 +10,7 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [phone, setPhone] = useState("");
   const [avatar, setAvatar] = useState(null);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { setIsAuth, setUser } = useContext(AuthContext);
   const handleSubmit = async (e) => {
@@ -19,6 +21,7 @@ const Register = () => {
       return;
     }
 
+    setLoading(true);
     const formData = new FormData();
     formData.append("fullName", fullName);
     formData.append("email", email);
@@ -36,7 +39,7 @@ const Register = () => {
       if (response.ok) {
         const data = await response.json();
         console.log(" Registration successful:", data);
-        alert(data.message);
+        toast.success(data.message);
         setFullName("");
         setEmail("");
         setPassword("");
@@ -47,7 +50,8 @@ const Register = () => {
         navigate("/");
       }
     } catch (error) {
-      console.error("Error while registering:", error);
+      console.log("Error while registering:", error);
+      toast.error("Failed to register");
     }
   };
 
@@ -145,9 +149,10 @@ const Register = () => {
 
           <button
             type="submit"
+            disabled={loading}
             className="w-full  bg-gradient-to-r from-purple-400 to-blue-400 text-white py-2 rounded-lg font-semibold hover:opacity-90 transition duration-300"
           >
-            Register
+            {loading ? "Registering..." : "Register"}
           </button>
         </form>
 
