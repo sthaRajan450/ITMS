@@ -31,7 +31,7 @@ import MyAssignments from "./student/MyAssignments";
 import ResourceManagement from "./instructor/ResourceManagement";
 import AssignmentManagement from "./instructor/AssignmentManagement";
 import AdminDashboard from "./admin/AdminDashboard";
-import ContentManagement from "./admin/ContentManagement";
+
 import FinancialManagement from "./admin/FinancialManagement";
 import UserManagement from "./admin/UserManagement";
 import EditUser from "./admin/EditUser";
@@ -57,6 +57,8 @@ import CourseManagement from "./admin/CourseManagement";
 import BlogManagement from "./admin/BlogManagement";
 import JobManagement from "./admin/JobManagement";
 import ApplicationManagement from "./admin/ApplicationManagement";
+
+import InstructorCourseManagement from "./instructor/InstructorCourseManagement";
 
 const App = () => {
   const location = useLocation();
@@ -287,7 +289,7 @@ const App = () => {
               index
               element={
                 <PageWrapper>
-                  <CourseManagement />
+                  <InstructorCourseManagement />
                 </PageWrapper>
               }
             />
@@ -295,10 +297,11 @@ const App = () => {
               path="courseManagement"
               element={
                 <PageWrapper>
-                  <CourseManagement />
+                  <InstructorCourseManagement />
                 </PageWrapper>
               }
             />
+
             <Route
               path="studentManagement"
               element={
@@ -308,7 +311,7 @@ const App = () => {
               }
             />
             <Route
-              path="resourceManagement/:courseId"
+              path="resourceManagement"
               element={
                 <PageWrapper>
                   <ResourceManagement />
@@ -316,7 +319,7 @@ const App = () => {
               }
             />
             <Route
-              path="assignmentManagement/:courseId"
+              path="assignmentManagement"
               element={
                 <PageWrapper>
                   <AssignmentManagement />
@@ -324,14 +327,7 @@ const App = () => {
               }
             />
           </Route>
-          <Route
-            path="/addCourses"
-            element={
-              <PageWrapper>
-                <AddCourses />
-              </PageWrapper>
-            }
-          />
+
           <Route
             path="/sendMessage"
             element={

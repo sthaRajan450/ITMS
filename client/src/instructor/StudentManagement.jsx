@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import SendMessage from "./SendMessage";
+
 import { BASE_URL } from "../config/api";
 const StudentManagement = () => {
   const [students, setStudents] = useState([]);
@@ -26,7 +26,7 @@ const StudentManagement = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 py-10 px-6">
-      <h1 className="text-4xl font-bold text-center text-blue-700 mb-8">
+      <h1 className="text-4xl font-bold text-center text-gray-600 mb-8">
         👩‍🎓 Student Management
       </h1>
 
@@ -40,7 +40,7 @@ const StudentManagement = () => {
               <img
                 src={student.avatar}
                 alt={student.fullName}
-                className="w-24 h-24 rounded-full mb-4 object-cover border-2 border-blue-400"
+                className="w-24 h-24 rounded-full mb-4 object-cover border-2 border-orange-400"
               />
               <h2 className="text-xl font-semibold text-gray-800 mb-1">
                 {student.fullName}
@@ -50,10 +50,6 @@ const StudentManagement = () => {
               <p className="text-sm text-gray-500 mt-2">
                 Enrolled in: {student.enrolledCourses.length} course(s)
               </p>
-              <SendMessage
-                receiverId={student._id}
-                courseId="686e354caaabe6fb428bcf9a"
-              />
             </div>
           ))}
         </div>

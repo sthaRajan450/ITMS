@@ -60,7 +60,7 @@ const Contact = () => {
             value={form.fullName}
             onChange={handleChange}
             required
-            className="w-full px-5 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:outline-none text-lg"
+            className="w-full px-5 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-600 focus:outline-none text-lg"
           />
           <input
             type="email"
@@ -69,7 +69,7 @@ const Contact = () => {
             value={form.email}
             onChange={handleChange}
             required
-            className="w-full px-5 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:outline-none text-lg"
+            className="w-full px-5 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-600 focus:outline-none text-lg"
           />
           <textarea
             name="message"
@@ -78,11 +78,11 @@ const Contact = () => {
             value={form.message}
             onChange={handleChange}
             required
-            className="w-full px-5 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:outline-none text-lg"
+            className="w-full px-5 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-600 focus:outline-none text-lg"
           ></textarea>
           <button
             type="submit"
-            className="w-full bg-gradient-to-r from-purple-400 to-blue-400 text-white py-3 rounded-xl text-lg font-bold hover:opacity-90 transition"
+            className="w-full bg-gradient-to-r from-red-400 to-orange-400 text-white py-3 rounded-xl text-lg font-bold hover:opacity-90 transition"
           >
             📤 Send Message
           </button>

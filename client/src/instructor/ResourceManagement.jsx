@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useLocation } from "react-router-dom";
 import { BASE_URL } from "../config/api";
 const ResourceManagement = () => {
-  const { courseId } = useParams();
+  const location = useLocation();
+  const courseId = location.state;
+
   const [resources, setResources] = useState([]);
   const [file, setFile] = useState(null);
   const [title, setTitle] = useState("");
