@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { BASE_URL } from "../config/api";
+import { toast } from "react-toastify";
 
 const AddJob = () => {
   const { jobId } = useParams();
@@ -33,11 +34,11 @@ const AddJob = () => {
 
       if (response.ok) {
         const data = await response.json();
-        alert(data.message);
+        toast.success(data.message);
         navigate("/admin/contentManagement");
       } else {
         const err = await response.json();
-        alert(err.message || "Something went wrong");
+        toast.error(err.message || "Something went wrong");
       }
     } catch (error) {
       console.log("Failed to add job:", error);
@@ -45,8 +46,8 @@ const AddJob = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
-      <h1 className="text-2xl font-bold mb-6 text-center text-gray-700">
+    <div className="max-w-2xl mx-auto m-10 p-6 bg-white shadow-lg rounded-lg">
+      <h1 className="text-3xl font-bold mb-6 text-center text-gray-600">
         Add Job
       </h1>
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -117,7 +118,7 @@ const AddJob = () => {
 
         <button
           type="submit"
-          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
+          className="w-full bg-orange-600 text-white py-2 rounded-full hover:bg-orange-5 00 transition"
         >
           Add Job
         </button>

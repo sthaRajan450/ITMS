@@ -61,26 +61,24 @@ const UserManagement = () => {
         👥 User Management
       </h1>
 
-      <div className="flex justify-center mb-6">
+      <div className="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
+        <input
+          type="text"
+          placeholder="🔍 Search by name, email"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="w-full md:w-1/2 px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-orange-500"
+        />
         <button
           onClick={() => navigate("/addUser")}
-          className="bg-orange-600 text-white px-6 py-3 rounded-full text-xl hover:bg-orange-500"
+          className="px-5 py-3 bg-orange-600 text-white rounded-full hover:bg-orange-500 transition"
         >
           Add User
         </button>
       </div>
-      <div className="max-w-xl mx-auto mb-6">
-        <input
-          type="text"
-          placeholder="Search by name or email..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400"
-        />
-      </div>
 
       {loading ? (
-        <p className="text-center text-gray-600">Loading...</p>
+        <p className="text-center text-orange-600">Loading users...</p>
       ) : error ? (
         <p className="text-center text-red-600">{error}</p>
       ) : users.length > 0 ? (

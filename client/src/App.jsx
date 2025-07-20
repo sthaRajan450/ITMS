@@ -54,6 +54,9 @@ import LocomotiveScroll from "locomotive-scroll";
 import { ToastContainer } from "react-toastify";
 import Course from "./pages/Course";
 import CourseManagement from "./admin/CourseManagement";
+import BlogManagement from "./admin/BlogManagement";
+import JobManagement from "./admin/JobManagement";
+import ApplicationManagement from "./admin/ApplicationManagement";
 
 const App = () => {
   const location = useLocation();
@@ -362,6 +365,30 @@ const App = () => {
               element={
                 <PageWrapper>
                   <CourseManagement />
+                </PageWrapper>
+              }
+            />
+            <Route
+              path="jobManagement"
+              element={
+                <PageWrapper>
+                  <JobManagement />
+                </PageWrapper>
+              }
+            />
+            <Route
+              path="applicationManagement"
+              element={
+                <PageWrapper>
+                  <ApplicationManagement />
+                </PageWrapper>
+              }
+            />
+            <Route
+              path="blogManagement"
+              element={
+                <PageWrapper>
+                  <BlogManagement />
                 </PageWrapper>
               }
             />

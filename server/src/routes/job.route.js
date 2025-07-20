@@ -9,6 +9,7 @@ const {
   getMyApplications,
   acceptApplication,
   rejectApplication,
+  getAllApplications,
 } = require("../controllers/job.controller");
 const verifyToken = require("../middlewares/auth.middleware");
 const upload = require("../middlewares/upload.middleware");
@@ -22,7 +23,7 @@ jobRouter
   .route("/apply/:jobId")
   .post(verifyToken, upload.single("resume"), applyToJob);
 jobRouter.route("/myApplications").get(verifyToken, getMyApplications);
-jobRouter.route("/applications").get(verifyToken, getMyApplications);
+jobRouter.route("/applications").get(verifyToken, getAllApplications);
 jobRouter
   .route("/application/accept/:applicationId")
   .post(verifyToken, acceptApplication);

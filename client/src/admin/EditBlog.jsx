@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { BASE_URL } from "../config/api";
+import { toast } from "react-toastify";
 
 const EditBlog = () => {
   const { blogId } = useParams();
@@ -49,12 +50,12 @@ const EditBlog = () => {
 
       if (response.ok) {
         const data = await response.json();
-        alert(data.message);
+        toast.success(data.message);
         setTitle("");
         setContent("");
         setCategory("");
         setImage(null);
-        navigate("/admin/contentManagement");
+        navigate("/admin/blogManagement");
       } else {
         const err = await response.json();
         alert(err.message || "Something went wrong");
@@ -65,12 +66,12 @@ const EditBlog = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
-      <h1 className="text-2xl font-bold mb-6 text-center text-gray-700">
+    <div className="max-w-2xl mx-auto m-14 p-6 bg-white shadow-lg rounded-lg">
+      <h1 className="text-3xl font-bold mb-6 text-center text-gray-600">
         Update Blog
       </h1>
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
+        <div c>
           <label htmlFor="title" className="block text-gray-600 mb-1">
             Title
           </label>
@@ -109,7 +110,7 @@ const EditBlog = () => {
           ></textarea>
         </div>
 
-        <div>
+        <div className="border rounded-lg p-2">
           <label htmlFor="image" className="block text-gray-600 mb-1">
             Upload New Image (optional)
           </label>
@@ -123,7 +124,7 @@ const EditBlog = () => {
 
         <button
           type="submit"
-          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
+          className="w-full bg-orange-600 text-white py-2 rounded-full hover:bg-orange-500 transition"
         >
           Update Blog
         </button>

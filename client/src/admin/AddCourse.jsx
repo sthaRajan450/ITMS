@@ -1,9 +1,11 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthProvider";
 import { BASE_URL } from "../config/api";
+import { toast } from "react-toastify";
 
 const AddCourse = () => {
+  const [users, setUsers] = useState([]);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [syllabus, setSyllabus] = useState("");
@@ -15,14 +17,46 @@ const AddCourse = () => {
   const [enrollmentDeadline, setEnrollmentDeadline] = useState("");
   const [instructor, setInstructor] = useState("");
   const [thumbnail, setThumbnail] = useState(null);
-  const { user } = useContext(AuthContext);
-  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
+  const navigate = useNavigate();
+  const getUsers = async () => {
+    try {
+      const response = await fetch(`${BASE_URL}/user/all`, {
+        method: "GET",
+        credentials: "include",
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setUsers(data.data);
+      }
+    } catch (error) {
+      console.log("Failed to fetch users", error);
+    }
+  };
+
+  useEffect(() => {
+    getUsers();
+  }, []);
+
+  const instructors = users.filter((u) => u.role === "Instructor");
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!thumbnail) {
-      alert("Please select a course thumbnail image.");
+    if (
+      !title ||
+      !description ||
+      !thumbnail ||
+      !syllabus ||
+      !duration ||
+      !price ||
+      !level ||
+      !category ||
+      !prerequisites ||
+      !enrollmentDeadline ||
+      !instructor
+    ) {
+      toast.warning("All fields are required");
       return;
     }
 
@@ -41,7 +75,7 @@ const AddCourse = () => {
     formData.append("enrollmentDeadline", enrollmentDeadline);
     formData.append("thumbnail", thumbnail);
     formData.append("instructor", instructor);
-
+    setLoading(true);
     try {
       const response = await fetch(`${BASE_URL}/course/admin/create`, {
         method: "POST",
@@ -51,29 +85,56 @@ const AddCourse = () => {
 
       if (response.ok) {
         const data = await response.json();
-        alert(data.message);
-        navigate("/admin/contentManagement");
+        toast.success(data.message);
+        navigate("/admin/courseManagement");
       }
     } catch (error) {
       console.error("Error while adding course:", error);
+      toast.error("Failed to add course", error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="bg-white shadow-lg rounded-2xl p-8 w-full max-w-lg">
+      <div className="bg-white shadow-lg rounded-2xl p-8 w-full max-w-[900px]">
         <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
           Add Course
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <input
-            type="text"
-            placeholder="Course Title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="w-full px-4 py-2 border rounded-lg"
-          />
+          <div className="grid grid-cols-4 gap-6">
+            <input
+              type="text"
+              placeholder="Course Title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              className="w-full px-4 py-2 border rounded-lg"
+            />
+            <input
+              type="text"
+              placeholder="Duration (e.g. 12 weeks)"
+              value={duration}
+              onChange={(e) => setDuration(e.target.value)}
+              className="w-full px-4 py-2 border rounded-lg"
+            />
+            <input
+              type="number"
+              placeholder="Price"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+              className="w-full px-4 py-2 border rounded-lg"
+            />
+            <input
+              type="text"
+              placeholder="Level"
+              value={level}
+              onChange={(e) => setLevel(e.target.value)}
+              className="w-full px-4 py-2 border rounded-lg"
+            />
+          </div>
+
           <textarea
             placeholder="Description"
             value={description}
@@ -86,40 +147,41 @@ const AddCourse = () => {
             onChange={(e) => setSyllabus(e.target.value)}
             className="w-full px-4 py-2 border rounded-lg"
           />
+
+          <div className="grid grid-cols-3 gap-6">
+            <select
+              value={instructor}
+              onChange={(e) => setInstructor(e.target.value)}
+              className="w-full px-4 py-2 border rounded-lg"
+            >
+              <option value="">Select Instructor</option>
+              {instructors.map((inst) => (
+                <option key={inst._id} value={inst._id}>
+                  {inst.fullName}
+                </option>
+              ))}
+            </select>
+
+            <input
+              type="text"
+              placeholder="Category"
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              className="w-full px-4 py-2 border rounded-lg"
+            />
+
+            <input
+              type="date"
+              value={enrollmentDeadline}
+              onChange={(e) => setEnrollmentDeadline(e.target.value)}
+              className="w-full px-4 py-2 border rounded-lg"
+            />
+          </div>
           <input
-            type="text"
-            placeholder="Duration (e.g. 12 weeks)"
-            value={duration}
-            onChange={(e) => setDuration(e.target.value)}
-            className="w-full px-4 py-2 border rounded-lg"
-          />
-          <input
-            type="text"
-            placeholder="Instructor DB_id"
-            value={instructor}
-            onChange={(e) => setInstructor(e.target.value)}
-            className="w-full px-4 py-2 border rounded-lg"
-          />
-          <input
-            type="number"
-            placeholder="Price"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-            className="w-full px-4 py-2 border rounded-lg"
-          />
-          <input
-            type="text"
-            placeholder="Level (Beginner/Intermediate/Advanced)"
-            value={level}
-            onChange={(e) => setLevel(e.target.value)}
-            className="w-full px-4 py-2 border rounded-lg"
-          />
-          <input
-            type="text"
-            placeholder="Category"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            className="w-full px-4 py-2 border rounded-lg"
+            type="file"
+            accept="image/*"
+            onChange={(e) => setThumbnail(e.target.files[0])}
+            className="w-full border rounded-lg p-2"
           />
           <input
             type="text"
@@ -128,25 +190,13 @@ const AddCourse = () => {
             onChange={(e) => setPrerequisites(e.target.value)}
             className="w-full px-4 py-2 border rounded-lg"
           />
-          <input
-            type="date"
-            placeholder="Enrollment Deadline"
-            value={enrollmentDeadline}
-            onChange={(e) => setEnrollmentDeadline(e.target.value)}
-            className="w-full px-4 py-2 border rounded-lg"
-          />
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => setThumbnail(e.target.files[0])}
-            className="w-full border rounded-lg p-2"
-          />
 
           <button
+            disabled={loading}
             type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700"
+            className="w-full bg-orange-600 text-white py-2 rounded-lg hover:bg-orange-500"
           >
-            Add Course
+            {loading ? "Adding course..." : "Add Course"}
           </button>
         </form>
       </div>

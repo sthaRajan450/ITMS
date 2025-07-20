@@ -172,7 +172,7 @@ const addCourse = asyncHandler(async (req, res) => {
 });
 
 const getAllCourses = asyncHandler(async (req, res) => {
-  const courses = await Course.find().select("-instructor");
+  const courses = await Course.find().populate("instructor", "fullName");
   if (!courses.length) {
     throw new ApiError(404, "Courses not found");
   }
@@ -186,7 +186,10 @@ const getAllCourses = asyncHandler(async (req, res) => {
 const getCourse = asyncHandler(async (req, res) => {
   const { courseId } = req.params;
 
-  const course = await Course.findById(courseId).populate("instructor");
+  const course = await Course.findById(courseId).populate(
+    "instructor",
+    "fullName"
+  );
   if (!course) {
     throw new ApiError(404, "Course not found");
   }
@@ -285,6 +288,7 @@ const updateCourse = asyncHandler(async (req, res) => {
     instructor,
   } = req.body;
 
+  // Validate required fields (except thumbnail)
   if (
     !title ||
     !description ||
@@ -298,18 +302,7 @@ const updateCourse = asyncHandler(async (req, res) => {
     throw new ApiError(400, "All fields are required");
   }
 
-  const thumbnailLocalPath = req.file?.path;
-  console.log(thumbnailLocalPath);
-  if (!thumbnailLocalPath) {
-    throw new ApiError(400, "Thumbnail file is required");
-  }
-
-  const thumbnail = await uploadOnCloudinary(thumbnailLocalPath);
-  console.log(thumbnail);
-  if (!thumbnail) {
-    throw new ApiError(400, "Failed to upload file on cloudinary");
-  }
-
+  // Parse syllabus (should be an array)
   let parsedSyllabus;
   try {
     parsedSyllabus =
@@ -324,30 +317,47 @@ const updateCourse = asyncHandler(async (req, res) => {
     );
   }
 
-  const courseInstance = await Course.findByIdAndUpdate(courseId, {
-    title,
-    description,
-    syllabus: parsedSyllabus,
-    duration,
-    price,
-    level,
-    category,
-    thumbnail: thumbnail.secure_url,
-    prerequisites,
-    enrollmentDeadline,
-    instructor: instructor,
-  });
-
-  const createdCourse = await Course.findById(courseInstance._id);
-
-  if (!createdCourse) {
-    throw new ApiError(400, "Something went wrong while updating course");
+  // Upload new thumbnail if file present, else keep existing
+  let thumbnailUrl;
+  if (req.file?.path) {
+    const thumbnail = await uploadOnCloudinary(req.file.path);
+    if (!thumbnail) {
+      throw new ApiError(400, "Failed to upload file on Cloudinary");
+    }
+    thumbnailUrl = thumbnail.secure_url;
   }
 
-  return res
-    .status(201)
-    .json(new ApiResponse(201, "Course updated successfully", createdCourse));
+  const existingCourse = await Course.findById(courseId);
+  if (!existingCourse) {
+    throw new ApiError(404, "Course not found");
+  }
+
+  // Update course data, keeping old thumbnail if none uploaded
+  const updatedCourse = await Course.findByIdAndUpdate(
+    courseId,
+    {
+      title,
+      description,
+      syllabus: parsedSyllabus,
+      duration,
+      price,
+      level,
+      category,
+      prerequisites,
+      enrollmentDeadline,
+      instructor,
+      thumbnail: thumbnailUrl || existingCourse.thumbnail,
+    },
+    { new: true }
+  );
+
+  res.status(200).json({
+    success: true,
+    message: "Course updated successfully",
+    data: updatedCourse,
+  });
 });
+
 module.exports = {
   createCourse,
   getAllCourses,

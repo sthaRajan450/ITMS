@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { BASE_URL } from "../config/api";
+import { toast } from "react-toastify";
 
 const EditUser = () => {
   const { userId } = useParams();
@@ -53,7 +54,7 @@ const EditUser = () => {
       });
       if (response.ok) {
         const data = await response.json();
-        alert(data.message);
+        toast.success(data.message);
         navigate("/admin/userManagement");
       }
     } catch (error) {

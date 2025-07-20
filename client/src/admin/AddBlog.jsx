@@ -19,14 +19,11 @@ const AddBlog = () => {
     if (image) formData.append("image", image);
 
     try {
-      const response = await fetch(
-        `${BASE_URL}/blog/create`,
-        {
-          method: "POST",
-          credentials: "include",
-          body: formData,
-        }
-      );
+      const response = await fetch(`${BASE_URL}/blog/create`, {
+        method: "POST",
+        credentials: "include",
+        body: formData,
+      });
 
       if (response.ok) {
         const data = await response.json();
@@ -47,8 +44,8 @@ const AddBlog = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
-      <h1 className="text-2xl font-bold mb-6 text-center text-gray-700">
+    <div className="max-w-2xl mx-auto m-14 p-6 bg-white shadow-lg rounded-lg">
+      <h1 className="text-3xl font-bold mb-6 text-center text-gray-600">
         Add Blog
       </h1>
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -105,7 +102,7 @@ const AddBlog = () => {
 
         <button
           type="submit"
-          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
+          className="w-full bg-orange-600 text-white py-2 rounded-full hover:bg-orange-500 transition"
         >
           Add Blog
         </button>

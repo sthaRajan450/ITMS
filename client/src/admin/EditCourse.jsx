@@ -2,8 +2,9 @@ import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../context/AuthProvider";
 import { BASE_URL } from "../config/api";
-
+import { toast } from "react-toastify";
 const EditCourse = () => {
+  const [users, setUsers] = useState([]);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [syllabus, setSyllabus] = useState("");
@@ -15,20 +16,35 @@ const EditCourse = () => {
   const [enrollmentDeadline, setEnrollmentDeadline] = useState("");
   const [instructor, setInstructor] = useState("");
   const [thumbnail, setThumbnail] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const { user } = useContext(AuthContext);
   const { courseId } = useParams();
   const navigate = useNavigate();
+
+  const getUsers = async () => {
+    try {
+      const response = await fetch(`${BASE_URL}/user/all`, {
+        method: "GET",
+        credentials: "include",
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setUsers(data.data);
+      }
+    } catch (error) {
+      console.log("Failed to fetch users", error);
+    }
+  };
 
   const getCourse = async () => {
     try {
       const response = await fetch(`${BASE_URL}/course/${courseId}`);
       if (response.ok) {
         const data = await response.json();
-
         const c = data.data;
+        console.log(c);
 
-        // Populate form states
         setTitle(c.title);
         setDescription(c.description);
         setSyllabus(c.syllabus.join(", "));
@@ -49,16 +65,22 @@ const EditCourse = () => {
     getCourse();
   }, [courseId]);
 
+  useEffect(() => {
+    getUsers();
+  }, []);
+
+  const instructors = users.filter((u) => u.role === "Instructor");
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const formData = new FormData();
     formData.append("title", title);
     formData.append("description", description);
-
-    const syllabusArray = syllabus.split(",").map((item) => item.trim());
-    formData.append("syllabus", JSON.stringify(syllabusArray));
-
+    formData.append(
+      "syllabus",
+      JSON.stringify(syllabus.split(",").map((s) => s.trim()))
+    );
     formData.append("duration", duration);
     formData.append("price", price);
     formData.append("level", level);
@@ -66,8 +88,7 @@ const EditCourse = () => {
     formData.append("prerequisites", prerequisites);
     formData.append("enrollmentDeadline", enrollmentDeadline);
     formData.append("instructor", instructor);
-
-    // only attach thumbnail if user selected a new one
+    setLoading(true);
     if (thumbnail) {
       formData.append("thumbnail", thumbnail);
     }
@@ -81,35 +102,56 @@ const EditCourse = () => {
 
       if (response.ok) {
         const data = await response.json();
-        alert(data.message);
+        toast.success(data.message);
 
-        if (user.role == "Admin") {
-          navigate("/admin/contentManagement");
-        }
-        if (user.role == "Instructor") navigate("/instructor/courseManagement");
-        {
-        }
+        navigate("/admin/courseManagement");
       }
     } catch (error) {
       console.error("Error while updating course:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="bg-white shadow-lg rounded-2xl p-8 w-full max-w-lg">
-        <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
+      <div className="bg-white shadow-lg rounded-2xl p-8 w-full max-w-[900px]">
+        <h2 className="text-3xl font-bold text-center text-gray-600 mb-6">
           Update Course
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <input
-            type="text"
-            placeholder="Course Title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="w-full px-4 py-2 border rounded-lg"
-          />
+          <div className="grid grid-cols-4 gap-6">
+            <input
+              type="text"
+              placeholder="Course Title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              className="w-full px-4 py-2 border rounded-lg"
+            />
+            <input
+              type="text"
+              placeholder="Duration (e.g. 12 weeks)"
+              value={duration}
+              onChange={(e) => setDuration(e.target.value)}
+              className="w-full px-4 py-2 border rounded-lg"
+            />
+            <input
+              type="number"
+              placeholder="Price"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+              className="w-full px-4 py-2 border rounded-lg"
+            />
+            <input
+              type="text"
+              placeholder="Level"
+              value={level}
+              onChange={(e) => setLevel(e.target.value)}
+              className="w-full px-4 py-2 border rounded-lg"
+            />
+          </div>
+
           <textarea
             placeholder="Description"
             value={description}
@@ -122,40 +164,41 @@ const EditCourse = () => {
             onChange={(e) => setSyllabus(e.target.value)}
             className="w-full px-4 py-2 border rounded-lg"
           />
+
+          <div className="grid grid-cols-3 gap-6">
+            <select
+              value={instructor}
+              onChange={(e) => setInstructor(e.target.value)}
+              className="w-full px-4 py-2 border rounded-lg"
+            >
+              <option value="">Select Instructor</option>
+              {instructors.map((inst) => (
+                <option key={inst._id} value={inst._id}>
+                  {inst.fullName}
+                </option>
+              ))}
+            </select>
+
+            <input
+              type="text"
+              placeholder="Category"
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              className="w-full px-4 py-2 border rounded-lg"
+            />
+
+            <input
+              type="date"
+              value={enrollmentDeadline}
+              onChange={(e) => setEnrollmentDeadline(e.target.value)}
+              className="w-full px-4 py-2 border rounded-lg"
+            />
+          </div>
           <input
-            type="text"
-            placeholder="Duration (e.g. 12 weeks)"
-            value={duration}
-            onChange={(e) => setDuration(e.target.value)}
-            className="w-full px-4 py-2 border rounded-lg"
-          />
-          <input
-            type="text"
-            placeholder="Instructor DB_id"
-            value={instructor}
-            onChange={(e) => setInstructor(e.target.value)}
-            className="w-full px-4 py-2 border rounded-lg"
-          />
-          <input
-            type="number"
-            placeholder="Price"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-            className="w-full px-4 py-2 border rounded-lg"
-          />
-          <input
-            type="text"
-            placeholder="Level"
-            value={level}
-            onChange={(e) => setLevel(e.target.value)}
-            className="w-full px-4 py-2 border rounded-lg"
-          />
-          <input
-            type="text"
-            placeholder="Category"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            className="w-full px-4 py-2 border rounded-lg"
+            type="file"
+            accept="image/*"
+            onChange={(e) => setThumbnail(e.target.files[0])}
+            className="w-full border rounded-lg p-2"
           />
           <input
             type="text"
@@ -164,24 +207,13 @@ const EditCourse = () => {
             onChange={(e) => setPrerequisites(e.target.value)}
             className="w-full px-4 py-2 border rounded-lg"
           />
-          <input
-            type="date"
-            value={enrollmentDeadline}
-            onChange={(e) => setEnrollmentDeadline(e.target.value)}
-            className="w-full px-4 py-2 border rounded-lg"
-          />
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => setThumbnail(e.target.files[0])}
-            className="w-full border rounded-lg p-2"
-          />
 
           <button
+            disabled={loading}
             type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700"
+            className="w-full bg-orange-600 text-white py-2 rounded-lg hover:bg-orange-500"
           >
-            Update Course
+            {loading ? "Updating course..." : "Update Course"}
           </button>
         </form>
       </div>

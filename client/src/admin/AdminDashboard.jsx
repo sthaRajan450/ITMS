@@ -5,6 +5,9 @@ const links = [
   { path: "/admin/userManagement", label: "User Management" },
 
   { path: "/admin/courseManagement", label: "Course Management" },
+  { path: "/admin/blogManagement", label: "Blog Management" },
+  { path: "/admin/jobManagement", label: "Job Management" },
+  { path: "/admin/applicationManagement", label: "Application Management" },
   { path: "/admin/financialManagement", label: "Financial Management" },
 ];
 

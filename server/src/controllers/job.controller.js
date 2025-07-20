@@ -129,14 +129,13 @@ const getMyApplications = asyncHandler(async (req, res) => {
     );
 });
 
-
 const getAllApplications = asyncHandler(async (req, res) => {
   if (req.user?.role !== "Admin") {
     throw new ApiError(401, "Unauthorized request");
   }
 
   const applications = await JobApplication.find()
-    .populate("applicant job")
+    .populate("applicant job", "fullName email title company salary")
     .sort({ createdAt: -1 });
 
   if (applications.length === 0) {
@@ -148,8 +147,8 @@ const getAllApplications = asyncHandler(async (req, res) => {
     .json(
       new ApiResponse(
         200,
-        applications,
-        "All job applications fetched successfully"
+        "All job applications fetched successfully",
+        applications
       )
     );
 });

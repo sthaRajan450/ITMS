@@ -8,7 +8,7 @@ const Payment = () => {
   const location = useLocation();
   const { order_id, totalAmount } = location.state;
 
-  const Message = `total_amount=${10},transaction_uuid=${order_id},product_code=EPAYTEST`;
+  const Message = `total_amount=${totalAmount},transaction_uuid=${order_id},product_code=EPAYTEST`;
   const hash = CryptoJS.HmacSHA256(Message, "8gBm/:&EnhH.1/q");
   const signature = CryptoJS.enc.Base64.stringify(hash);
 
@@ -28,7 +28,7 @@ const Payment = () => {
               type="hidden"
               id="amount"
               name="amount"
-              value={10}
+              value={totalAmount}
               readOnly
               className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
               required
@@ -62,7 +62,7 @@ const Payment = () => {
               type="text"
               id="total_amount"
               name="total_amount"
-              value={10}
+              value={totalAmount}
               readOnly
               className="w-full border border-gray-300 rounded-lg px-4 py-2"
               required
