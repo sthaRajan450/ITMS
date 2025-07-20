@@ -70,7 +70,7 @@ const Jobs = () => {
                         navigate("/login");
                         return;
                       }
-                      navigate(`/job/${job._id}`);
+                      navigate(`/applyJob`, { state: job._id });
                     }}
                     className="mt-2 w-full py-2 px-4 bg-orange-600 text-white rounded-lg hover:bg-orange-500 transition"
                   >

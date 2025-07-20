@@ -141,7 +141,7 @@ const App = () => {
             }
           />
           <Route
-            path="/job/:jobId"
+            path="/applyJob"
             element={
               <PageWrapper>
                 <JobApplicationForm />

@@ -1,25 +1,29 @@
 import React, { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { BASE_URL } from "../config/api";
+import { toast } from "react-toastify";
 
 const JobApplicationForm = () => {
-  const { jobId } = useParams();
+  const location = useLocation();
+  const jobId = location.state;
+
   const [letter, setLetter] = useState("");
   const [resume, setResume] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!resume) {
-      alert("Please upload your resume.");
+      toast.warning("Please upload your resume.");
       return;
     }
 
     const formData = new FormData();
     formData.append("coverLetter", letter);
     formData.append("resume", resume);
-
+    setLoading(true);
     try {
       const response = await fetch(`${BASE_URL}/job/apply/${jobId}`, {
         method: "POST",
@@ -27,24 +31,30 @@ const JobApplicationForm = () => {
         body: formData,
       });
 
-      if (response.ok) {
-        const data = await response.json();
-        alert(data.message);
-        setResume("");
-        setLetter("");
-        navigate("/jobs");
-        navi;
-      } else {
-        const error = await response.json();
-        alert(error.message);
+      const data = await response.json(); // parse the JSON once
+
+      if (!response.ok) {
+        // backend sent an error status, show the message returned
+        toast.error(data.message || "Failed to apply for job");
+        return; // stop further execution
       }
+
+      // if successful
+      toast.success(data.message);
+      setResume("");
+      setLetter("");
+      navigate("/jobs");
     } catch (error) {
-      console.log("Error applying for job:", error);
+      // network error or unexpected error
+      toast.error("An unexpected error occurred");
+      console.error("Error applying for job:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="max-w-lg mx-auto bg-white rounded-lg shadow-md p-8">
+    <div className="max-w-lg mx-auto my-10 bg-white rounded-lg shadow-md p-8">
       <h2 className="text-2xl font-bold mb-6 text-gray-800">
         Apply for this Job
       </h2>
@@ -76,10 +86,11 @@ const JobApplicationForm = () => {
         </div>
 
         <button
+          disabled={loading}
           type="submit"
-          className="w-full py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+          className="w-full py-3 bg-orange-600 text-white rounded-full hover:bg-orange-500 transition"
         >
-          Submit Application
+          {loading ? "Submitting" : "Submit"}
         </button>
       </form>
     </div>
