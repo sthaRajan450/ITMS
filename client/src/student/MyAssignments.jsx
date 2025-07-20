@@ -7,13 +7,10 @@ const MyAssignments = () => {
 
   const getMyAssignments = async () => {
     try {
-      const response = await fetch(
-        `${BASE_URL}/assignment/submitted/all`,
-        {
-          method: "GET",
-          credentials: "include",
-        }
-      );
+      const response = await fetch(`${BASE_URL}/assignment/submitted/all`, {
+        method: "GET",
+        credentials: "include",
+      });
 
       if (response.ok) {
         const data = await response.json();
@@ -35,8 +32,8 @@ const MyAssignments = () => {
 
   return (
     <div className="p-6">
-      <h2 className="text-3xl font-bold mb-6 text-blue-700">
-        📄 My Submitted Assignments
+      <h2 className="text-3xl font-bold mb-6 text-gray-600">
+        📄 Submitted Assignments
       </h2>
       {loading ? (
         <p>Loading assignments...</p>
@@ -49,10 +46,7 @@ const MyAssignments = () => {
               key={assignment._id}
               className="border p-4 rounded-lg shadow bg-white"
             >
-              <p className="text-lg font-semibold text-gray-800">
-                {assignment.assignment?.title || "Untitled Assignment"}
-              </p>
-              <p className="text-sm text-gray-500 mb-2">
+              <p className="text-xl font-semibold text-gray-500 mb-2">
                 Course: {assignment.course?.title || "N/A"}
               </p>
               <a

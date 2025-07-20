@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../config/api";
+import { toast } from "react-toastify";
 
 const UserManagement = () => {
   const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+
   const navigate = useNavigate();
 
   const getUsers = async () => {
+    setLoading(true);
     try {
       const response = await fetch(`${BASE_URL}/user/all`, {
         method: "GET",
@@ -18,6 +24,9 @@ const UserManagement = () => {
       }
     } catch (error) {
       console.log("Failed to fetch users:", error);
+      setError("Failed to fetch user");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -29,8 +38,7 @@ const UserManagement = () => {
       });
       if (response.ok) {
         const data = await response.json();
-        alert(data.message);
-
+        toast.success(data.message);
         getUsers();
       }
     } catch (error) {
@@ -41,57 +49,82 @@ const UserManagement = () => {
   useEffect(() => {
     getUsers();
   }, []);
+  const filteredUsers = users.filter((user) =>
+    `${user.fullName} ${user.email}`
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase())
+  );
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-6">
-      <h1 className="text-4xl font-bold text-center text-blue-700 mb-10">
+    <div className="min-h-screen bg-gray-50 py-8 px-6">
+      <h1 className="text-4xl font-bold text-center text-gray-700 mb-10">
         👥 User Management
       </h1>
-      <div className="flex  my-10 justify-center">
+
+      <div className="flex justify-center mb-6">
         <button
-          onClick={() => {
-            navigate("/addUser");
-          }}
-          className="bg-blue-500 text-white text-2xl px-6 py-3 cursor-pointer  rounded-full hover:bg-blue-700 "
+          onClick={() => navigate("/addUser")}
+          className="bg-orange-600 text-white px-6 py-3 rounded-full text-xl hover:bg-orange-500"
         >
           Add User
         </button>
       </div>
-      {users.length > 0 ? (
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
-          {users.map((user) => (
-            <div
-              key={user._id}
-              className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition"
-            >
-              <h2 className="text-2xl font-semibold text-gray-800 mb-2">
-                {user.fullName}
-              </h2>
-              <p className="text-gray-600 mb-1">📧 {user.email}</p>
-              <p className="text-gray-600 mb-1">📞 {user.phone}</p>
-              <p className="text-gray-600 mb-3">🎓 Role: {user.role}</p>
+      <div className="max-w-xl mx-auto mb-6">
+        <input
+          type="text"
+          placeholder="Search by name or email..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400"
+        />
+      </div>
 
-              <div className="flex space-x-3">
-                <button
-                  className="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600 transition"
-                  onClick={() => {
-                    navigate(`/updateUser/${user._id}`);
-                  }}
-                >
-                  Update
-                </button>
-                <button
-                  onClick={() => handleDelete(user._id)}
-                  className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition"
-                >
-                  Delete
-                </button>
-              </div>
-            </div>
-          ))}
+      {loading ? (
+        <p className="text-center text-gray-600">Loading...</p>
+      ) : error ? (
+        <p className="text-center text-red-600">{error}</p>
+      ) : users.length > 0 ? (
+        <div className="overflow-x-auto">
+          <table className="w-full max-w-6xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
+            <thead className="bg-gray-100 text-gray-700">
+              <tr>
+                <th className="py-3 px-4 text-left">#</th>
+                <th className="py-3 px-4 text-left">Full Name</th>
+                <th className="py-3 px-4 text-left">Email</th>
+                <th className="py-3 px-4 text-left">Phone</th>
+                <th className="py-3 px-4 text-left">Role</th>
+                <th className="py-3 px-4 text-left">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredUsers.map((user, index) => (
+                <tr key={user._id} className="border-t hover:bg-gray-50">
+                  <td className="py-3 px-4">{index + 1}</td>
+                  <td className="py-3 px-4">{user.fullName}</td>
+                  <td className="py-3 px-4">{user.email}</td>
+                  <td className="py-3 px-4">{user.phone}</td>
+                  <td className="py-3 px-4 capitalize">{user.role}</td>
+                  <td className="py-3 px-4 space-x-2">
+                    <button
+                      onClick={() => navigate(`/updateUser/${user._id}`)}
+                      className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-1 rounded"
+                    >
+                      Update
+                    </button>
+                    <button
+                      onClick={() => handleDelete(user._id)}
+                      className="bg-red-600 hover:bg-red-700 text-white px-4 py-1 rounded"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       ) : (
-        <div className="text-center text-gray-600 text-lg">No users found.</div>
+        <div className="text-center text-gray-600">No users found.</div>
       )}
     </div>
   );

@@ -24,7 +24,7 @@ import MyApplications from "./student/MyApplications";
 import InstrcutorDashboard from "./instructor/InstrcutorDashboard";
 import StudentDashboard from "./student/StudentDashboard";
 import MyCertificates from "./student/MyCertificates";
-import CourseManagement from "./instructor/CourseManagement";
+// import CourseManagement from "./instructor/CourseManagement";
 import StudentManagement from "./instructor/StudentManagement";
 import MyProgress from "./student/MyProgress";
 import MyAssignments from "./student/MyAssignments";
@@ -53,6 +53,7 @@ import SubmitAssignment from "./student/SubmitAssignment";
 import LocomotiveScroll from "locomotive-scroll";
 import { ToastContainer } from "react-toastify";
 import Course from "./pages/Course";
+import CourseManagement from "./admin/CourseManagement";
 
 const App = () => {
   const location = useLocation();
@@ -61,7 +62,7 @@ const App = () => {
   return (
     <div>
       <Navbar />
-      <ToastContainer position="top-center" autoClose={2000} />
+      <ToastContainer position="top-center" autoClose={2000} theme="dark" />
       <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
           <Route
@@ -355,14 +356,16 @@ const App = () => {
                 </PageWrapper>
               }
             />
+
             <Route
-              path="contentManagement"
+              path="courseManagement"
               element={
                 <PageWrapper>
-                  <ContentManagement />
+                  <CourseManagement />
                 </PageWrapper>
               }
             />
+
             <Route
               path="financialManagement"
               element={

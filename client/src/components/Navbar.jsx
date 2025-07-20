@@ -22,7 +22,7 @@ const Navbar = () => {
 
   const studentLinks = [{ path: "/student", label: "Dashboard" }];
   const instructorLinks = [{ path: "/instructor", label: "Dashboard" }];
-  const adminLinks = [{ path: "/admin", label: "Admin Dashboard" }];
+  const adminLinks = [{ path: "/admin", label: " Dashboard" }];
 
   const roleLinks =
     user?.role === "Student"
@@ -158,7 +158,7 @@ const Navbar = () => {
                   <img
                     src={user.avatar}
                     alt="Avatar"
-                    className="w-10 h-10 rounded-full border-2 border-white hover:border-green-300 transition"
+                    className="w-10 h-10 rounded-full border-2 border-white hover:border-orange-300 hover:shadow-amber-600 transition"
                   />
                 </NavLink>
               </>

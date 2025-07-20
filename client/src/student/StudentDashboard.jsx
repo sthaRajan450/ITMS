@@ -7,8 +7,6 @@ const links = [
   { path: "/student/myApplications", label: " Applications" },
   { path: "/student/myProgress", label: " Progress" },
   { path: "/student/myAssignments", label: "Assignments" },
-  
-  
 ];
 
 const StudentDashboard = () => {

@@ -6,13 +6,10 @@ const MyApplications = () => {
 
   const getMyApplications = async () => {
     try {
-      const response = await fetch(
-       `${BASE_URL}/job/myApplications`,
-        {
-          method: "GET",
-          credentials: "include",
-        }
-      );
+      const response = await fetch(`${BASE_URL}/job/myApplications`, {
+        method: "GET",
+        credentials: "include",
+      });
       if (response.ok) {
         const data = await response.json();
         console.log(data.data);
@@ -29,7 +26,7 @@ const MyApplications = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-6">
-      <h1 className="text-4xl font-bold text-center text-blue-700 mb-10">
+      <h1 className="text-4xl font-bold text-center text-gray-600 mb-10">
         📑 My Job Applications
       </h1>
 
@@ -60,15 +57,13 @@ const MyApplications = () => {
               <p className="text-sm text-gray-600 mb-1">
                 📅 Applied On: {new Date(app.appliedAt).toLocaleDateString()}
               </p>
-              <p className="text-sm text-gray-600 mb-1">
-                Status:{app.status}
-              </p>
+              <p className="text-sm text-gray-600 mb-1">Status:{app.status}</p>
 
               <a
                 href={app.resume}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-block mt-3 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+                className="inline-block mt-3 px-4 py-2 bg-orange-600 text-white rounded hover:bg-orange-500 transition"
               >
                 📥 View Resume
               </a>

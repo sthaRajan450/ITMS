@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { CartContext } from "../context/CartProvider";
 import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../config/api";
+import { toast } from "react-toastify";
 
 const Cart = () => {
   const { state, dispatch } = useContext(CartContext);
@@ -29,7 +30,7 @@ const Cart = () => {
       if (response.ok) {
         const data = await response.json();
         console.log(data.data);
-        alert(data.message);
+        toast.info(data.message);
         let order_id = data.data._id;
         navigate("/payment", { state: { order_id, totalAmount } });
       }
@@ -58,10 +59,12 @@ const Cart = () => {
                 />
                 <div className="flex  justify-between m-4 items-center flex-1">
                   <div>
-                    <h2 className="text-xl font-semibold mb-1">{item.title}</h2>
+                    <h2 className="text-xl font-semibold mb-1 hover:text-blue-500">
+                      {item.title}
+                    </h2>
                     <p className="text-gray-600 text-sm">📚 {item.category}</p>
                     <p className="text-gray-600 text-sm">🎓 {item.level}</p>
-                    <p className="text-blue-600 font-bold mt-2">
+                    <p className="text-orange-600 font-bold mt-2">
                       NPR {item.price}
                     </p>
                   </div>
@@ -69,7 +72,7 @@ const Cart = () => {
                     onClick={() =>
                       dispatch({ type: "remove", payload: item._id })
                     }
-                    className="text-sm p-5 bg-red-500 text-white rounded hover:bg-red-600"
+                    className="text-sm p-5 bg-red-500 text-white rounded-full px-8 hover:bg-red-600"
                   >
                     Remove
                   </button>
@@ -98,7 +101,7 @@ const Cart = () => {
               onClick={() => {
                 orderNow();
               }}
-              className="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition"
+              className="w-full bg-gradient-to-bl from-red-500 to-orange-500 text-white py-3 rounded-lg hover:bg-green-700 transition"
             >
               Proceed to Payment
             </button>

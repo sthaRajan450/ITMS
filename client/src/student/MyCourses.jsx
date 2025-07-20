@@ -36,8 +36,8 @@ const MyCourses = () => {
 
   return (
     <div className="max-w-5xl mx-auto p-6">
-      <h2 className="text-4xl font-bold mb-8 text-center text-gray-900">
-        My Courses
+      <h2 className="text-4xl font-bold mb-8 text-center text-gray-600">
+        Enrolled Courses
       </h2>
 
       {myCourses.length > 0 ? (
