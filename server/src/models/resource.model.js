@@ -11,9 +11,16 @@ const resourceSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    type: {
+      type: String,
+      enum: ["file", "link"],
+      required: true,
+    },
     fileUrl: {
       type: String,
-      required: true,
+    },
+    link: {
+      type: String,
     },
     uploadedBy: {
       type: mongoose.Schema.Types.ObjectId,

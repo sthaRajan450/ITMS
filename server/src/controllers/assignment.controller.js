@@ -1,5 +1,6 @@
 const Assignment = require("../models/assignment.model");
 const AssignmentSubmission = require("../models/assignmentSubmission.model");
+const Course = require("../models/course.model");
 const ApiError = require("../utils/ApiError");
 const ApiResponse = require("../utils/ApiResponse");
 const asyncHandler = require("../utils/asyncHandler");
@@ -94,10 +95,58 @@ const getSubmittedAssignments = asyncHandler(async (req, res) => {
     );
 });
 
+const deleteAssignment = asyncHandler(async (req, res) => {
+  const { assignmentId } = req.params;
+  const assignment = await Assignment.findByIdAndDelete(assignmentId);
+  if (!assignment) {
+    throw new ApiError(404, "No assignment found");
+  }
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, "Assignment deleted successfully"));
+});
+
+const getSubmittedAssignmentsForInstructor = asyncHandler(async (req, res) => {
+  //  Find all courses taught by this instructor
+  const instructorId = req.user._id;
+  const courses = await Course.find({ instructor: instructorId }).select("_id");
+
+  if (courses.length === 0) {
+    throw new ApiError(404, "No courses found for this instructor.");
+  }
+
+  const courseIds = courses.map((course) => course._id);
+
+  //  Find all assignment submissions for these courses
+  const submissions = await AssignmentSubmission.find({
+    course: { $in: courseIds },
+  })
+    .populate("student", "fullName email") // populate student info, adjust fields as needed
+    .populate("assignment", "title deadline") // populate assignment info
+    .populate("course", "title") // populate course info
+    .exec();
+
+  if (submissions.length === 0) {
+    throw new ApiError(404, "No assignments submitted for your course");
+  }
+
+  res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        "Submitted assignments fetched successfully",
+        submissions
+      )
+    );
+});
 
 module.exports = {
   createAssignment,
   getAssignmentByCourse,
   submitAssignment,
   getSubmittedAssignments,
+  deleteAssignment,
+  getSubmittedAssignmentsForInstructor,
 };

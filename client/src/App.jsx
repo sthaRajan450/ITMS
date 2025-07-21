@@ -59,6 +59,7 @@ import JobManagement from "./admin/JobManagement";
 import ApplicationManagement from "./admin/ApplicationManagement";
 
 import InstructorCourseManagement from "./instructor/InstructorCourseManagement";
+import SubmittedAssignments from "./instructor/SubmittedAssignments";
 
 const App = () => {
   const location = useLocation();
@@ -275,7 +276,7 @@ const App = () => {
             }
           />
           <Route
-            path="/submitAssignment/:assignmentId"
+            path="/submitAssignment"
             element={
               <PageWrapper>
                 <SubmitAssignment />
@@ -298,6 +299,14 @@ const App = () => {
               element={
                 <PageWrapper>
                   <InstructorCourseManagement />
+                </PageWrapper>
+              }
+            />
+            <Route
+              path="submitted-assignments"
+              element={
+                <PageWrapper>
+                  <SubmittedAssignments />
                 </PageWrapper>
               }
             />

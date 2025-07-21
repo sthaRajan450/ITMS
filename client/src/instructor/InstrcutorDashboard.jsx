@@ -5,6 +5,7 @@ const links = [
   { path: "/instructor/studentManagement", label: "Student Management" },
 
   { path: "/instructor/courseManagement", label: "Course Management" },
+  { path: "/instructor/submitted-assignments", label: "Submitted Assignments" },
 ];
 
 const InstructorDashboard = () => {

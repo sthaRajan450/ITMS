@@ -1,19 +1,19 @@
 import React, { useState } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { BASE_URL } from "../config/api";
+import { toast } from "react-toastify";
 
 const SubmitAssignment = () => {
-  const { assignmentId } = useParams();
-
   const navigate = useNavigate();
   const [file, setFile] = useState(null);
   const [comment, setComment] = useState("");
   const location = useLocation();
-  const { courseId } = location.state;
+  console.log(location.state);
+  const { assignmentId, courseId } = location.state;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!file) return alert("Please upload your assignment file.");
+    if (!file) return toast.warning("Please upload your assignment file.");
 
     const formData = new FormData();
     formData.append("file", file);
@@ -31,10 +31,10 @@ const SubmitAssignment = () => {
       const data = await res.json();
       if (res.ok) {
         console.log(data.data);
-        alert(data.message);
+        toast.success(data.message);
         navigate("/student/myAssignments");
       } else {
-        alert(data.message);
+        toast.error(data.message);
       }
     } catch (error) {
       console.error("Submission failed:", error);
@@ -42,8 +42,10 @@ const SubmitAssignment = () => {
   };
 
   return (
-    <div className="max-w-lg mx-auto bg-white p-8 rounded-lg shadow mt-10">
-      <h1 className="text-2xl font-bold mb-6">📥 Submit Your Assignment</h1>
+    <div className="max-w-lg mx-auto bg-white p-8 rounded-lg shadow m-10">
+      <h1 className="text-2xl text-gray-600 font-bold mb-6">
+        📥 Submit Your Assignment
+      </h1>
 
       <form onSubmit={handleSubmit} className="space-y-5">
         <div>
@@ -73,7 +75,7 @@ const SubmitAssignment = () => {
 
         <button
           type="submit"
-          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
+          className="w-full bg-orange-600 text-white py-2 rounded-full hover:bg-orange-500 transition"
         >
           Submit Assignment
         </button>

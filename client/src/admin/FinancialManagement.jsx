@@ -21,15 +21,18 @@ const FinancialManagement = () => {
   useEffect(() => {
     getOrders();
   }, []);
-  const getTotalRevenue = () => {
-    return orders.reduce((acc, order) => {
+ const getTotalRevenue = () => {
+  return orders
+    .filter(order => order.paymentStatus !== "PENDING")
+    .reduce((acc, order) => {
       const courseTotal = order.course.reduce(
         (sum, courseItem) => sum + Number(courseItem.course_id.price),
         0
       );
       return acc + courseTotal;
     }, 0);
-  };
+};
+
 
   return (
     <div className="p-6">

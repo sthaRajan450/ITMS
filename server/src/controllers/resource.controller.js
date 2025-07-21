@@ -4,21 +4,46 @@ const asyncHandler = require("../utils/asyncHandler");
 const uploadOnCloudinary = require("../utils/cloudinary");
 
 const uploadResource = asyncHandler(async (req, res) => {
-  const { title, courseId } = req.body;
-  const filePath = req.file.path;
+  const { title, courseId, type, link } = req.body;
 
-  const uploadedFile = await uploadOnCloudinary(filePath);
-  if (!uploadedFile) throw new ApiError(400, "Failed to upload resource");
+  if (!title || !courseId || !type) {
+    throw new ApiError(400, "Title, courseId, and type are required");
+  }
+
+  let fileUrl = null;
+
+  // Handle file upload
+  if (type === "file") {
+    if (!req.file || !req.file.path) {
+      throw new ApiError(400, "File not provided");
+    }
+
+    const uploadedFile = await uploadOnCloudinary(req.file.path);
+
+    if (!uploadedFile) {
+      throw new ApiError(400, "Failed to upload file to Cloudinary");
+    }
+
+    fileUrl = uploadedFile.secure_url;
+  }
+
+  // Handle link validation
+  if (type === "link") {
+    if (!link) throw new ApiError(400, "Link is required for link type");
+  }
 
   const resource = await Resource.create({
     course: courseId,
     title,
-    fileUrl: uploadedFile.secure_url,
+    type,
+    fileUrl: type === "file" ? fileUrl : undefined,
+    link: type === "link" ? link : undefined,
     uploadedBy: req.user._id,
   });
 
   res.status(201).json(new ApiResponse(201, "Resource uploaded", resource));
 });
+
 
 const getResourcesByCourse = asyncHandler(async (req, res) => {
   const { courseId } = req.params;
@@ -52,6 +77,8 @@ const deleteResource = asyncHandler(async (req, res) => {
 
   res.status(200).json(new ApiResponse(200, "Resource deleted successfully"));
 });
+
+
 
 module.exports = {
   uploadResource,

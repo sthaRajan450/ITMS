@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { useParams, Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { BASE_URL } from "../config/api";
+import { toast } from "react-toastify";
+
 const ResourceManagement = () => {
   const location = useLocation();
   const courseId = location.state;
 
   const [resources, setResources] = useState([]);
   const [file, setFile] = useState(null);
+  const [link, setLink] = useState("");
   const [title, setTitle] = useState("");
+  const [type, setType] = useState("file"); // "file" or "link"
 
   // Fetch resources for this course
   const fetchResources = async () => {
@@ -17,7 +21,6 @@ const ResourceManagement = () => {
         credentials: "include",
       });
       const data = await res.json();
-      console.log(data.data);
       setResources(data.data);
     } catch (err) {
       console.log("Failed to fetch resources:", err);
@@ -31,12 +34,20 @@ const ResourceManagement = () => {
   // Upload new resource
   const handleUpload = async (e) => {
     e.preventDefault();
-    if (!file) return alert("Please select a file");
+    if (!title) return alert("Title is required");
 
     const formData = new FormData();
-    formData.append("file", file);
     formData.append("title", title);
     formData.append("courseId", courseId);
+    formData.append("type", type);
+
+    if (type === "file") {
+      if (!file) return alert("Please select a file");
+      formData.append("file", file);
+    } else {
+      if (!link) return alert("Please enter a valid link");
+      formData.append("link", link);
+    }
 
     try {
       const res = await fetch(`${BASE_URL}/resource/upload`, {
@@ -45,8 +56,9 @@ const ResourceManagement = () => {
         body: formData,
       });
       const data = await res.json();
-      alert(data.message);
+      toast.success(data.message);
       setFile(null);
+      setLink("");
       setTitle("");
       fetchResources();
     } catch (err) {
@@ -62,7 +74,7 @@ const ResourceManagement = () => {
         credentials: "include",
       });
       const data = await res.json();
-      alert(data.message);
+      toast.success(data.message);
       fetchResources();
     } catch (err) {
       console.log("Failed to delete:", err);
@@ -74,50 +86,109 @@ const ResourceManagement = () => {
       <h1 className="text-3xl font-bold mb-6">📂 Resource Management</h1>
 
       {/* Upload Form */}
-      <form onSubmit={handleUpload} className="mb-8 flex gap-4 items-center">
+      <form
+        onSubmit={handleUpload}
+        className="mb-8 flex flex-col sm:flex-row gap-4 items-center"
+      >
         <input
           type="text"
           placeholder="Resource title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className="border p-2 rounded"
+          className="border p-2 rounded w-full sm:w-auto"
+          required
         />
-        <input
-          type="file"
-          onChange={(e) => setFile(e.target.files[0])}
-          className="border p-2"
-        />
+
+        <div className="flex items-center gap-4">
+          <label>
+            <input
+              type="radio"
+              value="file"
+              checked={type === "file"}
+              onChange={() => setType("file")}
+              className="mr-1"
+            />
+            File
+          </label>
+          <label>
+            <input
+              type="radio"
+              value="link"
+              checked={type === "link"}
+              onChange={() => setType("link")}
+              className="mr-1"
+            />
+            Link
+          </label>
+        </div>
+
+        {type === "file" ? (
+          <input
+            type="file"
+            onChange={(e) => setFile(e.target.files[0])}
+            className="border p-2"
+            required
+          />
+        ) : (
+          <input
+            type="url"
+            placeholder="Paste link here"
+            value={link}
+            onChange={(e) => setLink(e.target.value)}
+            className="border p-2 rounded w-full sm:w-auto"
+            required
+          />
+        )}
+
         <button
           type="submit"
-          className="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition"
+          className="bg-orange-600 text-white py-2 px-4 rounded hover:bg-orange-500 transition"
         >
           Upload
         </button>
       </form>
 
       {/* Resource List */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {resources.map((res) => (
-          <div key={res._id} className="bg-white p-4 rounded shadow">
-            <h2 className="text-xl font-semibold mb-2">{res.title}</h2>
-            <a
-              href={res.fileUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-600 underline"
-            >
-              View Resource
-            </a>
-
-            <button
-              onClick={() => handleDelete(res._id)}
-              className="mt-3 block bg-red-600 text-white py-1 px-3 rounded hover:bg-red-700 transition"
-            >
-              Delete
-            </button>
-          </div>
-        ))}
-      </div>
+      <table className="min-w-full border-collapse border border-gray-300">
+        <thead>
+          <tr className="bg-gray-100">
+            <th className="border border-gray-300 px-4 py-2 text-left">
+              Title
+            </th>
+            <th className="border border-gray-300 px-4 py-2 text-left">
+              Resource Link
+            </th>
+            <th className="border border-gray-300 px-4 py-2 text-left">
+              Actions
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {resources.map((res) => (
+            <tr key={res._id} className="hover:bg-gray-50">
+              <td className="border border-gray-300 px-4 py-2">{res.title}</td>
+              <td className="border border-gray-300 px-4 py-2">
+                <a
+                  href={res.fileUrl || res.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-orange-600 underline"
+                >
+                  View Resource
+                </a>
+              </td>
+              <td className="border border-gray-300 px-4 py-2">
+                <button
+                  onClick={() => handleDelete(res._id)}
+                  className="bg-red-600 text-white py-1 px-3 rounded hover:bg-red-500 transition"
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
 
       {!resources.length && (
         <p className="text-gray-500 text-center mt-10">

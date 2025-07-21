@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../config/api";
+
 const AssignmentList = ({ courseId }) => {
   const [assignments, setAssignments] = useState([]);
   const navigate = useNavigate();
+
   const getAssignments = async () => {
     try {
       const res = await fetch(`${BASE_URL}/assignment/course/${courseId}`, {
@@ -11,53 +13,78 @@ const AssignmentList = ({ courseId }) => {
         credentials: "include",
       });
       const data = await res.json();
-      console.log(data.data);
-      setAssignments(data.data);
+      setAssignments(data.data || []);
     } catch (error) {
       console.error("Failed to fetch assignments:", error);
     }
   };
 
   useEffect(() => {
-    getAssignments();
+    if (courseId) {
+      getAssignments();
+    }
   }, [courseId]);
 
   return (
-    <div className="min-h-screen  p-6">
+    <div className="min-h-screen p-6">
       {assignments.length ? (
-        <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-          {assignments.map((assignment) => (
-            <div
-              key={assignment._id}
-              className="bg-white p-5 rounded-xl shadow hover:scale-[1.01] transition"
-            >
-              <h2 className="text-xl font-semibold mb-2">{assignment.title}</h2>
-              <p className="text-gray-600 mb-2 line-clamp-3">
-                {assignment.description}
-              </p>
-              <p className="text-sm text-gray-500 mb-1">
-                📅 Deadline: {new Date(assignment.deadline).toDateString()}
-              </p>
-              <a
-                href={assignment.fileUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-600 underline text-sm block mb-3"
-              >
-                📥 View Assignment File
-              </a>
-              <button
-                onClick={() => {
-                  navigate(`/submitAssignment/${assignment._id}`, {
-                    state: { courseId: assignment.course },
-                  });
-                }}
-                className="block text-center py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
-              >
-                Submit Assignment
-              </button>
-            </div>
-          ))}
+        <div className="overflow-x-auto rounded-lg shadow">
+          <table className="min-w-full border border-gray-300 bg-white rounded-lg shadow">
+            <thead>
+              <tr className="bg-gray-100 text-left text-sm font-semibold text-gray-700">
+                <th className="py-3 px-4 border-b">Title</th>
+                <th className="py-3 px-4 border-b">Description</th>
+                <th className="py-3 px-4 border-b">Deadline</th>
+                <th className="py-3 px-4 border-b">File</th>
+                <th className="py-3 px-4 border-b">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {assignments.map((assignment) => (
+                <tr
+                  key={assignment._id}
+                  className="text-sm border-b hover:bg-gray-50"
+                >
+                  <td className="py-2 px-4 font-medium">{assignment.title}</td>
+                  <td className="py-2 px-4 line-clamp-3">
+                    {assignment.description}
+                  </td>
+                  <td className="py-2 px-4">
+                    {new Date(assignment.deadline).toDateString()}
+                  </td>
+                  <td className="py-2 px-4">
+                    {assignment.fileUrl ? (
+                      <a
+                        href={assignment.fileUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 underline hover:text-blue-700"
+                      >
+                        View File
+                      </a>
+                    ) : (
+                      <span className="text-gray-400 italic">No file</span>
+                    )}
+                  </td>
+                  <td className="py-2 px-4">
+                    <button
+                      onClick={() => {
+                        navigate(`/submitAssignment`, {
+                          state: {
+                            assignmentId: assignment._id,
+                            courseId: assignment.course,
+                          },
+                        });
+                      }}
+                      className="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 transition text-xs"
+                    >
+                      Submit
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       ) : (
         <div className="text-gray-500 text-center text-lg mt-20">
