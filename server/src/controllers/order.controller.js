@@ -58,7 +58,7 @@ const getOrder = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, "Order fetched successfully", order));
 });
 
-const success = asyncHandler(async (req, res) => {
+const updateOrder = asyncHandler(async (req, res) => {
   let data = req.query.data;
   data = JSON.parse(atob(data));
   console.log(data);
@@ -81,9 +81,21 @@ const success = asyncHandler(async (req, res) => {
   return res.redirect(`${clientUrl}/success/${data.transaction_uuid}`);
 });
 
+const deleteOrder = asyncHandler(async (req, res) => {
+  const { orderId } = req.params;
+
+  const order = await Order.findById(orderId);
+  if (!order) {
+    throw new ApiError(404, "No order found");
+  }
+  await Order.findByIdAndDelete(orderId);
+  return res.status(200).json(200, "Order deleted successfully");
+});
+
 module.exports = {
   createOrder,
   getAllOrders,
   getOrder,
-  success,
+  updateOrder,
+  deleteOrder,
 };

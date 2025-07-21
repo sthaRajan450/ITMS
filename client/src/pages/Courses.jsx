@@ -23,7 +23,7 @@ const Courses = () => {
 
       if (response.ok) {
         const data = await response.json();
-        console.log(data);
+        // console.log(data);
         setCourses(data.data);
       }
     } catch (error) {
@@ -54,8 +54,11 @@ const Courses = () => {
           {courses?.length !== 0 ? (
             <div className="grid gap-8 grid-cols-1  sm:grid-cols-2 md:grid-cols-4">
               {courses.map((course) => (
-                <div className="bg-white rounded-2xl shadow-lg overflow-hidden hover:scale-102 transition-transform duration-300">
-                  <div key={course._id} className=" h-80 ">
+                <div
+                  key={course._id}
+                  className="bg-white rounded-2xl shadow-lg overflow-hidden hover:scale-102 transition-transform duration-300"
+                >
+                  <div className=" h-80 ">
                     <img
                       onClick={() => {
                         navigate(`/courseDetail/${course._id}`);

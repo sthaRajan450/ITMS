@@ -17,6 +17,12 @@ const orderSchema = new mongoose.Schema({
       },
     },
   ],
+
+  paymentMethod: {
+    type: String,
+    // required: true,
+    defaut: "esewa",
+  },
   paymentStatus: {
     type: String,
     enum: [
