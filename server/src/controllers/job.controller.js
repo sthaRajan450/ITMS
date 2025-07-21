@@ -4,6 +4,7 @@ const ApiError = require("../utils/ApiError");
 const ApiResponse = require("../utils/ApiResponse");
 const asyncHandler = require("../utils/asyncHandler");
 const uploadOnCloudinary = require("../utils/cloudinary");
+const { sendApplicationDecisionEmail } = require("../utils/email");
 
 const createJob = asyncHandler(async (req, res) => {
   const { title, company, location, salary, description } = req.body;
@@ -159,7 +160,9 @@ const acceptApplication = asyncHandler(async (req, res) => {
   if (req.user?.role !== "Admin") {
     throw new ApiError(401, "Unauthorized request");
   }
-  const application = await JobApplication.findById(applicationId);
+
+  const application =
+    await JobApplication.findById(applicationId).populate("applicant");
 
   if (!application) {
     throw new ApiError(404, "Application not found");
@@ -168,26 +171,55 @@ const acceptApplication = asyncHandler(async (req, res) => {
   application.status = "Accepted";
   await application.save();
 
+  try {
+    await sendApplicationDecisionEmail({
+      to: application.applicant.email,
+      name: application.applicant.fullName || application.applicant.name,
+      status: "accepted",
+    });
+  } catch (err) {
+    console.error("Email sending failed:", err.message);
+  }
+
   return res
     .status(200)
-    .json(new ApiResponse(200, "Application accepted successfully"));
+    .json(
+      new ApiResponse(200, "Application accepted successfully hai", application)
+    );
 });
+
 const rejectApplication = asyncHandler(async (req, res) => {
   const { applicationId } = req.params;
+
   if (req.user?.role !== "Admin") {
     throw new ApiError(401, "Unauthorized request");
   }
-  const application = await JobApplication.findById(applicationId);
 
+  const application =
+    await JobApplication.findById(applicationId).populate("applicant");
+
+  console.log(application);
   if (!application) {
     throw new ApiError(404, "Application not found");
   }
 
-  await JobApplication.findByIdAndDelete(applicationId);
+  application.status = "Rejected";
+  await application.save();
+  try {
+    await sendApplicationDecisionEmail({
+      to: application.applicant.email,
+      name: application.applicant.fullName || application.applicant.name,
+      status: "rejected",
+    });
+  } catch (err) {
+    console.error("Email sending failed:", err.message);
+  }
 
   return res
     .status(200)
-    .json(new ApiResponse(200, "Application rejected successfully"));
+    .json(
+      new ApiResponse(200, "Application rejected successfully", application)
+    );
 });
 
 module.exports = {

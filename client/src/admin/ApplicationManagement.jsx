@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { BASE_URL } from "../config/api";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const ApplicationManagement = () => {
@@ -18,7 +17,6 @@ const ApplicationManagement = () => {
       });
       if (response.ok) {
         const data = await response.json();
-        console.log(data.data);
         setApplications(data.data);
       } else {
         const err = await response.json();
@@ -43,13 +41,14 @@ const ApplicationManagement = () => {
 
       const data = await response.json();
       if (response.ok) {
+        console.log(data);
         toast.success(data.message);
         getApplications();
       } else {
         toast.error(data.message);
       }
     } catch (error) {
-      alert(`Failed to ${action} application`);
+      toast.error(`Failed to ${action} application`);
     }
   };
 
@@ -96,6 +95,7 @@ const ApplicationManagement = () => {
                 <th className="py-3 px-4">Applied Date</th>
                 <th className="py-3 px-4">Cover Letter</th>
                 <th className="py-3 px-4">Resume</th>
+                <th className="py-3 px-4">Status</th>
                 <th className="py-3 px-4">Action</th>
               </tr>
             </thead>
@@ -124,25 +124,44 @@ const ApplicationManagement = () => {
                       📄 View Resume
                     </a>
                   </td>
+                  <td className="py-3 px-4 text-sm">
+                    <span
+                      className={`px-2 py-1 rounded-full text-white text-xs ${
+                        app.status === "Accepted"
+                          ? "bg-green-600"
+                          : app.status === "Rejected"
+                            ? "bg-red-600"
+                            : "bg-yellow-500"
+                      }`}
+                    >
+                      {app.status || "Pending"}
+                    </span>
+                  </td>
                   <td className="py-3 px-4 space-x-2">
-                    <div className="flex gap-x-5">
-                      <button
-                        onClick={() =>
-                          acceptOrRejectApplication(app._id, "accept")
-                        }
-                        className="px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700"
-                      >
-                        Accept
-                      </button>
-                      <button
-                        onClick={() =>
-                          acceptOrRejectApplication(app._id, "reject")
-                        }
-                        className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700"
-                      >
-                        Reject
-                      </button>
-                    </div>
+                    {app.status === "Pending" ? (
+                      <div className="flex gap-x-5">
+                        <button
+                          onClick={() =>
+                            acceptOrRejectApplication(app._id, "accept")
+                          }
+                          className="px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700"
+                        >
+                          Accept
+                        </button>
+                        <button
+                          onClick={() =>
+                            acceptOrRejectApplication(app._id, "reject")
+                          }
+                          className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700"
+                        >
+                          Reject
+                        </button>
+                      </div>
+                    ) : (
+                      <span className="text-gray-500 italic">
+                        No Action Available
+                      </span>
+                    )}
                   </td>
                 </tr>
               ))}

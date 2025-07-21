@@ -1,15 +1,7 @@
-const ApiResponse = require("../utils/ApiResponse");
-const asyncHandler = require("../utils/asyncHandler");
 const nodemailer = require("nodemailer");
 
-const sendApplicationDecisionEmail = asyncHandler(async (req, res) => {
-  const { to, name, status } = req.body;
-
-  if (!to || !status) {
-    return res
-      .status(400)
-      .json(new ApiResponse(400, "Missing required fields"));
-  }
+const sendApplicationDecisionEmail = async ({ to, name, status }) => {
+  if (!to || !status) throw new Error("Missing required fields");
 
   let subject, html;
 
@@ -26,9 +18,7 @@ const sendApplicationDecisionEmail = asyncHandler(async (req, res) => {
             <p>We encourage you to apply again in the future.</p>
             <p>Best wishes,<br>ITMS Nepal Team</p>`;
   } else {
-    return res
-      .status(400)
-      .json(new ApiResponse(400, "Invalid status value"));
+    throw new Error("Invalid status value");
   }
 
   const transporter = nodemailer.createTransport({
@@ -49,10 +39,7 @@ const sendApplicationDecisionEmail = asyncHandler(async (req, res) => {
   });
 
   console.log("Email sent:", info.messageId);
-
-  return res
-    .status(200)
-    .json(new ApiResponse(200, "Email sent successfully", info.messageId));
-});
+  return info.messageId;
+};
 
 module.exports = { sendApplicationDecisionEmail };
