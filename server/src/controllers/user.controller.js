@@ -154,9 +154,6 @@ const logoutUser = asyncHandler(async (req, res) => {
 });
 
 const getUserById = asyncHandler(async (req, res) => {
-  if (req.user.role !== "Admin") {
-    throw new ApiError(401, "Unauthorized request");
-  }
   const { userId } = req.params;
   const user = await User.findById(userId).select("-password -refreshToken");
   if (!user) {

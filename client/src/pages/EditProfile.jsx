@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 const EditProfile = () => {
   const location = useLocation();
   const userId = location.state;
+
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -55,6 +56,7 @@ const EditProfile = () => {
       if (response.ok) {
         const data = await response.json();
         toast.success(data.message);
+       
         navigate("/profile");
       }
     } catch (error) {
