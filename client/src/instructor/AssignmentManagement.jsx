@@ -113,22 +113,22 @@ const AssignmentManagement = () => {
               No assignments found for this course.
             </p>
           ) : (
-            <table className="min-w-full border border-gray-300 rounded-md">
+            <table className="min-w-full border border-gray-300 rounded-lg">
               <thead className="bg-gray-100">
                 <tr>
-                  <th className="py-2 px-4 border-b text-left text-sm font-semibold text-gray-700">
+                  <th className="py-2 px-4 border-b border-gray-300 text-left text-sm font-semibold text-gray-700">
                     Title
                   </th>
-                  <th className="py-2 px-4 border-b text-left text-sm font-semibold text-gray-700">
+                  <th className="py-2 px-4 border-b border-gray-300 text-left text-sm font-semibold text-gray-700">
                     Description
                   </th>
-                  <th className="py-2 px-4 border-b text-left text-sm font-semibold text-gray-700">
+                  <th className="py-2 px-4 border-b border-gray-300 text-left text-sm font-semibold text-gray-700">
                     Deadline
                   </th>
-                  <th className="py-2 px-4 border-b text-left text-sm font-semibold text-gray-700">
+                  <th className="py-2 px-4 border-b border-gray-300 text-left text-sm font-semibold text-gray-700">
                     File
                   </th>
-                  <th className="py-2 px-4 border-b text-left text-sm font-semibold text-gray-700">
+                  <th className="py-2 px-4 border-b border-gray-300 text-left text-sm font-semibold text-gray-700">
                     Actions
                   </th>
                 </tr>
@@ -137,7 +137,7 @@ const AssignmentManagement = () => {
                 {assignments.map((assignment) => (
                   <tr
                     key={assignment._id}
-                    className="text-sm border-b hover:bg-gray-50"
+                    className="text-sm border-b border-gray-300 hover:bg-gray-50"
                   >
                     <td className="py-2 px-4 font-medium">
                       {assignment.title}

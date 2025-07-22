@@ -1,8 +1,10 @@
 import React, { useContext } from "react";
 import { AuthContext } from "../context/AuthProvider";
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
   const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
   console.log(user);
 
   if (!user) {
@@ -23,7 +25,12 @@ const Profile = () => {
       <p className="text-gray-600 text-lg mb-1">📧 {user.email}</p>
       <p className="text-gray-600 text-lg mb-1">📱 {user.phone}</p>
       <p className="text-gray-600 text-lg mb-4">👤 {user.role}</p>
-      <button className="bg-gradient-to-r from-red-500 to-orange-500 text-white px-8 py-3 rounded-lg font-bold hover:bg-blue-700 transition">
+      <button
+        onClick={() => {
+          navigate("/editProfile", { state: user._id });
+        }}
+        className="bg-gradient-to-r from-red-500 to-orange-500 text-white px-8 py-3 rounded-lg font-bold hover:bg-blue-700 transition"
+      >
         Edit Profile
       </button>
     </div>

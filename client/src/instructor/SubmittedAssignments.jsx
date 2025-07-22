@@ -48,21 +48,21 @@ const SubmittedAssignments = () => {
         <div className="overflow-x-auto rounded-lg shadow">
           <table className="min-w-full border border-gray-300 bg-white rounded-lg shadow">
             <thead>
-              <tr className="bg-gray-100 text-left text-sm font-semibold text-gray-700">
-                <th className="py-3 px-4 border-b">Student</th>
-                <th className="py-3 px-4 border-b">Course</th>
-                <th className="py-3 px-4 border-b">Assignment</th>
-                <th className="py-3 px-4 border-b">Submitted File</th>
-                <th className="py-3 px-4 border-b">Status</th>
-                <th className="py-3 px-4 border-b">Submitted On</th>
-                <th className="py-3 px-4 border-b">Comment</th>
+              <tr className="bg-gray-100 text-left text-md font-semibold text-gray-700">
+                <th className="py-3 px-4 border-b border-gray-300">Student</th>
+                <th className="py-3 px-4 border-b border-gray-300">Course</th>
+                <th className="py-3 px-4 border-b border-gray-300">Assignment</th>
+                <th className="py-3 px-4 border-b border-gray-300">Submitted File</th>
+                <th className="py-3 px-4 border-b border-gray-300">Status</th>
+                <th className="py-3 px-4 border-b border-gray-300">Submitted On</th>
+                <th className="py-3 px-4 border-b border-gray-300">Comment</th>
               </tr>
             </thead>
             <tbody>
               {assignments.map((item) => (
                 <tr
                   key={item._id}
-                  className="text-sm border-b hover:bg-gray-50"
+                  className="text-sm border-b border-gray-300    hover:bg-gray-50"
                 >
                   <td className="py-2 px-4 font-medium">
                     {item.student?.fullName || "N/A"}
@@ -79,7 +79,7 @@ const SubmittedAssignments = () => {
                         rel="noopener noreferrer"
                         className="text-blue-600 underline hover:text-blue-700"
                       >
-                        📎 View File
+                       View File
                       </a>
                     ) : (
                       <span className="text-gray-400 italic">No file</span>

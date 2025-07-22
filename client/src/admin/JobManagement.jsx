@@ -126,7 +126,7 @@ const JobManagement = () => {
                   </td>
                   <td className="px-6 py-4 flex gap-2 justify-center">
                     <button
-                      onClick={() => navigate(`/updateJob/${job._id}`)}
+                      onClick={() => navigate(`/updateJob`, { state: job._id })}
                       className="px-4 py-2 text-sm bg-yellow-500 text-white rounded hover:bg-yellow-600"
                     >
                       Update

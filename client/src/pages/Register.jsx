@@ -80,7 +80,7 @@ const Register = () => {
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
               placeholder="Your full name"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:outline-none"
             />
           </div>
 
@@ -97,7 +97,7 @@ const Register = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@example.com"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:outline-none"
             />
           </div>
 
@@ -114,7 +114,7 @@ const Register = () => {
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
               placeholder="98XXXXXXXX"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:outline-none"
             />
           </div>
 
@@ -131,7 +131,7 @@ const Register = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="********"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:outline-none"
             />
           </div>
 
@@ -162,7 +162,7 @@ const Register = () => {
 
         <p className="text-center text-gray-600 text-sm mt-4">
           Already have an account?{" "}
-          <Link to="/login" className="text-blue-600 hover:underline">
+          <Link to="/login" className="text-orange-600 hover:underline">
             Login
           </Link>
         </p>

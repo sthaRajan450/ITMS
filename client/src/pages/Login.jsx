@@ -72,25 +72,29 @@ const Login = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@example.com"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:outline-none"
             />
           </div>
 
-          <div className="relative">
+          <div className="relative ">
             <input
               type={showPassword ? "text" : "password"}
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="********"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none pr-12"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:outline-none pr-12"
             />
             <button
               type="button"
               onClick={() => setShowPassword((prev) => !prev)}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-sm text-blue-500 hover:text-blue-700 focus:outline-none"
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-sm text-orange-500 hover:text-orange-700 focus:outline-none"
             >
-              {showPassword ? <FaEyeSlash className="text-xl text-gray-500" /> : <FaEye className="text-xl text-gray-500" />}
+              {showPassword ? (
+                <FaEyeSlash className="text-xl text-gray-500" />
+              ) : (
+                <FaEye className="text-xl text-gray-500" />
+              )}
             </button>
           </div>
 
@@ -105,7 +109,7 @@ const Login = () => {
 
         <p className="text-center text-gray-600 text-sm mt-4">
           Don’t have an account?{" "}
-          <Link to="/register" className="text-blue-600 hover:underline">
+          <Link to="/register" className="text-orange-600 hover:underline">
             Register
           </Link>
         </p>

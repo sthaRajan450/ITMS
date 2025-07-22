@@ -60,6 +60,7 @@ import ApplicationManagement from "./admin/ApplicationManagement";
 
 import InstructorCourseManagement from "./instructor/InstructorCourseManagement";
 import SubmittedAssignments from "./instructor/SubmittedAssignments";
+import EditProfile from "./pages/EditProfile";
 
 const App = () => {
   const location = useLocation();
@@ -164,6 +165,14 @@ const App = () => {
             element={
               <PageWrapper>
                 <Register />
+              </PageWrapper>
+            }
+          />
+          <Route
+            path="/editProfile"
+            element={
+              <PageWrapper>
+                <EditProfile />
               </PageWrapper>
             }
           />
@@ -408,7 +417,7 @@ const App = () => {
             />
           </Route>
           <Route
-            path="/updateUser/:userId"
+            path="/updateUser"
             element={
               <PageWrapper>
                 <EditUser />
@@ -416,7 +425,7 @@ const App = () => {
             }
           />
           <Route
-            path="/updateCourse/:courseId"
+            path="/updateCourse"
             element={
               <PageWrapper>
                 <EditCourse />
@@ -424,7 +433,7 @@ const App = () => {
             }
           />
           <Route
-            path="/updateBlog/:blogId"
+            path="/updateBlog"
             element={
               <PageWrapper>
                 <EditBlog />
@@ -432,7 +441,7 @@ const App = () => {
             }
           />
           <Route
-            path="/updateJob/:jobId"
+            path="/updateJob"
             element={
               <PageWrapper>
                 <EditJob />

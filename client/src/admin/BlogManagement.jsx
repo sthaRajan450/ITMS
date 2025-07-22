@@ -106,7 +106,9 @@ const BlogManagement = () => {
                   </td>
                   <td className="px-6 py-4 text-center space-x-2">
                     <button
-                      onClick={() => navigate(`/updateBlog/${blog._id}`)}
+                      onClick={() =>
+                        navigate(`/updateBlog`, { state: blog._id })
+                      }
                       className="p-3 bg-yellow-500 text-white rounded hover:bg-yellow-600 text-xs"
                     >
                       Update

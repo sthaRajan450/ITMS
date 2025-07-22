@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { BASE_URL } from "../config/api";
 import { toast } from "react-toastify";
 
 const EditBlog = () => {
-  const { blogId } = useParams();
+  const location = useLocation();
+  const blogId = location.state;
 
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");

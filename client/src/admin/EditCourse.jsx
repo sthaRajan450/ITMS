@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../context/AuthProvider";
 import { BASE_URL } from "../config/api";
 import { toast } from "react-toastify";
@@ -19,7 +19,8 @@ const EditCourse = () => {
   const [loading, setLoading] = useState(false);
 
   const { user } = useContext(AuthContext);
-  const { courseId } = useParams();
+  const location = useLocation();
+  const courseId = location.state;
   const navigate = useNavigate();
 
   const getUsers = async () => {

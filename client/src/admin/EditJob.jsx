@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { BASE_URL } from "../config/api";
 import { toast } from "react-toastify";
 const EditJob = () => {
-  const { jobId } = useParams();
+  const Location = useLocation();
+  const jobId = Location.state;
 
   const [title, setTitle] = useState("");
   const [company, setCompany] = useState("");

@@ -35,20 +35,26 @@ const InstructorCourseManagement = () => {
           <table className="min-w-full border border-gray-300 bg-white rounded-lg shadow">
             <thead>
               <tr className="bg-gray-100 text-left text-sm font-semibold text-gray-700">
-                <th className="py-3 px-4 border-b">Thumbnail</th>
-                <th className="py-3 px-4 border-b">Title</th>
-                <th className="py-3 px-4 border-b">Description</th>
-                <th className="py-3 px-4 border-b">Level</th>
-                <th className="py-3 px-4 border-b">Duration</th>
-                <th className="py-3 px-4 border-b">Price (NPR)</th>
-                <th className="py-3 px-4 border-b">Actions</th>
+                <th className="py-3 px-4 border-b border-gray-300">
+                  Thumbnail
+                </th>
+                <th className="py-3 px-4 border-b border-gray-300">Title</th>
+                <th className="py-3 px-4 border-b border-gray-300">
+                  Description
+                </th>
+                <th className="py-3 px-4 border-b border-gray-300">Level</th>
+                <th className="py-3 px-4 border-b border-gray-300">Duration</th>
+                <th className="py-3 px-4 border-b border-gray-300">
+                  Price (NPR)
+                </th>
+                <th className="py-3 px-4 border-b border-gray-300">Actions</th>
               </tr>
             </thead>
             <tbody>
               {myCourses.map((course) => (
                 <tr
                   key={course._id}
-                  className="text-sm border-b hover:bg-gray-50"
+                  className="text-sm border-b border-gray-300 hover:bg-gray-50"
                 >
                   <td className="py-2 px-4">
                     <img

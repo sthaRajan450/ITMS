@@ -20,7 +20,6 @@ const CourseManagement = () => {
       if (response.ok) {
         const data = await response.json();
         setCourses(data.data);
-       
       }
     } catch (error) {
       console.error("Error while fetching courses:", error);
@@ -83,9 +82,7 @@ const CourseManagement = () => {
       </div>
 
       {loading ? (
-        <p className="text-center text-orange-600 ">
-          Loading courses...
-        </p>
+        <p className="text-center text-orange-600 ">Loading courses...</p>
       ) : filteredCourses.length ? (
         <div className="overflow-auto bg-white rounded-xl shadow-lg">
           <table className="min-w-full table-auto text-sm text-left">
@@ -125,7 +122,9 @@ const CourseManagement = () => {
                   </td>
                   <td className="px-6 py-4 flex gap-2 justify-center">
                     <button
-                      onClick={() => navigate(`/updateCourse/${course._id}`)}
+                      onClick={() =>
+                        navigate(`/updateCourse`, { state: course._id })
+                      }
                       className="px-4 py-2 text-sm bg-yellow-500 text-white rounded hover:bg-yellow-600"
                     >
                       Update

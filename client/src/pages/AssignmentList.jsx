@@ -32,18 +32,18 @@ const AssignmentList = ({ courseId }) => {
           <table className="min-w-full border border-gray-300 bg-white rounded-lg shadow">
             <thead>
               <tr className="bg-gray-100 text-left text-sm font-semibold text-gray-700">
-                <th className="py-3 px-4 border-b">Title</th>
-                <th className="py-3 px-4 border-b">Description</th>
-                <th className="py-3 px-4 border-b">Deadline</th>
-                <th className="py-3 px-4 border-b">File</th>
-                <th className="py-3 px-4 border-b">Actions</th>
+                <th className="py-3 px-4 border-b border-gray-300">Title</th>
+                <th className="py-3 px-4 border-b border-gray-300">Description</th>
+                <th className="py-3 px-4 border-b border-gray-300">Deadline</th>
+                <th className="py-3 px-4 border-b border-gray-300">File</th>
+                <th className="py-3 px-4 border-b border-gray-300">Actions</th>
               </tr>
             </thead>
             <tbody>
               {assignments.map((assignment) => (
                 <tr
                   key={assignment._id}
-                  className="text-sm border-b hover:bg-gray-50"
+                  className="text-sm border-b border-gray-300 hover:bg-gray-50"
                 >
                   <td className="py-2 px-4 font-medium">{assignment.title}</td>
                   <td className="py-2 px-4 line-clamp-3">

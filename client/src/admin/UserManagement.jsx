@@ -104,7 +104,9 @@ const UserManagement = () => {
                   <td className="py-3 px-4 capitalize">{user.role}</td>
                   <td className="py-3 px-4 space-x-2">
                     <button
-                      onClick={() => navigate(`/updateUser/${user._id}`)}
+                      onClick={() =>
+                        navigate(`/updateUser`, { state: user._id })
+                      }
                       className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-1 rounded"
                     >
                       Update

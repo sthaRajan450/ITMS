@@ -228,12 +228,31 @@ const updateUser = asyncHandler(async (req, res) => {
   const { userId } = req.params;
   const { fullName, email, phone, role } = req.body;
 
-  if (req.user.role !== "Admin") {
-    throw new ApiError(401, "Unauthorized request");
+  // Find the user to update
+  const userToUpdate = await User.findById(userId);
+  if (!userToUpdate) {
+    throw new ApiError(404, "User not found");
   }
 
-  const updateData = { fullName, email, phone, role };
+  // Check if the user is updating their own profile or is an Admin
+  const isAdmin = req.user.role === "Admin";
+  const isSelfUpdate = req.user._id.toString() === userId;
 
+  if (!isAdmin && !isSelfUpdate) {
+    throw new ApiError(403, "You are not allowed to update this user");
+  }
+
+  const updateData = { fullName, email, phone };
+
+  // Only Admin can change roles
+  if (role) {
+    if (!isAdmin) {
+      throw new ApiError(403, "Only Admin can change user roles");
+    }
+    updateData.role = role;
+  }
+
+  // Handle avatar upload
   if (req.file?.path) {
     const avatar = await uploadOnCloudinary(req.file.path);
     if (!avatar) {
@@ -242,15 +261,18 @@ const updateUser = asyncHandler(async (req, res) => {
     updateData.avatar = avatar.secure_url;
   }
 
-  const user = await User.findByIdAndUpdate(userId, updateData, { new: true });
+  // Update user
+  const updatedUser = await User.findByIdAndUpdate(userId, updateData, {
+    new: true,
+  });
 
-  if (!user) {
+  if (!updatedUser) {
     throw new ApiError(400, "Failed to update user");
   }
 
   return res
     .status(200)
-    .json(new ApiResponse(200, "User updated successfully", user));
+    .json(new ApiResponse(200, "User updated successfully", updatedUser));
 });
 
 const addUser = asyncHandler(async (req, res) => {

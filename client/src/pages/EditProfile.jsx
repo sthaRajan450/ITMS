@@ -3,13 +3,13 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { BASE_URL } from "../config/api";
 import { toast } from "react-toastify";
 
-const EditUser = () => {
+const EditProfile = () => {
   const location = useLocation();
   const userId = location.state;
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [role, setRole] = useState("");
+
   const [avatar, setAvatar] = useState(null);
   const navigate = useNavigate();
 
@@ -24,10 +24,9 @@ const EditUser = () => {
         setFullName(data.data.fullName);
         setEmail(data.data.email);
         setPhone(data.data.phone);
-        setRole(data.data.role);
       }
     } catch (error) {
-      console.log("Failed to fetch user details:", error);
+      console.log("Failed to fetch your details:", error);
     }
   };
 
@@ -41,7 +40,7 @@ const EditUser = () => {
     const formData = new FormData();
     formData.append("fullName", fullName);
     formData.append("email", email);
-    formData.append("role", role);
+
     formData.append("phone", phone);
     if (avatar) {
       formData.append("avatar", avatar);
@@ -56,10 +55,10 @@ const EditUser = () => {
       if (response.ok) {
         const data = await response.json();
         toast.success(data.message);
-        navigate("/admin/userManagement");
+        navigate("/profile");
       }
     } catch (error) {
-      console.log("Failed to update user:", error);
+      console.log("Failed to edit your profile:", error);
     }
   };
 
@@ -112,32 +111,18 @@ const EditUser = () => {
               className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-orange-400"
             />
           </div>
-
+          {/* Avatar Upload */}
           <div>
-            <label className="block font-medium text-gray-700 mb-2">Role</label>
-            <select
-              value={role}
-              onChange={(e) => setRole(e.target.value)}
+            <label className="block font-medium text-gray-700 mb-2">
+              Avatar
+            </label>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => setAvatar(e.target.files[0])}
               className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-orange-400"
-              required
-            >
-              <option value="">-- Select Role --</option>
-              <option value="Admin">Admin</option>
-              <option value="Instructor">Instructor</option>
-              <option value="Student">Student</option>
-            </select>
+            />
           </div>
-        </div>
-
-        {/* Avatar Upload */}
-        <div>
-          <label className="block font-medium text-gray-700 mb-2">Avatar</label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => setAvatar(e.target.files[0])}
-            className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-orange-400"
-          />
         </div>
 
         {/* Submit Button */}
@@ -152,4 +137,4 @@ const EditUser = () => {
   );
 };
 
-export default EditUser;
+export default EditProfile;
