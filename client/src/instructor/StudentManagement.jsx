@@ -53,58 +53,69 @@ const StudentManagement = () => {
       </h1>
 
       {students.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
-          {students.map((student) => {
-            // Find all instructor courses the student is enrolled in
-            const relevantCourses = instructorCourses.filter((ic) =>
-              student.enrolledCourses.includes(ic._id)
-            );
+        <div className="overflow-x-auto">
+          <table className="table-auto w-full border-collapse border border-gray-300 bg-white rounded-lg shadow-md">
+            <thead className="bg-gray-200">
+              <tr>
+                <th className="border border-gray-300 px-4 py-2">Avatar</th>
+                <th className="border border-gray-300 px-4 py-2">Name</th>
+                <th className="border border-gray-300 px-4 py-2">Email</th>
+                <th className="border border-gray-300 px-4 py-2">Phone</th>
+                <th className="border border-gray-300 px-4 py-2">Courses</th>
+                <th className="border border-gray-300 px-4 py-2">View Progress</th>
+              </tr>
+            </thead>
+            <tbody>
+              {students.map((student) => {
+                const relevantCourses = instructorCourses.filter((ic) =>
+                  student.enrolledCourses.includes(ic._id)
+                );
 
-            if (relevantCourses.length === 0) return null;
+                if (relevantCourses.length === 0) return null;
 
-            return (
-              <div
-                key={student._id}
-                className="bg-white rounded-xl shadow-md p-6 flex flex-col items-center text-center hover:shadow-lg transition"
-              >
-                <img
-                  src={student.avatar}
-                  alt={student.fullName}
-                  className="w-24 h-24 rounded-full mb-4 object-cover border-2 border-orange-400"
-                />
-                <h2 className="text-xl font-semibold text-gray-800 mb-1">
-                  {student.fullName}
-                </h2>
-                <p className="text-gray-600 mb-1">📧 {student.email}</p>
-                <p className="text-gray-600 mb-1">📱 {student.phone}</p>
-                <p className="text-sm text-gray-500 mt-2">
-                  Enrolled in: {relevantCourses.length} relevant course(s)
-                </p>
-
-                <select
-                  onChange={(e) =>
-                    navigate("/instructor/studentProgress", {
-                      state: {
-                        courseId: e.target.value,
-                        studentId: student._id,
-                      },
-                    })
-                  }
-                  defaultValue=""
-                  className="mt-4 border border-orange-500 px-3 py-2 rounded w-full text-sm"
-                >
-                  <option value="" disabled className="text-gray-500" >
-                    Select course to view progress
-                  </option>
-                  {relevantCourses.map((course) => (
-                    <option key={course._id} value={course._id}>
-                      {course.title}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            );
-          })}
+                return (
+                  <tr key={student._id} className="text-center">
+                    <td className="border border-gray-300 px-4 py-2">
+                      <img
+                        src={student.avatar}
+                        alt={student.fullName}
+                        className="w-12 h-12 rounded-full mx-auto object-cover border-2 border-gray-400"
+                      />
+                    </td>
+                    <td className="border border-gray-300 px-4 py-2">{student.fullName}</td>
+                    <td className="border border-gray-300 px-4 py-2">{student.email}</td>
+                    <td className="border border-gray-300 px-4 py-2">{student.phone}</td>
+                    <td className="border border-gray-300 px-4 py-2">
+                      {relevantCourses.map((course) => course.title).join(", ")}
+                    </td>
+                    <td className="border border-gray-300 px-4 py-2">
+                      <select
+                        onChange={(e) =>
+                          navigate("/instructor/studentProgress", {
+                            state: {
+                              courseId: e.target.value,
+                              studentId: student._id,
+                            },
+                          })
+                        }
+                        defaultValue=""
+                        className="border border-orange-500 px-2 py-1 rounded text-sm w-full"
+                      >
+                        <option value="" disabled>
+                          Select Course
+                        </option>
+                        {relevantCourses.map((course) => (
+                          <option key={course._id} value={course._id}>
+                            {course.title}
+                          </option>
+                        ))}
+                      </select>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
         </div>
       ) : (
         <div className="text-center text-gray-500 text-lg mt-20">
