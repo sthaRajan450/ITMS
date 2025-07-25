@@ -142,6 +142,25 @@ const getSubmittedAssignmentsForInstructor = asyncHandler(async (req, res) => {
     );
 });
 
+const markAssignmentReviewed = asyncHandler(async (req, res) => {
+  const { submissionId } = req.params;
+  const { feedback } = req.body;
+
+  const submission = await AssignmentSubmission.findById(submissionId);
+  if (!submission) {
+    throw new ApiError(404, "Submission not found");
+  }
+
+  submission.status = "Reviewed";
+  if (feedback) {
+    submission.instructorFeedback = feedback;
+  }
+
+  await submission.save();
+
+  res.status(200).json(new ApiResponse(200, "Marked as reviewed", submission));
+});
+
 module.exports = {
   createAssignment,
   getAssignmentByCourse,
@@ -149,4 +168,5 @@ module.exports = {
   getSubmittedAssignments,
   deleteAssignment,
   getSubmittedAssignmentsForInstructor,
+  markAssignmentReviewed,
 };

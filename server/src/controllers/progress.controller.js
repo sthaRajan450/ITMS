@@ -35,6 +35,7 @@ const getStudentProgress = asyncHandler(async (req, res) => {
       (sub) => sub.assignment.toString() === assignment._id.toString()
     );
     return {
+      submissionId:submitted._id,
       assignmentTitle: assignment.title,
       submitted: !!submitted,
       submittedAt: submitted?.createdAt || null,
@@ -55,5 +56,7 @@ const getStudentProgress = asyncHandler(async (req, res) => {
     })
   );
 });
+
+
 
 module.exports = { getStudentProgress };

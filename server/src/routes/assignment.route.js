@@ -7,6 +7,7 @@ const {
   getSubmittedAssignments,
   deleteAssignment,
   getSubmittedAssignmentsForInstructor,
+  markAssignmentReviewed,
 } = require("../controllers/assignment.controller");
 const upload = require("../middlewares/upload.middleware");
 
@@ -27,4 +28,8 @@ assignmentRouter
   .route("/course/:courseId")
   .get(verifyToken, getAssignmentByCourse);
 assignmentRouter.route("/:assignmentId").delete(verifyToken, deleteAssignment);
+
+assignmentRouter
+  .route("/review/:submissionId")
+  .put(verifyToken, markAssignmentReviewed);
 module.exports = assignmentRouter;

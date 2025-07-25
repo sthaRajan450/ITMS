@@ -38,7 +38,7 @@ const MyAssignments = () => {
       {loading ? (
         <p>Loading assignments...</p>
       ) : assignments.length === 0 ? (
-        <p className="text-gray-600">No assignments submitted yet.</p>
+        <p className="text-gray-600 text-center">No assignments submitted yet.</p>
       ) : (
         <div className="overflow-x-auto rounded-lg shadow">
           <table className="min-w-full border border-gray-300 bg-white  shadow">

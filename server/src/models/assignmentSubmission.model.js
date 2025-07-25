@@ -23,6 +23,9 @@ const assignmentSubmissionSchema = new mongoose.Schema(
       enum: ["Submitted", "Reviewed"],
       default: "Submitted",
     },
+    instructorFeedback: {
+      type: String,
+    },
   },
   { timestamps: true }
 );
