@@ -5,6 +5,7 @@ import { BASE_URL } from "../config/api";
 const MyCourses = () => {
   const [myCourses, setMyCourses] = useState([]);
   const navigate = useNavigate();
+
   const getMyCourses = async () => {
     try {
       const response = await fetch(`${BASE_URL}/course/getMyCourses`, {
@@ -35,63 +36,57 @@ const MyCourses = () => {
   };
 
   return (
-    <div className="max-w-5xl mx-auto p-6">
+    <div className="max-w-7xl mx-auto p-6">
       <h2 className="text-4xl font-bold mb-8 text-center text-gray-600">
         Enrolled Courses
       </h2>
 
       {myCourses.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {myCourses.map((course) => (
-            <div
-              onClick={() => {
-                navigate("/student/course", { state: course });
-              }}
-              key={course._id}
-              className="bg-white shadow-lg rounded-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300"
-            >
-              <img
-                src={course.thumbnail}
-                alt={course.title}
-                className="w-full h-48 object-cover"
-              />
-              <div className="p-6">
-                <h3 className="text-2xl font-semibold mb-2 hover:text-blue-500">
-                  {course.title}
-                </h3>
-                <p className="text-sm text-gray-600 mb-2">
-                  Category:
-                  <span className="font-medium text-gray-800 hover:text-blue-500">
+        <div className="overflow-x-auto rounded-lg shadow-md">
+          <table className="min-w-full table-auto border border-gray-100 bg-white">
+            <thead>
+              <tr className="bg-gray-300 text-left text-sm font-semibold text-black">
+                <th className="py-3 px-4 border-b border-gray-100">Thumbnail</th>
+                <th className="py-3 px-4 border-b border-gray-100">Title</th>
+                <th className="py-3 px-4 border-b border-gray-100">Category</th>
+                <th className="py-3 px-4 border-b border-gray-100">Description</th>
+                <th className="py-3 px-4 border-b border-gray-100">Duration</th>
+                <th className="py-3 px-4 border-b border-gray-100">Level</th>
+                <th className="py-3 px-4 border-b border-gray-100">Price</th>
+              </tr>
+            </thead>
+            <tbody>
+              {myCourses.map((course) => (
+                <tr
+                  key={course._id}
+                  className="hover:bg-indigo-50 cursor-pointer text-sm transition"
+                  onClick={() => navigate("/student/course", { state: course })}
+                >
+                  <td className="py-2 px-4 border-b border-gray-100">
+                    <img
+                      src={course.thumbnail}
+                      alt={course.title}
+                      className="w-20 h-14 object-cover rounded-md border border-gray-200"
+                    />
+                  </td>
+                  <td className="py-2 px-4 border-b border-gray-100 font-medium text-blue-600 hover:underline">
+                    {course.title}
+                  </td>
+                  <td className="py-2 px-4 border-b border-gray-100 capitalize">
                     {course.category}
-                  </span>
-                </p>
-                <p className="text-gray-700 mb-3 hover:text-blue-500  capitalize font-semibold">
-                  {course.description}
-                </p>
-
-                <div className="flex flex-wrap gap-4 text-sm text-gray-600 mb-4">
-                  <span>
-                    Duration&nbsp;:
-                    <strong className=" hover:text-blue-500">
-                      {course.duration}
-                    </strong>
-                  </span>
-                  <span>
-                    Level:&nbsp;
-                    <strong className=" hover:text-blue-500">
-                      {course.level}
-                    </strong>
-                  </span>
-                  <span>
-                    Price:&nbsp;
-                    <strong className=" text-orange-600">
-                      {formatPrice(course.price)}
-                    </strong>
-                  </span>
-                </div>
-              </div>
-            </div>
-          ))}
+                  </td>
+                  <td className="py-2 px-4 border-b border-gray-100 text-gray-700 line-clamp-2">
+                    {course.description}
+                  </td>
+                  <td className="py-2 px-4 border-b border-gray-100">{course.duration}</td>
+                  <td className="py-2 px-4 border-b border-gray-100 capitalize">{course.level}</td>
+                  <td className="py-2 px-4 border-b border-gray-100 text-orange-600 font-semibold">
+                    {formatPrice(course.price)}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       ) : (
         <p className="text-center text-gray-500 mt-20 text-lg">

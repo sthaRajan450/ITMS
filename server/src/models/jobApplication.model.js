@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+
 const jobApplicationSchema = new mongoose.Schema(
   {
     applicant: {
@@ -11,12 +12,11 @@ const jobApplicationSchema = new mongoose.Schema(
       ref: "Job",
       required: true,
     },
-
     coverLetter: {
-      type: String,
+      type: String, // URL to cover letter image
     },
     resume: {
-      type: String,
+      type: String, // URL to resume image
       required: true,
     },
     status: {
@@ -35,4 +35,5 @@ const jobApplicationSchema = new mongoose.Schema(
 );
 
 const JobApplication = mongoose.model("JobApplication", jobApplicationSchema);
+
 module.exports = JobApplication;

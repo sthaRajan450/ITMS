@@ -19,9 +19,14 @@ const jobRouter = express.Router();
 // static routes FIRST
 jobRouter.route("/create").post(verifyToken, createJob);
 jobRouter.route("/all").get(getAllJobs);
-jobRouter
-  .route("/apply/:jobId")
-  .post(verifyToken, upload.single("resume"), applyToJob);
+jobRouter.route("/apply/:jobId").post(
+  verifyToken,
+  upload.fields([
+    { name: "resume", maxCount: 1 },
+    { name: "coverLetter", maxCount: 1 },
+  ]),
+  applyToJob
+);
 jobRouter.route("/myApplications").get(verifyToken, getMyApplications);
 jobRouter.route("/applications").get(verifyToken, getAllApplications);
 jobRouter

@@ -85,7 +85,6 @@ const updateJob = asyncHandler(async (req, res) => {
 
 const applyToJob = asyncHandler(async (req, res) => {
   const { jobId } = req.params;
-  const { coverLetter } = req.body;
 
   const alreadyApplied = await JobApplication.findOne({
     job: jobId,
@@ -95,24 +94,40 @@ const applyToJob = asyncHandler(async (req, res) => {
     throw new ApiError(400, "You have already applied for this job");
   }
 
-  const resumeLocalPath = req.file.path;
-  if (!resumeLocalPath) {
+  if (!req.files || !req.files.resume || req.files.resume.length === 0) {
     throw new ApiError(400, "Resume file is required");
   }
-  const resume = await uploadOnCloudinary(resumeLocalPath);
-  if (!resume) {
-    throw new ApiError(400, "Failed to upload resume  on cloudinary");
+
+  // Upload resume
+  const resumeLocalPath = req.files.resume[0].path;
+  const resumeUpload = await uploadOnCloudinary(resumeLocalPath);
+  if (!resumeUpload) {
+    throw new ApiError(400, "Failed to upload resume on cloudinary");
   }
+
+  // Upload cover letter (optional)
+  let coverLetterUrl = "";
+  if (req.files.coverLetter && req.files.coverLetter.length > 0) {
+    const coverLetterLocalPath = req.files.coverLetter[0].path;
+    const coverLetterUpload = await uploadOnCloudinary(coverLetterLocalPath);
+    if (!coverLetterUpload) {
+      throw new ApiError(400, "Failed to upload cover letter on cloudinary");
+    }
+    coverLetterUrl = coverLetterUpload.secure_url;
+  }
+
   const application = await JobApplication.create({
     applicant: req.user._id,
     job: jobId,
-    coverLetter: coverLetter || "",
-    resume: resume.secure_url,
+    coverLetter: coverLetterUrl,
+    resume: resumeUpload.secure_url,
   });
+
   return res
     .status(201)
-    .json(new ApiResponse(201, "Applied successfully ", application));
+    .json(new ApiResponse(201, "Applied successfully", application));
 });
+
 
 const getMyApplications = asyncHandler(async (req, res) => {
   const applications = await JobApplication.find({ applicant: req.user?._id })
