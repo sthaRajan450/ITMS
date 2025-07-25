@@ -7,6 +7,8 @@ const EditProfile = () => {
   const location = useLocation();
   const userId = location.state;
 
+  const [loading, setLoading] = useState(false);
+
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -46,7 +48,7 @@ const EditProfile = () => {
     if (avatar) {
       formData.append("avatar", avatar);
     }
-
+    setLoading(true);
     try {
       const response = await fetch(`${BASE_URL}/user/update/${userId}`, {
         method: "PUT",
@@ -56,11 +58,13 @@ const EditProfile = () => {
       if (response.ok) {
         const data = await response.json();
         toast.success(data.message);
-       
+
         navigate("/profile");
       }
     } catch (error) {
       console.log("Failed to edit your profile:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -132,7 +136,7 @@ const EditProfile = () => {
           type="submit"
           className="w-full py-3 bg-orange-600 text-white rounded-lg font-semibold hover:bg-orange-500 transition text-lg"
         >
-          Update User
+          {loading ? "Updating..." : "Update Profile"}
         </button>
       </form>
     </div>

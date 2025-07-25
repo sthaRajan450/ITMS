@@ -5,6 +5,7 @@ import { BASE_URL } from "../config/api";
 const InstructorCourseManagement = () => {
   const navigate = useNavigate();
   const [myCourses, setMyCourses] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const getMyCourses = async () => {
     try {
@@ -24,13 +25,28 @@ const InstructorCourseManagement = () => {
   useEffect(() => {
     getMyCourses();
   }, []);
+  const filteredCourses = myCourses.filter((course) =>
+    `${course.title}  ${course.level}`
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="p-6 min-h-screen bg-gray-50">
       <h1 className="text-3xl text-center font-bold text-gray-600 pb-5">
         Course Management
       </h1>
-      {myCourses.length ? (
+
+      <div className="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
+        <input
+          type="text"
+          placeholder="🔍 Search by title, or level"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="w-full md:w-1/2 px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-orange-500"
+        />
+      </div>
+      {filteredCourses.length ? (
         <div className="overflow-x-auto rounded-lg shadow-lg  ">
           <table className="min-w-full border border-gray-300 bg-white rounded-lg shadow">
             <thead>
@@ -51,7 +67,7 @@ const InstructorCourseManagement = () => {
               </tr>
             </thead>
             <tbody>
-              {myCourses.map((course) => (
+              {filteredCourses.map((course) => (
                 <tr
                   key={course._id}
                   className="text-sm border-b border-gray-300 hover:bg-gray-50"

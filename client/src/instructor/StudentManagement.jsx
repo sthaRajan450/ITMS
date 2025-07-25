@@ -5,9 +5,10 @@ import { useNavigate } from "react-router-dom";
 const StudentManagement = () => {
   const [students, setStudents] = useState([]);
   const [instructorCourses, setInstructorCourses] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
 
-  const getUsers = async () => {
+  const getStudents = async () => {
     try {
       const response = await fetch(`${BASE_URL}/user/all`, {
         method: "GET",
@@ -42,17 +43,29 @@ const StudentManagement = () => {
   };
 
   useEffect(() => {
-    getUsers();
+    getStudents();
     getInstructorCourses();
   }, []);
-
+  const filteredStudents = students.filter((student) =>
+    `${student.fullName} ${student.email}`
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase())
+  );
   return (
     <div className="min-h-screen bg-gray-50 py-10 px-6">
       <h1 className="text-4xl font-bold text-center text-gray-600 mb-8">
         👩‍🎓 Student Management
       </h1>
-
-      {students.length > 0 ? (
+      <div className="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
+        <input
+          type="text"
+          placeholder="🔍 Search by name, email"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="w-full md:w-1/2 px-4 py-2 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-orange-500"
+        />
+      </div>
+      {filteredStudents.length > 0 ? (
         <div className="overflow-x-auto">
           <table className="table-auto w-full border-collapse border border-gray-300 bg-white rounded-lg shadow-md">
             <thead className="bg-gray-200">
@@ -62,11 +75,13 @@ const StudentManagement = () => {
                 <th className="border border-gray-300 px-4 py-2">Email</th>
                 <th className="border border-gray-300 px-4 py-2">Phone</th>
                 <th className="border border-gray-300 px-4 py-2">Courses</th>
-                <th className="border border-gray-300 px-4 py-2">View Progress</th>
+                <th className="border border-gray-300 px-4 py-2">
+                  View Progress
+                </th>
               </tr>
             </thead>
             <tbody>
-              {students.map((student) => {
+              {filteredStudents.map((student) => {
                 const relevantCourses = instructorCourses.filter((ic) =>
                   student.enrolledCourses.includes(ic._id)
                 );
@@ -79,12 +94,18 @@ const StudentManagement = () => {
                       <img
                         src={student.avatar}
                         alt={student.fullName}
-                        className="w-12 h-12 rounded-full mx-auto object-cover border-2 border-gray-400"
+                        className="w-12 h-12 rounded-full mx-auto object-cover border-2 border-orange-400"
                       />
                     </td>
-                    <td className="border border-gray-300 px-4 py-2">{student.fullName}</td>
-                    <td className="border border-gray-300 px-4 py-2">{student.email}</td>
-                    <td className="border border-gray-300 px-4 py-2">{student.phone}</td>
+                    <td className="border border-gray-300 px-4 py-2">
+                      {student.fullName}
+                    </td>
+                    <td className="border border-gray-300 px-4 py-2">
+                      {student.email}
+                    </td>
+                    <td className="border border-gray-300 px-4 py-2">
+                      {student.phone}
+                    </td>
                     <td className="border border-gray-300 px-4 py-2">
                       {relevantCourses.map((course) => course.title).join(", ")}
                     </td>

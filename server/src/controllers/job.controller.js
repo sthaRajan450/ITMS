@@ -116,7 +116,7 @@ const applyToJob = asyncHandler(async (req, res) => {
 
 const getMyApplications = asyncHandler(async (req, res) => {
   const applications = await JobApplication.find({ applicant: req.user?._id })
-    .populate("job", "title company salary")
+    .populate("job", "title location company salary")
     .sort({ createdAt: -1 });
 
   if (!applications.length) {
