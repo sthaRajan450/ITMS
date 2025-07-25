@@ -24,9 +24,9 @@ import MyApplications from "./student/MyApplications";
 import InstrcutorDashboard from "./instructor/InstrcutorDashboard";
 import StudentDashboard from "./student/StudentDashboard";
 import MyCertificates from "./student/MyCertificates";
-// import CourseManagement from "./instructor/CourseManagement";
+
 import StudentManagement from "./instructor/StudentManagement";
-import MyProgress from "./student/MyProgress";
+
 import MyAssignments from "./student/MyAssignments";
 import ResourceManagement from "./instructor/ResourceManagement";
 import AssignmentManagement from "./instructor/AssignmentManagement";
@@ -45,7 +45,7 @@ import AddJob from "./admin/AddJob";
 import Payment from "./payment/Payment";
 import Cart from "./pages/Cart";
 import Success from "./payment/Success";
-import AddCourses from "./instructor/AddCourses";
+
 import SendMessage from "./instructor/SendMessage";
 import AssignmentList from "./pages/AssignmentList";
 import SubmitAssignment from "./student/SubmitAssignment";
@@ -252,14 +252,7 @@ const App = () => {
                 </PageWrapper>
               }
             />
-            <Route
-              path="myProgress"
-              element={
-                <PageWrapper>
-                  <MyProgress />
-                </PageWrapper>
-              }
-            />
+
             <Route
               path="myAssignments"
               element={
