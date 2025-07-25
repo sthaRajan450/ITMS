@@ -1,12 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../context/AuthProvider";
 import { CartContext } from "../context/CartProvider";
 import { BASE_URL } from "../config/api";
-import { FaCartShopping } from "react-icons/fa6";
+import { FaCartShopping, FaChampagneGlasses } from "react-icons/fa6";
+import { CalendarSearch } from "lucide-react";
 
 const CourseDetail = () => {
-  const { courseId } = useParams();
+  const location = useLocation();
+  const { courseId } = location.state;
   const [course, setCourse] = useState(null);
   const { isAuth } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -46,7 +48,22 @@ const CourseDetail = () => {
           className="w-full h-72 object-cover"
         />
         <div className="p-8">
-          <h1 className="text-3xl font-bold mb-4">{course.title}</h1>
+          <div className="flex justify-between items-center mb-6">
+            <h1 className="text-3xl font-bold mb-4">{course.title}</h1>
+            <button
+              onClick={() => {
+                if (!isAuth) {
+                  navigate("/login");
+                  return;
+                }
+                navigate("/schedule-demo", { state: { course } });
+              }}
+              className="px-4 py-2 bg-transparent flex  justify-center items-center  gap-x-3 text-orange-500 border-2 rounded-md hover:bg-orange-500 hover:text-white transition"
+            >
+              <CalendarSearch /> Schdeule Demo
+            </button>
+          </div>
+
           <p className="text-gray-600 mb-4">{course.description}</p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">

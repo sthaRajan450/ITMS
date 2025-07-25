@@ -62,6 +62,7 @@ import InstructorCourseManagement from "./instructor/InstructorCourseManagement"
 import SubmittedAssignments from "./instructor/SubmittedAssignments";
 import EditProfile from "./pages/EditProfile";
 import StudentProgress from "./instructor/StudentProgress";
+import ScheduleDemo from "./pages/ScheduleDemo";
 
 const App = () => {
   const location = useLocation();
@@ -98,6 +99,14 @@ const App = () => {
             }
           />
           <Route
+            path="/schedule-demo"
+            element={
+              <PageWrapper>
+                <ScheduleDemo />
+              </PageWrapper>
+            }
+          />
+          <Route
             path="/blogDetail"
             element={
               <PageWrapper>
@@ -114,7 +123,7 @@ const App = () => {
             }
           />
           <Route
-            path="/courseDetail/:courseId"
+            path="/courseDetail"
             element={
               <PageWrapper>
                 <CourseDetail />

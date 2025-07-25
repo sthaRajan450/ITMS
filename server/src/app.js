@@ -15,6 +15,7 @@ const assignmentRouter = require("./routes/assignment.route");
 const fs = require("fs");
 const path = require("path");
 const progressRouter = require("./routes/progress.route");
+const demoRouter = require("./routes/demo.route");
 
 const tempPath = path.join(__dirname, "public", "temp");
 if (!fs.existsSync(tempPath)) {
@@ -52,5 +53,6 @@ app.use("/api/v1/message", messageRouter);
 app.use("/api/v1/resource", resourceRouter);
 app.use("/api/v1/assignment", assignmentRouter);
 app.use("/api/v1/progress", progressRouter);
+app.use("/api/v1/demo", demoRouter);
 
 module.exports = app;
