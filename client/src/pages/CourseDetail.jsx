@@ -5,12 +5,13 @@ import { CartContext } from "../context/CartProvider";
 import { BASE_URL } from "../config/api";
 import { FaCartShopping, FaChampagneGlasses } from "react-icons/fa6";
 import { CalendarSearch } from "lucide-react";
+import ReviewForm from "./ReviewForm";
 
 const CourseDetail = () => {
   const location = useLocation();
   const { courseId } = location.state;
   const [course, setCourse] = useState(null);
-  const { isAuth } = useContext(AuthContext);
+  const { isAuth, user } = useContext(AuthContext);
   const navigate = useNavigate();
   const { dispatch } = useContext(CartContext);
 
@@ -47,7 +48,7 @@ const CourseDetail = () => {
           alt={course.title}
           className="w-full h-72 object-cover"
         />
-        <div className="p-8">
+        <div className="p-8 relative">
           <div className="flex justify-between items-center mb-6">
             <h1 className="text-3xl font-bold mb-4">{course.title}</h1>
             <button
@@ -91,22 +92,28 @@ const CourseDetail = () => {
               <p className="font-semibold">Prerequisites:</p>
               <p>{course.prerequisites}</p>
             </div>
+
+            <div className="mb-6">
+              <p className="font-semibold mb-2">Syllabus:</p>
+              <ul className="list-disc list-inside text-gray-700">
+                {course.syllabus && course.syllabus.length > 0 ? (
+                  course.syllabus.map((item, index) => (
+                    <li key={index}>{item}</li>
+                  ))
+                ) : (
+                  <li>No syllabus available</li>
+                )}
+              </ul>
+            </div>
+            {isAuth && (
+              <div className="mt-10">
+                <h2 className="text-xl font-semibold mb-4">Leave a Review</h2>
+                <ReviewForm courseId={course._id} userId={user._id} />
+              </div>
+            )}
           </div>
 
-          <div className="mb-6">
-            <p className="font-semibold mb-2">Syllabus:</p>
-            <ul className="list-disc list-inside text-gray-700">
-              {course.syllabus && course.syllabus.length > 0 ? (
-                course.syllabus.map((item, index) => (
-                  <li key={index}>{item}</li>
-                ))
-              ) : (
-                <li>No syllabus available</li>
-              )}
-            </ul>
-          </div>
-
-          <div className="flex gap-4 mt-6">
+          <div className="absolute bottom-20 left-10 flex gap-4 mt-6">
             <button
               onClick={() => {
                 if (!isAuth) {

@@ -6,6 +6,7 @@ import "slick-carousel/slick/slick-theme.css";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { BASE_URL } from "../config/api";
 import Hero from "./Hero";
+import Testimonials from "./Testimonials";
 
 const testimonials = [
   {
@@ -247,6 +248,10 @@ const Home = () => {
           </Slider>
         </div>
       </section>
+
+      <Testimonials courseId={null} />
+
+      
     </div>
   );
 };
