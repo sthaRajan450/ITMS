@@ -1,30 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+
 import { BASE_URL } from "../config/api";
 import Hero from "./Hero";
 import Testimonials from "./Testimonials";
-
-const testimonials = [
-  {
-    name: "Rajan Shreshtha",
-    feedback:
-      "The courses here are top-notch! I landed my dream job thanks to the skills I learned.",
-  },
-  {
-    name: "Roshan singh",
-    feedback:
-      "Amazing instructors and a supportive community. Highly recommend ITMS Nepal!",
-  },
-  {
-    name: "Rajesh Kumar",
-    feedback:
-      "The hands-on projects helped me build a strong portfolio. Great experience overall!",
-  },
-];
 
 const Home = () => {
   const [courses, setCourses] = useState([]);
@@ -33,19 +12,6 @@ const Home = () => {
   const [level, setLevel] = useState("");
   const [keyword, setKeyword] = useState("");
   const navigate = useNavigate();
-
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1, // or 2-3 if needed
-    slidesToScroll: 1,
-    arrows: true,
-    prevArrow: <FaArrowLeft className="text-blue-600 text-2xl" />,
-    nextArrow: <FaArrowRight className="text-blue-600 text-2xl" />,
-    autoplay: true,
-    autoplaySpeed: 4000,
-  };
 
   useEffect(() => {
     getCourses();
@@ -229,29 +195,7 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="bg-gray-100 py-20">
-        <div className="max-w-6xl mx-auto px-6">
-          <h2 className="text-4xl font-bold text-center mb-10 text-gray-800">
-            💬 What Our Students Say
-          </h2>
-          <Slider {...settings}>
-            {testimonials.map((testimonial, idx) => (
-              <div key={idx} className="px-4">
-                <div className="bg-white p-6 rounded-xl shadow-lg text-center">
-                  <p className="text-gray-600 italic mb-4">
-                    "{testimonial.feedback}"
-                  </p>
-                  <p className=" font-semibold">- {testimonial.name}</p>
-                </div>
-              </div>
-            ))}
-          </Slider>
-        </div>
-      </section>
-
-      <Testimonials courseId={null} />
-
-      
+      <Testimonials />
     </div>
   );
 };

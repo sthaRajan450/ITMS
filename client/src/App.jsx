@@ -63,6 +63,7 @@ import SubmittedAssignments from "./instructor/SubmittedAssignments";
 import EditProfile from "./pages/EditProfile";
 import StudentProgress from "./instructor/StudentProgress";
 import ScheduleDemo from "./pages/ScheduleDemo";
+import ReviewManagement from "./admin/ReviewManagement";
 
 const App = () => {
   const location = useLocation();
@@ -381,6 +382,14 @@ const App = () => {
               element={
                 <PageWrapper>
                   <UserManagement />
+                </PageWrapper>
+              }
+            />
+            <Route
+              path="reviewManagement"
+              element={
+                <PageWrapper>
+                  <ReviewManagement />
                 </PageWrapper>
               }
             />

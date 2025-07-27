@@ -12,6 +12,7 @@ const ReviewForm = ({ courseId, userId }) => {
 
     const res = await fetch(`${BASE_URL}/review/add`, {
       method: "POST",
+      credentials: "include",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ courseId, userId, rating, comment }),
     });

@@ -3,6 +3,7 @@ const ApiError = require("../utils/ApiError");
 const ApiResponse = require("../utils/ApiResponse");
 const asyncHandler = require("../utils/asyncHandler");
 
+// ✅ Add a review (user)
 const addReview = asyncHandler(async (req, res) => {
   const { userId, courseId, rating, comment } = req.body;
 
@@ -12,18 +13,20 @@ const addReview = asyncHandler(async (req, res) => {
       .json(new ApiResponse(400, "All fields are required"));
   }
 
-  const review = await Review.create({
+  await Review.create({
     user: userId,
     course: courseId,
     rating,
     comment,
     isApproved: false,
   });
+
   return res
     .status(201)
-    .json(new ApiResponse(201, "Review added successfully"));
+    .json(new ApiResponse(201, "Review submitted for approval"));
 });
 
+// ✅ Get approved reviews of a course (public)
 const getCourseReviews = asyncHandler(async (req, res) => {
   const { courseId } = req.params;
 
@@ -36,15 +39,48 @@ const getCourseReviews = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, "Reviews fetched successfully", reviews));
 });
 
+// ✅ Approve a review (admin)
 const approveReview = asyncHandler(async (req, res) => {
+  if (req.user?.role !== "Admin") {
+    throw new ApiError(404, "Unauthorized request");
+  }
   const review = await Review.findById(req.params.id);
   if (!review) {
-    throw new ApiError(404, "Reveiew not found");
+    throw new ApiError(404, "Review not found");
   }
+
   review.isApproved = true;
   await review.save();
 
-  res.status(200).json(new ApiResponse(200, "Review approved succesfully"));
+  res.status(200).json(new ApiResponse(200, "Review approved successfully"));
 });
 
-module.exports = { addReview, getCourseReviews, approveReview };
+// ✅ Get all pending (unapproved) reviews (admin)
+const getPendingReviews = asyncHandler(async (req, res) => {
+  if (req.user?.role !== "Admin") {
+    throw new ApiError(404, "Unauthorized request");
+  }
+  const reviews = await Review.find({ isApproved: false })
+    .populate("user", "fullName")
+    .populate("course", "title")
+    .sort({ createdAt: -1 });
+
+  res
+    .status(200)
+    .json(new ApiResponse(200, "Pending reviews fetched", reviews));
+});
+const getAllApprovedReviews = asyncHandler(async (req, res) => {
+  const reviews = await Review.find({ isApproved: true })
+    .populate("user", "fullName avatar")
+    .populate("course", "title")
+    .sort({ createdAt: -1 });
+  res.status(200).json(new ApiResponse(200, "All reviews fetched", reviews));
+});
+
+module.exports = {
+  addReview,
+  getCourseReviews,
+  approveReview,
+  getPendingReviews,
+  getAllApprovedReviews,
+};
