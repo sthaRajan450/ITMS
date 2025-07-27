@@ -210,7 +210,9 @@ const enrollCourse = asyncHandler(async (req, res) => {
   const user = await User.findById(userId);
 
   if (user.enrolledCourses.includes(courseId)) {
-    throw new ApiError(400, "You are already enrolled in this course");
+    return res
+      .status(200)
+      .json(new ApiResponse(200, "You are already enrolled in this course"));
   }
 
   user.enrolledCourses.push(courseId);
