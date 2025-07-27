@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { BASE_URL } from "../config/api";
+import { toast } from "react-toastify";
 
 const AddBlog = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [image, setImage] = useState(null);
   const [category, setCategory] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -18,6 +20,7 @@ const AddBlog = () => {
     formData.append("category", category);
     if (image) formData.append("image", image);
 
+    setLoading(true);
     try {
       const response = await fetch(`${BASE_URL}/blog/create`, {
         method: "POST",
@@ -28,18 +31,20 @@ const AddBlog = () => {
       if (response.ok) {
         const data = await response.json();
         console.log(data.data);
-        alert(data.message);
+        toast.success(data.message);
         setTitle("");
         setContent("");
         setCategory("");
         setImage(null);
-        navigate("/admin/contentManagement");
+        navigate("/admin/blogManagement");
       } else {
         const err = await response.json();
         alert(err.message || "Something went wrong");
       }
     } catch (error) {
       console.log("Failed to add blog:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -104,7 +109,7 @@ const AddBlog = () => {
           type="submit"
           className="w-full bg-orange-600 text-white py-2 rounded-full hover:bg-orange-500 transition"
         >
-          Add Blog
+          {loading ? "Adding..." : "Add Blog"}
         </button>
       </form>
     </div>

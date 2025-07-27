@@ -71,6 +71,7 @@ const MyAssignments = () => {
                 <th className="py-3 px-4 border-b">Status</th>
                 <th className="py-3 px-4 border-b">Submitted On</th>
                 <th className="py-3 px-4 border-b">Comment</th>
+                <th className="py-3 px-4 border-b">Score</th>
                 <th className="py-3 px-4 border-b">Feedback</th>
               </tr>
             </thead>
@@ -87,39 +88,43 @@ const MyAssignments = () => {
                           onClick={() => togglePreview(assignment._id)}
                           className="text-blue-600 underline hover:text-blue-700"
                         >
-                          {openPreviewId === assignment._id ? "Hide" : "View File"}
+                          {openPreviewId === assignment._id
+                            ? "Hide"
+                            : "View File"}
                         </button>
                       ) : (
                         <span className="text-gray-400 italic">No file</span>
                       )}
                     </td>
-                    <td className="py-2 px-4 font-medium">{assignment.status}</td>
+                    <td className="py-2 px-4 font-medium">
+                      {assignment.status}
+                    </td>
                     <td className="py-2 px-4">
                       {new Date(assignment.createdAt).toLocaleDateString()}
                     </td>
-                    <td className="py-2 px-4">
-                      {assignment.comment || "-"}
-                    </td>
+                    <td className="py-2 px-4">{assignment.comment || "-"}</td>
+                    <td className="py-2 px-4">{assignment.score || "-"}</td>
                     <td className="py-2 px-4">
                       {assignment.instructorFeedback || "-"}
                     </td>
                   </tr>
 
-                  {openPreviewId === assignment._id && assignment.submittedFile && (
-                    <tr>
-                      <td colSpan="6" className="p-4 bg-gray-50">
-                        <iframe
-                          src={`https://docs.google.com/viewer?url=${encodeURIComponent(
-                            assignment.submittedFile
-                          )}&embedded=true`}
-                          title="Assignment File"
-                          width="100%"
-                          height="500"
-                          className="rounded-md border shadow"
-                        />
-                      </td>
-                    </tr>
-                  )}
+                  {openPreviewId === assignment._id &&
+                    assignment.submittedFile && (
+                      <tr>
+                        <td colSpan="6" className="p-4 bg-gray-50">
+                          <iframe
+                            src={`https://docs.google.com/viewer?url=${encodeURIComponent(
+                              assignment.submittedFile
+                            )}&embedded=true`}
+                            title="Assignment File"
+                            width="100%"
+                            height="500"
+                            className="rounded-md border shadow"
+                          />
+                        </td>
+                      </tr>
+                    )}
                 </React.Fragment>
               ))}
             </tbody>

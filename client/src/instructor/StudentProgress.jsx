@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
+
 const StudentProgress = () => {
   const [progressData, setProgressData] = useState(null);
   const location = useLocation();
@@ -17,7 +18,7 @@ const StudentProgress = () => {
           }
         );
         const data = await res.json();
-        console.log(data.data);
+        // console.log(data.data);
         setProgressData(data.data);
       } catch (error) {
         console.error("Failed to fetch progress:", error);
@@ -45,6 +46,7 @@ const StudentProgress = () => {
             <th className="border px-4 py-2 text-left">Assignment</th>
             <th className="border px-4 py-2 text-left">Status</th>
             <th className="border px-4 py-2 text-left">Submitted At</th>
+            <th className="border px-4 py-2 text-left">Score</th>
             <th className="border px-4 py-2 text-left">Feedback</th>
           </tr>
         </thead>
@@ -68,8 +70,15 @@ const StudentProgress = () => {
               </td>
               <td className="border px-4 py-2">
                 {p.status === "Submitted" ? (
-                  <MarkReviewed submissionId={p.submissionId} />
+                  <MarkReviewed submissionId={p.submissionId} showScore />
                 ) : (
+                  <span className="text-sm text-gray-600">
+                    {p.score != null ? `${p.score}/100` : "—"}
+                  </span>
+                )}
+              </td>
+              <td className="border px-4 py-2">
+                {p.status === "Submitted" ? null : (
                   <span className="text-sm text-gray-600">
                     {p.feedback || "Reviewed"}
                   </span>
@@ -83,12 +92,21 @@ const StudentProgress = () => {
   );
 };
 
-const MarkReviewed = ({ submissionId }) => {
+const MarkReviewed = ({ submissionId, showScore = false }) => {
   const [feedback, setFeedback] = useState("");
+  const [score, setScore] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleMark = async () => {
-    if (!feedback) return toast.warning("Please enter feedback");
+    if (!feedback || score === "") {
+      toast.warning("Please enter both score and feedback");
+      return;
+    }
+    if (isNaN(score) || score < 0 || score > 100) {
+      toast.warning("Score must be between 0 and 100");
+      return;
+    }
+
     setLoading(true);
     try {
       const res = await fetch(
@@ -99,7 +117,7 @@ const MarkReviewed = ({ submissionId }) => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ feedback }),
+          body: JSON.stringify({ feedback, score: Number(score) }),
         }
       );
       const data = await res.json();
@@ -117,7 +135,16 @@ const MarkReviewed = ({ submissionId }) => {
   };
 
   return (
-    <div className="flex flex-col gap-1">
+    <div className="flex flex-col gap-2">
+      {showScore && (
+        <input
+          type="number"
+          placeholder="Score (0-100)"
+          value={score}
+          onChange={(e) => setScore(e.target.value)}
+          className="border p-1 text-sm w-full"
+        />
+      )}
       <textarea
         rows="2"
         placeholder="Enter feedback..."

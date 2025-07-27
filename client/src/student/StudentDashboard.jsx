@@ -5,7 +5,7 @@ const links = [
   { path: "/student/myCourses", label: " Courses" },
   { path: "/student/myCertificates", label: "Certificates" },
   { path: "/student/myApplications", label: " Applications" },
- 
+  { path: "/student/myProgress", label: " Progress" },
   { path: "/student/myAssignments", label: "Assignments" },
 ];
 

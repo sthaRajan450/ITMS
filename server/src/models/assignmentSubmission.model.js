@@ -26,6 +26,11 @@ const assignmentSubmissionSchema = new mongoose.Schema(
     instructorFeedback: {
       type: String,
     },
+    score: {
+      type: Number,
+      min: 0,
+      max: 100,
+    },
   },
   { timestamps: true }
 );

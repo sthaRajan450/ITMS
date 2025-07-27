@@ -35,11 +35,12 @@ const getStudentProgress = asyncHandler(async (req, res) => {
       (sub) => sub.assignment.toString() === assignment._id.toString()
     );
     return {
-      submissionId:submitted._id,
+      submissionId: submitted._id,
       assignmentTitle: assignment.title,
       submitted: !!submitted,
       submittedAt: submitted?.createdAt || null,
       status: submitted?.status || "Not Submitted",
+      score: submitted.score,
     };
   });
 
@@ -57,6 +58,45 @@ const getStudentProgress = asyncHandler(async (req, res) => {
   );
 });
 
+const getMyProgress = asyncHandler(async (req, res) => {
+  const { courseId } = req.params;
+  const studentId = req.user._id;
 
+  const course = await Course.findById(courseId);
+  if (!course) throw new ApiError(404, "Course not found");
 
-module.exports = { getStudentProgress };
+  if (!req.user.enrolledCourses.includes(courseId)) {
+    throw new ApiError(403, "You are not enrolled in this course");
+  }
+
+  const assignments = await Assignment.find({ course: courseId });
+  const submissions = await AssignmentSubmission.find({
+    course: courseId,
+    student: studentId,
+  });
+
+  const progress = assignments.map((assignment) => {
+    const submission = submissions.find(
+      (s) => s.assignment.toString() === assignment._id.toString()
+    );
+    return {
+      assignmentTitle: assignment.title,
+      submitted: !!submission,
+      submittedAt: submission?.createdAt || null,
+      status: submission?.status || "Not Submitted",
+      feedback: submission?.instructorFeedback || "",
+      score: submission?.score ?? null,
+    };
+  });
+
+  res.status(200).json(
+    new ApiResponse(200, "Progress fetched", {
+      course: {
+        title: course.title,
+      },
+      progress,
+    })
+  );
+});
+
+module.exports = { getStudentProgress, getMyProgress };

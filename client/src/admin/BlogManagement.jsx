@@ -104,21 +104,23 @@ const BlogManagement = () => {
                   <td className="px-6 py-4 line-clamp-2 max-w-xs">
                     {blog.content}
                   </td>
-                  <td className="px-6 py-4 text-center space-x-2">
-                    <button
-                      onClick={() =>
-                        navigate(`/updateBlog`, { state: blog._id })
-                      }
-                      className="p-3 bg-yellow-500 text-white rounded hover:bg-yellow-600 text-xs"
-                    >
-                      Update
-                    </button>
-                    <button
-                      onClick={() => deleteBlog(blog._id)}
-                      className="p-3 bg-red-500 text-white rounded hover:bg-red-600 text-xs"
-                    >
-                      Delete
-                    </button>
+                  <td className="px-6 py-4  text-center space-x-2">
+                    <div className="flex justify-center items-center gap-2">
+                      <button
+                        onClick={() =>
+                          navigate(`/updateBlog`, { state: blog._id })
+                        }
+                        className="p-3 bg-yellow-500 text-white rounded hover:bg-yellow-600 text-xs"
+                      >
+                        Update
+                      </button>
+                      <button
+                        onClick={() => deleteBlog(blog._id)}
+                        className="p-3 bg-red-500 text-white rounded hover:bg-red-600 text-xs"
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}

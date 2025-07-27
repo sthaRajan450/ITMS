@@ -50,7 +50,7 @@ const ReviewManagement = () => {
 
   return (
     <div className="p-6 max-w-4xl mx-auto">
-      <h1 className="text-2xl font-bold mb-6">Pending Reviews</h1>
+      <h1 className="text-4xl font-bold text-gray-700 mb-6">Pending Reviews</h1>
       {reviews.length === 0 ? (
         <p>No pending reviews.</p>
       ) : (

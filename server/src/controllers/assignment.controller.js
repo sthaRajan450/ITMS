@@ -144,7 +144,7 @@ const getSubmittedAssignmentsForInstructor = asyncHandler(async (req, res) => {
 
 const markAssignmentReviewed = asyncHandler(async (req, res) => {
   const { submissionId } = req.params;
-  const { feedback } = req.body;
+  const { feedback, score } = req.body;
 
   const submission = await AssignmentSubmission.findById(submissionId);
   if (!submission) {
@@ -152,8 +152,13 @@ const markAssignmentReviewed = asyncHandler(async (req, res) => {
   }
 
   submission.status = "Reviewed";
+
   if (feedback) {
     submission.instructorFeedback = feedback;
+  }
+
+  if (typeof score === "number") {
+    submission.score = score;
   }
 
   await submission.save();
