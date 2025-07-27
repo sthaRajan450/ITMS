@@ -87,7 +87,7 @@ const Success = () => {
                 >
                   <div>
                     <span className="text-gray-700 block">
-                      Product ID: {item.product_id}
+                      Course ID: {item.course._id}
                     </span>
                     <span className="text-gray-800 font-medium">
                       Qty: {item.quantity}
