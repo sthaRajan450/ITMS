@@ -65,6 +65,7 @@ import StudentProgress from "./instructor/StudentProgress";
 import ScheduleDemo from "./pages/ScheduleDemo";
 import ReviewManagement from "./admin/ReviewManagement";
 import MyProgress from "./student/MyProgress";
+import CertificateManagement from "./admin/CertificateManagement";
 
 const App = () => {
   const location = useLocation();
@@ -228,7 +229,6 @@ const App = () => {
               </PageWrapper>
             }
           />
-       
 
           {/* Student routes */}
           <Route path="/student/" element={<StudentDashboard />}>
@@ -392,6 +392,14 @@ const App = () => {
               element={
                 <PageWrapper>
                   <UserManagement />
+                </PageWrapper>
+              }
+            />
+            <Route
+              path="assign-Certificate"
+              element={
+                <PageWrapper>
+                  <CertificateManagement />
                 </PageWrapper>
               }
             />

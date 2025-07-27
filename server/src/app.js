@@ -17,6 +17,7 @@ const path = require("path");
 const progressRouter = require("./routes/progress.route");
 const demoRouter = require("./routes/demo.route");
 const reveiewRouter = require("./routes/review.route");
+const certificateRouter = require("./routes/certificate.route");
 
 const tempPath = path.join(__dirname, "public", "temp");
 if (!fs.existsSync(tempPath)) {
@@ -56,5 +57,6 @@ app.use("/api/v1/assignment", assignmentRouter);
 app.use("/api/v1/progress", progressRouter);
 app.use("/api/v1/demo", demoRouter);
 app.use("/api/v1/review", reveiewRouter);
+app.use("/api/v1/certificate", certificateRouter);
 
 module.exports = app;

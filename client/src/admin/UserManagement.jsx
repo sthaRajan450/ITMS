@@ -45,6 +45,9 @@ const UserManagement = () => {
       console.log("Failed to delete user:", error);
     }
   };
+  const handleAssignCertificate = (userId) => {
+    navigate("/admin/assign-certificate", { state: { studentId: userId } });
+  };
 
   useEffect(() => {
     getUsers();
@@ -116,6 +119,13 @@ const UserManagement = () => {
                       className="bg-red-600 hover:bg-red-700 text-white px-4 py-1 rounded"
                     >
                       Delete
+                    </button>
+
+                    <button
+                      onClick={() => handleAssignCertificate(user._id)}
+                      className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-1 rounded"
+                    >
+                      Assign Certificate
                     </button>
                   </td>
                 </tr>
