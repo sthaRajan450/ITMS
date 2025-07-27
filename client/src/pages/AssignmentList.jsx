@@ -4,8 +4,11 @@ import { BASE_URL } from "../config/api";
 
 const AssignmentList = ({ courseId }) => {
   const [assignments, setAssignments] = useState([]);
+  const [submittedAssignmentIds, setSubmittedAssignmentIds] = useState([]);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
+  // Fetch all assignments for the course
   const getAssignments = async () => {
     try {
       const res = await fetch(`${BASE_URL}/assignment/course/${courseId}`, {
@@ -19,11 +22,35 @@ const AssignmentList = ({ courseId }) => {
     }
   };
 
+  // Fetch student's submitted assignments for this course
+  const getSubmittedAssignments = async () => {
+    try {
+      const res = await fetch(`${BASE_URL}/assignment/submitted/${courseId}`, {
+        method: "GET",
+        credentials: "include",
+      });
+      const data = await res.json();
+
+      // Map to array of assignment IDs (strings)
+      setSubmittedAssignmentIds(
+        (data.data || []).map((item) => item.assignment.toString())
+      );
+    } catch (error) {
+      console.error("Failed to fetch submitted assignments:", error);
+    }
+  };
+
   useEffect(() => {
     if (courseId) {
-      getAssignments();
+      setLoading(true);
+      Promise.all([getAssignments(), getSubmittedAssignments()]).finally(() =>
+        setLoading(false)
+      );
     }
   }, [courseId]);
+
+  if (loading)
+    return <p className="text-center mt-10">Loading assignments...</p>;
 
   return (
     <div className="min-h-screen p-6">
@@ -40,49 +67,62 @@ const AssignmentList = ({ courseId }) => {
               </tr>
             </thead>
             <tbody>
-              {assignments.map((assignment) => (
-                <tr
-                  key={assignment._id}
-                  className="text-sm border-b border-gray-300 hover:bg-gray-50"
-                >
-                  <td className="py-2 px-4 font-medium">{assignment.title}</td>
-                  <td className="py-2 px-4 line-clamp-3">
-                    {assignment.description}
-                  </td>
-                  <td className="py-2 px-4">
-                    {new Date(assignment.deadline).toDateString()}
-                  </td>
-                  <td className="py-2 px-4">
-                    {assignment.fileUrl ? (
-                      <a
-                        href={assignment.fileUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-blue-600 underline hover:text-blue-700"
+              {assignments.map((assignment) => {
+                const isSubmitted = submittedAssignmentIds.includes(
+                  assignment._id.toString()
+                );
+
+                return (
+                  <tr
+                    key={assignment._id}
+                    className="text-sm border-b border-gray-300 hover:bg-gray-50"
+                  >
+                    <td className="py-2 px-4 font-medium">{assignment.title}</td>
+                    <td className="py-2 px-4 line-clamp-3">
+                      {assignment.description}
+                    </td>
+                    <td className="py-2 px-4">
+                      {new Date(assignment.deadline).toDateString()}
+                    </td>
+                    <td className="py-2 px-4">
+                      {assignment.fileUrl ? (
+                        <a
+                          href={assignment.fileUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-600 underline hover:text-blue-700"
+                        >
+                          View File
+                        </a>
+                      ) : (
+                        <span className="text-gray-400 italic">No file</span>
+                      )}
+                    </td>
+                    <td className="py-2 px-4">
+                      <button
+                        disabled={isSubmitted}
+                        onClick={() => {
+                          if (!isSubmitted) {
+                            navigate(`/submitAssignment`, {
+                              state: {
+                                assignmentId: assignment._id,
+                                courseId: assignment.course,
+                              },
+                            });
+                          }
+                        }}
+                        className={`px-3 py-1 rounded text-xs transition ${
+                          isSubmitted
+                            ? "bg-gray-400 cursor-not-allowed text-white"
+                            : "bg-blue-600 text-white hover:bg-blue-700"
+                        }`}
                       >
-                        View File
-                      </a>
-                    ) : (
-                      <span className="text-gray-400 italic">No file</span>
-                    )}
-                  </td>
-                  <td className="py-2 px-4">
-                    <button
-                      onClick={() => {
-                        navigate(`/submitAssignment`, {
-                          state: {
-                            assignmentId: assignment._id,
-                            courseId: assignment.course,
-                          },
-                        });
-                      }}
-                      className="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 transition text-xs"
-                    >
-                      Submit
-                    </button>
-                  </td>
-                </tr>
-              ))}
+                        {isSubmitted ? "Submitted" : "Submit"}
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>

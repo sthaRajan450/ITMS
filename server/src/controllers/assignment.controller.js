@@ -55,6 +55,21 @@ const submitAssignment = asyncHandler(async (req, res) => {
     throw new ApiError(400, "assignmentId and courseId are required");
   }
 
+  // Check if the student has already submitted this assignment for this course
+  const existingSubmission = await AssignmentSubmission.findOne({
+    assignment: assignmentId,
+    course: courseId,
+    student: req.user._id,
+  });
+
+  if (existingSubmission) {
+    return res
+      .status(200)
+      .json(
+        new ApiResponse(200, "You have already submitted this assignment.")
+      );
+  }
+
   const filePath = req.file.path;
 
   const uploadedFile = await uploadOnCloudinary(filePath);
