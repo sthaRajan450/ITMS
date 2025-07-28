@@ -8,6 +8,6 @@ const {
 const progressRouter = express.Router();
 
 progressRouter.route("/my/:courseId").get(verifyToken, getMyProgress);
-progressRouter.route("/:courseId/:studentId").get(getStudentProgress);
+progressRouter.route("/:courseId/:studentId").get(verifyToken,getStudentProgress);
 
 module.exports = progressRouter;
