@@ -168,7 +168,11 @@ const Home = () => {
               {courses.map((course) => (
                 <div
                   key={course._id}
-                  onClick={() => navigate(`/courseDetail/${course._id}`)}
+                  onClick={() =>
+                    navigate(`/courseDetail`, {
+                      state: { courseId: course._id },
+                    })
+                  }
                   className="bg-white rounded-xl shadow-md cursor-pointer hover:shadow-xl  hover:scale-105 duration-300  transition-transform "
                 >
                   <img
