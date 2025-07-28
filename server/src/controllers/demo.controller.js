@@ -64,5 +64,22 @@ const getAvailableSlots = asyncHandler(async (req, res) => {
   );
 });
 
+const getAllScheduleDemo = asyncHandler(async (req, res) => {
+  if (req.user.role !== "Admin") {
+    throw new ApiError(402, "Unauthorized request");
+  }
+  const demos = await Demo.find().populate(
+    "userId courseId",
+    "fullName email title"
+  );
+  if (!demos) {
+    throw new ApiError(404, "Demos not found");
+  }
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(200, "All schedule demos are fetched successfully", demos)
+    );
+});
 
-module.exports = { bookDemo ,getAvailableSlots};
+module.exports = { bookDemo, getAvailableSlots, getAllScheduleDemo };

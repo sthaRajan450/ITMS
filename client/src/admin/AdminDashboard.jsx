@@ -10,6 +10,7 @@ const links = [
   { path: "/admin/applicationManagement", label: "Application Management" },
   { path: "/admin/financialManagement", label: "Financial Management" },
   { path: "/admin/reviewManagement", label: "Review Management" },
+  { path: "/admin/demoManagement", label: "Demo Management" },
 ];
 
 const AdminDashboard = () => {

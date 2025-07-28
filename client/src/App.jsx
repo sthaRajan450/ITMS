@@ -66,6 +66,7 @@ import ScheduleDemo from "./pages/ScheduleDemo";
 import ReviewManagement from "./admin/ReviewManagement";
 import MyProgress from "./student/MyProgress";
 import CertificateManagement from "./admin/CertificateManagement";
+import DemoManagement from "./admin/DemoManagement";
 
 const App = () => {
   const location = useLocation();
@@ -417,6 +418,14 @@ const App = () => {
               element={
                 <PageWrapper>
                   <CourseManagement />
+                </PageWrapper>
+              }
+            />
+            <Route
+              path="demoManagement"
+              element={
+                <PageWrapper>
+                  <DemoManagement />
                 </PageWrapper>
               }
             />

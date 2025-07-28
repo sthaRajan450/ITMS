@@ -104,12 +104,12 @@ const FinancialManagement = () => {
         <table className="w-full border border-gray-300 print:text-xs print:w-full">
           <thead className="bg-gray-200">
             <tr>
-              <th className="p-2 border">Order ID</th>
-              <th className="p-2 border">User Email</th>
-              <th className="p-2 border">Courses</th>
-              <th className="p-2 border">Total Price</th>
-              <th className="p-2 border">Payment Status</th>
-              <th className="p-2 border print:hidden">Date</th>
+              <th className="p-2 border border-gray-300">Order ID</th>
+              <th className="p-2 border border-gray-300">User Email</th>
+              <th className="p-2 border border-gray-300">Courses</th>
+              <th className="p-2 border border-gray-300">Total Price</th>
+              <th className="p-2 border border-gray-300">Payment Status</th>
+              <th className="p-2 border border-gray-300 print:hidden">Date</th>
             </tr>
           </thead>
           <tbody>
@@ -121,9 +121,9 @@ const FinancialManagement = () => {
 
               return (
                 <tr key={order._id} className="text-center">
-                  <td className="p-2 border">{order._id}</td>
-                  <td className="p-2 border">{order.user?.email}</td>
-                  <td className="p-2 border">
+                  <td className="p-2 border border-gray-300">{order._id}</td>
+                  <td className="p-2 border border-gray-300">{order.user?.email}</td>
+                  <td className="p-2 border border-gray-300">
                     {order.course.map((item) => (
                       <div key={item._id}>
                         {item.course_id.title} ({item.course_id.duration}) — NPR{" "}
@@ -131,11 +131,11 @@ const FinancialManagement = () => {
                       </div>
                     ))}
                   </td>
-                  <td className="p-2 border">
+                  <td className="p-2 border border-gray-300">
                     NPR {totalPrice.toLocaleString()}
                   </td>
-                  <td className="p-2 border">{order.paymentStatus}</td>
-                  <td className="p-2 border print:hidden">
+                  <td className="p-2 border border-gray-300">{order.paymentStatus}</td>
+                  <td className="p-2 border border-gray-300 print:hidden">
                     {new Date(order.createdAt).toLocaleString()}
                   </td>
                 </tr>
