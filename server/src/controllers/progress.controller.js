@@ -34,13 +34,14 @@ const getStudentProgress = asyncHandler(async (req, res) => {
     const submitted = submissions.find(
       (sub) => sub.assignment.toString() === assignment._id.toString()
     );
+
     return {
-      submissionId: submitted._id,
+      submissionId: submitted?._id || null,
       assignmentTitle: assignment.title,
       submitted: !!submitted,
       submittedAt: submitted?.createdAt || null,
       status: submitted?.status || "Not Submitted",
-      score: submitted.score,
+      score: submitted?.score ?? null,
     };
   });
 

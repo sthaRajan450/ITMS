@@ -18,7 +18,7 @@ const StudentProgress = () => {
           }
         );
         const data = await res.json();
-        // console.log(data.data);
+        console.log(data);
         setProgressData(data.data);
       } catch (error) {
         console.error("Failed to fetch progress:", error);
