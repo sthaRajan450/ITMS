@@ -4,6 +4,7 @@ import { BASE_URL } from "../config/api";
 
 const Success = () => {
   const [order, setOrder] = useState(null);
+  const [enrolling, setEnrolling] = useState(false);
   const { orderId } = useParams();
   const navigate = useNavigate();
 
@@ -38,16 +39,14 @@ const Success = () => {
     }
   };
 
-  // 📌 Enroll into all ordered courses at once
   const handleEnrollAll = async () => {
     if (order && order.course.length) {
-      // enroll each course sequentially
+      setEnrolling(true);
       for (let item of order.course) {
         await handleEnroll(item.course_id);
       }
+      navigate("/");
     }
-    // after all enrollments, redirect home
-    navigate("/");
   };
 
   useEffect(() => {
@@ -87,7 +86,7 @@ const Success = () => {
                 >
                   <div>
                     <span className="text-gray-700 block">
-                      Course ID: {item.course._id}
+                      Course ID: {item.course_id}
                     </span>
                     <span className="text-gray-800 font-medium">
                       Qty: {item.quantity}
@@ -100,9 +99,14 @@ const Success = () => {
 
           <button
             onClick={handleEnrollAll}
-            className="mt-6 px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition duration-200"
+            disabled={enrolling}
+            className={`mt-6 px-6 py-2 rounded-lg text-white transition duration-200 ${
+              enrolling
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-green-600 hover:bg-green-700"
+            }`}
           >
-            OK
+            {enrolling ? "Enrolling..." : "OK"}
           </button>
         </div>
       ) : (
