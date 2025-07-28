@@ -11,6 +11,7 @@ const AddUser = () => {
   const [phone, setPhone] = useState("");
   const [avatar, setAvatar] = useState(null);
   const [role, setRole] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -28,7 +29,7 @@ const AddUser = () => {
     formData.append("phone", phone);
     formData.append("avatar", avatar);
     formData.append("role", role);
-
+    setLoading(true);
     try {
       let response = await fetch(`${BASE_URL}/user/admin/create`, {
         method: "POST",
@@ -49,6 +50,8 @@ const AddUser = () => {
       }
     } catch (error) {
       console.error("Error while registering:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -171,7 +174,7 @@ const AddUser = () => {
             type="submit"
             className="w-full bg-orange-600 text-white py-2 rounded-lg font-semibold hover:bg-orange-700 transition duration-300"
           >
-            Add
+            {loading ? "Adding..." : "Add"}
           </button>
         </form>
       </div>

@@ -11,11 +11,12 @@ const AddJob = () => {
   const [location, setLocation] = useState("");
   const [salary, setSalary] = useState("");
   const [description, setDescription] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setLoading(true);
     try {
       const response = await fetch(`${BASE_URL}/job/create`, {
         method: "POST",
@@ -35,13 +36,15 @@ const AddJob = () => {
       if (response.ok) {
         const data = await response.json();
         toast.success(data.message);
-        navigate("/admin/contentManagement");
+        navigate("/admin/jobManagement");
       } else {
         const err = await response.json();
         toast.error(err.message || "Something went wrong");
       }
     } catch (error) {
       console.log("Failed to add job:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -120,7 +123,7 @@ const AddJob = () => {
           type="submit"
           className="w-full bg-orange-600 text-white py-2 rounded-full hover:bg-orange-5 00 transition"
         >
-          Add Job
+          {loading ? "Adding..." : "Add Job"}
         </button>
       </form>
     </div>
