@@ -29,7 +29,5 @@ assignmentRouter
   .get(verifyToken, getAssignmentByCourse);
 assignmentRouter.route("/:assignmentId").delete(verifyToken, deleteAssignment);
 
-assignmentRouter
-  .route("/review/:submissionId")
-  .put(verifyToken, markAssignmentReviewed);
+assignmentRouter.route("/review/:submissionId").put(markAssignmentReviewed);
 module.exports = assignmentRouter;
