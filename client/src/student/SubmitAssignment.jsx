@@ -7,6 +7,7 @@ const SubmitAssignment = () => {
   const navigate = useNavigate();
   const [file, setFile] = useState(null);
   const [comment, setComment] = useState("");
+  const [loading, setLoading] = useState(false);
   const location = useLocation();
   console.log(location.state);
   const { assignmentId, courseId } = location.state;
@@ -20,6 +21,7 @@ const SubmitAssignment = () => {
     formData.append("comment", comment);
     formData.append("assignmentId", assignmentId);
     formData.append("courseId", courseId);
+    setLoading(true);
 
     try {
       const res = await fetch(`${BASE_URL}/assignment/submit`, {
@@ -38,6 +40,8 @@ const SubmitAssignment = () => {
       }
     } catch (error) {
       console.error("Submission failed:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -77,7 +81,7 @@ const SubmitAssignment = () => {
           type="submit"
           className="w-full bg-orange-600 text-white py-2 rounded-full hover:bg-orange-500 transition"
         >
-          Submit Assignment
+          {loading ? "Submitting.." : "Submit Assignment"}
         </button>
       </form>
     </div>
