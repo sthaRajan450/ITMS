@@ -81,7 +81,9 @@ const MyProgress = () => {
   return (
     <div className="max-w-5xl mx-auto p-6 bg-white shadow rounded-lg mt-10">
       <div className="flex flex-col md:flex-row md:items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold text-gray-700">My Assignment Progress</h2>
+        <h2 className="text-2xl font-bold text-gray-700">
+          My Assignment Progress
+        </h2>
         <select
           onChange={handleCourseChange}
           value={selectedCourseId}
@@ -99,7 +101,7 @@ const MyProgress = () => {
       {loading ? (
         <p className="text-center">Loading progress...</p>
       ) : !data ? (
-        <p className="text-center text-red-500">Error loading progress.</p>
+        <p className="text-center text-gray-500">No progress yet</p>
       ) : (
         <>
           <p className="mb-4 text-lg text-gray-600">
@@ -141,8 +143,8 @@ const MyProgress = () => {
                         item.status === "Reviewed"
                           ? "bg-green-600"
                           : item.status === "Submitted"
-                          ? "bg-yellow-500"
-                          : "bg-gray-400"
+                            ? "bg-yellow-500"
+                            : "bg-gray-400"
                       }`}
                     >
                       {item.status}
