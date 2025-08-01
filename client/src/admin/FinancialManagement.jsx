@@ -30,12 +30,10 @@ const FinancialManagement = () => {
   const filterOrdersByDate = () => {
     const now = new Date();
     const filtered = orders.filter((order) => {
-      const orderDate = new Date(order.createdAt); // Ensure createdAt is included in response
+      const orderDate = new Date(order.createdAt);
 
       if (filterType === "daily") {
-        return (
-          orderDate.toDateString() === now.toDateString()
-        );
+        return orderDate.toDateString() === now.toDateString();
       } else if (filterType === "weekly") {
         const weekAgo = new Date();
         weekAgo.setDate(now.getDate() - 7);
@@ -46,7 +44,7 @@ const FinancialManagement = () => {
           orderDate.getFullYear() === now.getFullYear()
         );
       } else {
-        return true; // All
+        return true;
       }
     });
 
@@ -65,8 +63,51 @@ const FinancialManagement = () => {
       }, 0);
   };
 
-  const handlePrint = () => {
-    window.print();
+  const exportToCSV = () => {
+    const headers = [
+      "Order ID",
+      "User Email",
+      "Course Titles",
+      "Total Price (NPR)",
+      "Payment Status",
+      "Date",
+    ];
+
+    const rows = filteredOrders.map((order) => {
+      const courseTitles = order.course
+        .map((item) => `${item.course_id.title} (${item.course_id.duration})`)
+        .join(" | ");
+
+      const totalPrice = order.course.reduce(
+        (sum, item) => sum + Number(item.course_id.price),
+        0
+      );
+
+      return [
+        order._id,
+        order.user?.email || "N/A",
+        courseTitles,
+        totalPrice,
+        order.paymentStatus,
+        new Date(order.createdAt).toLocaleString(),
+      ];
+    });
+
+    const csvContent = [headers, ...rows]
+      .map((row) =>
+        row.map((val) => `"${String(val).replace(/"/g, '""')}"`).join(",")
+      )
+      .join("\n");
+
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", "financial_report.csv");
+    link.style.visibility = "hidden";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   return (
@@ -85,10 +126,10 @@ const FinancialManagement = () => {
             <option value="monthly">This Month</option>
           </select>
           <button
-            onClick={handlePrint}
-            className="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600"
+            onClick={exportToCSV}
+            className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
           >
-            🖨️ Print Report
+            📄 Export CSV
           </button>
         </div>
       </div>
@@ -122,7 +163,9 @@ const FinancialManagement = () => {
               return (
                 <tr key={order._id} className="text-center">
                   <td className="p-2 border border-gray-300">{order._id}</td>
-                  <td className="p-2 border border-gray-300">{order.user?.email}</td>
+                  <td className="p-2 border border-gray-300">
+                    {order.user?.email}
+                  </td>
                   <td className="p-2 border border-gray-300">
                     {order.course.map((item) => (
                       <div key={item._id}>
@@ -134,7 +177,9 @@ const FinancialManagement = () => {
                   <td className="p-2 border border-gray-300">
                     NPR {totalPrice.toLocaleString()}
                   </td>
-                  <td className="p-2 border border-gray-300">{order.paymentStatus}</td>
+                  <td className="p-2 border border-gray-300">
+                    {order.paymentStatus}
+                  </td>
                   <td className="p-2 border border-gray-300 print:hidden">
                     {new Date(order.createdAt).toLocaleString()}
                   </td>
