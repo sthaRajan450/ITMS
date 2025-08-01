@@ -46,6 +46,7 @@ const StudentProgress = () => {
             <th className="border px-4 py-2 text-left">Assignment</th>
             <th className="border px-4 py-2 text-left">Status</th>
             <th className="border px-4 py-2 text-left">Submitted At</th>
+            <th className="border px-4 py-2 text-left">File</th>
             <th className="border px-4 py-2 text-left">Score</th>
             <th className="border px-4 py-2 text-left">Feedback</th>
           </tr>
@@ -68,6 +69,20 @@ const StudentProgress = () => {
                   ? new Date(p.submittedAt).toLocaleString()
                   : "Not Submitted"}
               </td>
+              <td className="border py-2 px-4">
+                {p.submittedFile ? (
+                  <a
+                    href={p.submittedFile}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 underline hover:text-blue-700"
+                  >
+                    View File
+                  </a>
+                ) : (
+                  <span className="text-gray-400 italic">No file</span>
+                )}
+              </td>
               <td className="border px-4 py-2">
                 {p.status === "Submitted" ? (
                   <MarkReviewed submissionId={p.submissionId} showScore />
@@ -77,6 +92,7 @@ const StudentProgress = () => {
                   </span>
                 )}
               </td>
+
               <td className="border px-4 py-2">
                 {p.status === "Submitted" ? null : (
                   <span className="text-sm text-gray-600">

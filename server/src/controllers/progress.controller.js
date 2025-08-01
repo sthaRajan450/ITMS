@@ -42,6 +42,7 @@ const getStudentProgress = asyncHandler(async (req, res) => {
       submittedAt: submitted?.createdAt || null,
       status: submitted?.status || "Not Submitted",
       score: submitted?.score ?? null,
+      submittedFile: submitted?.submittedFile,
     };
   });
 

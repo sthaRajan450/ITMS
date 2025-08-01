@@ -4,6 +4,7 @@ import { AuthContext } from "../context/AuthProvider";
 import { BASE_URL } from "../config/api";
 import { Menu, X } from "lucide-react"; // You can use any icon library
 import { toast } from "react-toastify";
+import { IoMdCart } from "react-icons/io";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -17,7 +18,7 @@ const Navbar = () => {
     { path: "/blogs", label: "Blogs" },
     { path: "/jobs", label: "Jobs" },
     { path: "/contact", label: "Contact" },
-    { path: "/cart", label: "Cart" },
+    { path: "/cart", label: <IoMdCart size={30} /> },
   ];
 
   const studentLinks = [{ path: "/student", label: "Dashboard" }];
