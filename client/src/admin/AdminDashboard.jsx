@@ -11,6 +11,7 @@ const links = [
   { path: "/admin/financialManagement", label: "Financial Management" },
   { path: "/admin/reviewManagement", label: "Review Management" },
   { path: "/admin/demoManagement", label: "Demo Management" },
+  { path: "/admin/attendanceManagement", label: "Attendance Management" },
 ];
 
 const AdminDashboard = () => {

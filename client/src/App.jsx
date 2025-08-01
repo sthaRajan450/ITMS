@@ -67,6 +67,10 @@ import ReviewManagement from "./admin/ReviewManagement";
 import MyProgress from "./student/MyProgress";
 import CertificateManagement from "./admin/CertificateManagement";
 import DemoManagement from "./admin/DemoManagement";
+import AttendanceManagement from "./instructor/AttendanceManagement";
+
+import MyAttendance from "./student/MyAttendance";
+import AdminAttendanceManagement from "./admin/AdminAttendanceMangement";
 
 const App = () => {
   const location = useLocation();
@@ -283,6 +287,14 @@ const App = () => {
               }
             />
             <Route
+              path="myAttendance"
+              element={
+                <PageWrapper>
+                  <MyAttendance />
+                </PageWrapper>
+              }
+            />
+            <Route
               path="course"
               element={
                 <PageWrapper>
@@ -326,6 +338,7 @@ const App = () => {
                 </PageWrapper>
               }
             />
+
             <Route
               path="submitted-assignments"
               element={
@@ -356,6 +369,14 @@ const App = () => {
               element={
                 <PageWrapper>
                   <AssignmentManagement />
+                </PageWrapper>
+              }
+            />
+            <Route
+              path="attendanceManagement"
+              element={
+                <PageWrapper>
+                  <AttendanceManagement />
                 </PageWrapper>
               }
             />
@@ -393,6 +414,14 @@ const App = () => {
               element={
                 <PageWrapper>
                   <UserManagement />
+                </PageWrapper>
+              }
+            />
+            <Route
+              path="attendanceManagement"
+              element={
+                <PageWrapper>
+                  <AdminAttendanceManagement />
                 </PageWrapper>
               }
             />

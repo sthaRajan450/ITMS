@@ -338,6 +338,25 @@ const deleteUser = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, "User deleted successfully", user));
 });
 
+const getUsersByCourse = asyncHandler(async (req, res) => {
+  const {courseId} = req.params;
+  const students = await User.find({
+    role: "Student",
+    enrolledCourses: { $in: [courseId] },
+  }).select("fullName email phone avatar enrolledCourses");
+  return res
+    .status(200)
+    .json(
+      new ApiResponse(
+        200,
+        students.length
+          ? "Students fetched successfully"
+          : "No students enrolled in your courses yet",
+        students
+      )
+    );
+});
+
 module.exports = {
   registerUser,
   loginUser,
@@ -348,4 +367,5 @@ module.exports = {
   updateUser,
   deleteUser,
   addUser,
+  getUsersByCourse,
 };

@@ -9,6 +9,7 @@ const {
   getMe,
   getUserById,
   addUser,
+  getUsersByCourse,
 } = require("../controllers/user.controller.js");
 const upload = require("../middlewares/upload.middleware.js");
 const verifyToken = require("../middlewares/auth.middleware.js");
@@ -20,6 +21,7 @@ userRouter.route("/login").post(loginUser);
 userRouter.route("/logout").post(verifyToken, logoutUser);
 userRouter.route("/me").get(verifyToken, getMe);
 userRouter.route("/all").get(verifyToken, getAllUsers);
+userRouter.route("/all/:courseId/students").get(getUsersByCourse);
 userRouter
   .route("/admin/create")
   .post(verifyToken, upload.single("avatar"), addUser);
