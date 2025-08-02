@@ -132,7 +132,7 @@ const AdminAttendanceManagement = () => {
       const { from, to } = getDateRange();
 
       let url = `${BASE_URL}/attendance/report/all?courseId=${selectedCourse}&from=${from}&to=${to}`;
-      console.log(url);
+
       if (selectedStudent !== "all") url += `&studentId=${selectedStudent}`;
 
       try {
@@ -142,7 +142,7 @@ const AdminAttendanceManagement = () => {
         });
 
         const data = await res.json();
-        console.log(data.data);
+        // console.log(data.data);
         if (res.ok) {
           setAttendanceRecords(data.data);
         } else {
@@ -246,8 +246,8 @@ const AdminAttendanceManagement = () => {
           >
             <option value="all">All Students</option>
             {allStudents.map((student) => (
-              <option key={student._id} value={student._id}>
-                {student.fullName}
+              <option key={student?._id} value={student?._id}>
+                {student?.fullName}
               </option>
             ))}
           </select>
@@ -324,7 +324,7 @@ const AdminAttendanceManagement = () => {
               <tr key={record._id}>
                 <td className="border px-2 py-1">
                   {typeof record.student === "object"
-                    ? record.student.fullName
+                    ? record.student?.fullName
                     : record.student}
                 </td>
                 <td className="border px-2 py-1 text-center">

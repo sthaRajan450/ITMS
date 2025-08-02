@@ -4,6 +4,7 @@ const ApiError = require("../utils/ApiError");
 const ApiResponse = require("../utils/ApiResponse");
 const asyncHandler = require("../utils/asyncHandler");
 const uploadOnCloudinary = require("../utils/cloudinary");
+const mongoose = require("mongoose");
 
 const generateAccessAndRefreshToken = async (userId) => {
   try {
@@ -275,29 +276,41 @@ const updateUser = asyncHandler(async (req, res) => {
 const addUser = asyncHandler(async (req, res) => {
   if (req.user?.role !== "Admin") {
     throw new ApiError(401, "Unauthorized request");
-    return;
   }
-  const { fullName, email, password, phone, role } = req.body;
 
-  if (!fullName || !email || !password || !phone) {
+  const { fullName, email, course, password, phone, role } = req.body;
+  console.log(req.body);
+
+  if (!fullName || !email || !password || !phone || !role) {
     throw new ApiError(400, "All fields are required");
   }
 
   const isExist = await User.findOne({ email });
   if (isExist) {
-    throw new ApiError(401, "User already exist");
+    throw new ApiError(401, "User already exists");
   }
 
   const avatarLocalPath = req.file?.path;
-
   if (!avatarLocalPath) {
     throw new ApiError(400, "Avatar file is required");
   }
 
   const avatar = await uploadOnCloudinary(avatarLocalPath);
-
   if (!avatar) {
-    throw new ApiError(500, "Failed to upload file on cloudinary");
+    throw new ApiError(500, "Failed to upload avatar");
+  }
+
+  // Course validation only for students
+  let enrolledCourses = [];
+
+  if (role === "Student") {
+    if (!course) {
+      throw new ApiError(400, "Course is required for Students");
+    }
+    if (!mongoose.Types.ObjectId.isValid(course)) {
+      throw new ApiError(400, "Invalid course ID");
+    }
+    enrolledCourses = [new mongoose.Types.ObjectId(course)];
   }
 
   const userInstance = await User.create({
@@ -306,21 +319,23 @@ const addUser = asyncHandler(async (req, res) => {
     password,
     phone,
     role,
+    enrolledCourses,
     avatar: avatar.secure_url,
   });
 
   const createdUser = await User.findById(userInstance._id).select(
     "-password -refreshToken"
   );
+
   if (!createdUser) {
     throw new ApiError(404, "Something went wrong while adding user");
   }
 
   return res
-
     .status(201)
     .json(new ApiResponse(201, "User added successfully", createdUser));
 });
+
 const deleteUser = asyncHandler(async (req, res) => {
   const { userId } = req.params;
 
@@ -339,7 +354,7 @@ const deleteUser = asyncHandler(async (req, res) => {
 });
 
 const getUsersByCourse = asyncHandler(async (req, res) => {
-  const {courseId} = req.params;
+  const { courseId } = req.params;
   const students = await User.find({
     role: "Student",
     enrolledCourses: { $in: [courseId] },

@@ -61,6 +61,7 @@ const AddJob = () => {
           <input
             type="text"
             id="title"
+            placeholder="e.g. Frontend Developer"
             className="w-full border p-2 rounded"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
@@ -74,6 +75,7 @@ const AddJob = () => {
           <input
             type="text"
             id="company"
+            placeholder="e.g. Tech Pvt. Ltd."
             className="w-full border p-2 rounded"
             value={company}
             onChange={(e) => setCompany(e.target.value)}
@@ -87,6 +89,7 @@ const AddJob = () => {
           <input
             type="text"
             id="location"
+            placeholder="e.g. Kathmandu, Nepal"
             className="w-full border p-2 rounded"
             value={location}
             onChange={(e) => setLocation(e.target.value)}
@@ -100,6 +103,7 @@ const AddJob = () => {
           <textarea
             id="description"
             rows="5"
+            placeholder="Job description, responsibilities, and requirements..."
             className="w-full border p-2 rounded"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
@@ -113,6 +117,7 @@ const AddJob = () => {
           <input
             type="text"
             id="salary"
+            placeholder="e.g. Rs. 50,000/month"
             className="w-full border p-2 rounded"
             value={salary}
             onChange={(e) => setSalary(e.target.value)}
@@ -121,7 +126,7 @@ const AddJob = () => {
 
         <button
           type="submit"
-          className="w-full bg-orange-600 text-white py-2 rounded-full hover:bg-orange-5 00 transition"
+          className="w-full bg-orange-600 text-white py-2 rounded-full hover:bg-orange-500 transition"
         >
           {loading ? "Adding..." : "Add Job"}
         </button>

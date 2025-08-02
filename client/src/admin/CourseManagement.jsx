@@ -30,7 +30,7 @@ const CourseManagement = () => {
   };
 
   const deleteCourse = async (courseId) => {
-    if (!window.confirm("Are you sure you want to delete this course?")) return;
+    
     try {
       const response = await fetch(`${BASE_URL}/course/delete/${courseId}`, {
         method: "DELETE",

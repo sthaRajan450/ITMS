@@ -1,11 +1,12 @@
-import React, { useContext, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { AuthContext } from "../context/AuthProvider";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../config/api";
 import { toast } from "react-toastify";
 
 const AddUser = () => {
   const [fullName, setFullName] = useState("");
+  const [courses, setCourses] = useState([]);
+  const [course, setCourse] = useState(""); // fixed: string instead of array
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [phone, setPhone] = useState("");
@@ -29,9 +30,11 @@ const AddUser = () => {
     formData.append("phone", phone);
     formData.append("avatar", avatar);
     formData.append("role", role);
+    formData.append("course", course);
+
     setLoading(true);
     try {
-      let response = await fetch(`${BASE_URL}/user/admin/create`, {
+      const response = await fetch(`${BASE_URL}/user/admin/create`, {
         method: "POST",
         credentials: "include",
         body: formData,
@@ -39,7 +42,7 @@ const AddUser = () => {
 
       if (response.ok) {
         const data = await response.json();
-        console.log(" Registration successful:", data);
+        console.log("Registration successful:", data);
         toast.success(data.message);
         setFullName("");
         setEmail("");
@@ -54,6 +57,22 @@ const AddUser = () => {
       setLoading(false);
     }
   };
+
+  const getAllCourses = async () => {
+    try {
+      const response = await fetch(`${BASE_URL}/course/getAllCourses`);
+      if (response.ok) {
+        const result = await response.json();
+        setCourses(result.data);
+      }
+    } catch (error) {
+      console.log("Failed to fetch courses", error);
+    }
+  };
+
+  useEffect(() => {
+    getAllCourses();
+  }, []);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -152,7 +171,32 @@ const AddUser = () => {
                 <option value="Admin">Admin</option>
               </select>
             </div>
+
+            {role == "Student" && (
+              <div>
+                <label
+                  htmlFor="course"
+                  className="block text-gray-700 font-medium mb-1"
+                >
+                  Course
+                </label>
+                <select
+                  id="course"
+                  value={course}
+                  onChange={(e) => setCourse(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:outline-none"
+                >
+                  <option value="">Select Course</option>
+                  {courses?.map((course) => (
+                    <option key={course._id} value={course._id}>
+                      {course.title}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
           </div>
+
           <div>
             <label
               htmlFor="password"
