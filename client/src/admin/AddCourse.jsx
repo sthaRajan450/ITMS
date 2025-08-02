@@ -1,6 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../context/AuthProvider";
 import { BASE_URL } from "../config/api";
 import { toast } from "react-toastify";
 
@@ -20,6 +19,7 @@ const AddCourse = () => {
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
+
   const getUsers = async () => {
     try {
       const response = await fetch(`${BASE_URL}/user/all`, {
@@ -40,6 +40,7 @@ const AddCourse = () => {
   }, []);
 
   const instructors = users.filter((u) => u.role === "Instructor");
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -75,6 +76,7 @@ const AddCourse = () => {
     formData.append("enrollmentDeadline", enrollmentDeadline);
     formData.append("thumbnail", thumbnail);
     formData.append("instructor", instructor);
+
     setLoading(true);
     try {
       const response = await fetch(`${BASE_URL}/course/admin/create`, {
@@ -87,10 +89,13 @@ const AddCourse = () => {
         const data = await response.json();
         toast.success(data.message);
         navigate("/admin/courseManagement");
+      } else {
+        const err = await response.json();
+        toast.error(err.message || "Failed to add course");
       }
     } catch (error) {
       console.error("Error while adding course:", error);
-      toast.error("Failed to add course", error.message);
+      toast.error("Failed to add course");
     } finally {
       setLoading(false);
     }
@@ -126,13 +131,18 @@ const AddCourse = () => {
               onChange={(e) => setPrice(e.target.value)}
               className="w-full px-4 py-2 border rounded-lg"
             />
-            <input
-              type="text"
-              placeholder="Level"
+            <select
+              name="level"
+              id="level"
               value={level}
               onChange={(e) => setLevel(e.target.value)}
               className="w-full px-4 py-2 border rounded-lg"
-            />
+            >
+              <option value="">Select Level</option>
+              <option value="Beginner">Beginner</option>
+              <option value="Intermediate">Intermediate</option>
+              <option value="Advanced">Advanced</option>
+            </select>
           </div>
 
           <textarea
@@ -177,12 +187,14 @@ const AddCourse = () => {
               className="w-full px-4 py-2 border rounded-lg"
             />
           </div>
+
           <input
             type="file"
             accept="image/*"
             onChange={(e) => setThumbnail(e.target.files[0])}
             className="w-full border rounded-lg p-2"
           />
+
           <input
             type="text"
             placeholder="Prerequisites"
@@ -194,7 +206,7 @@ const AddCourse = () => {
           <button
             disabled={loading}
             type="submit"
-            className="w-full bg-orange-600 text-white py-2 rounded-lg hover:bg-orange-500"
+            className="w-full bg-orange-600 text-white py-2 rounded-lg hover:bg-orange-500 transition"
           >
             {loading ? "Adding course..." : "Add Course"}
           </button>
