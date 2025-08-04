@@ -8,7 +8,6 @@ const MarkAttendance = ({ students, courses }) => {
   const [markedStatus, setMarkedStatus] = useState({});
   const today = new Date().toISOString().split("T")[0];
 
-  // Fetch existing attendance if course or date changes
   useEffect(() => {
     if (!selectedCourse) return;
 
@@ -105,6 +104,10 @@ const MarkAttendance = ({ students, courses }) => {
     }
   };
 
+  const filteredStudents = students.filter((student) =>
+    student.enrolledCourses?.includes(selectedCourse)
+  );
+
   return (
     <div>
       <div className="mb-4">
@@ -127,24 +130,18 @@ const MarkAttendance = ({ students, courses }) => {
       </div>
 
       {selectedCourse ? (
-        <table className="min-w-full table-auto border">
-          <thead>
-            <tr className="bg-gray-100">
-              <th className="border px-2 py-1">Name</th>
-              <th className="border px-2 py-1">Date</th>
-              <th className="border px-2 py-1">Remarks</th>
-              <th className="border px-2 py-1">Mark Attendance</th>
-            </tr>
-          </thead>
-          <tbody>
-            {students.length === 0 ? (
-              <tr>
-                <td colSpan="4" className="text-center py-4">
-                  No students found.
-                </td>
+        filteredStudents.length > 0 ? (
+          <table className="min-w-full table-auto border">
+            <thead>
+              <tr className="bg-gray-100">
+                <th className="border px-2 py-1">Name</th>
+                <th className="border px-2 py-1">Date</th>
+                <th className="border px-2 py-1">Remarks</th>
+                <th className="border px-2 py-1">Mark Attendance</th>
               </tr>
-            ) : (
-              students.map((student) => {
+            </thead>
+            <tbody>
+              {filteredStudents.map((student) => {
                 const record = attendanceData[student._id] || {};
                 const status = markedStatus[student._id];
 
@@ -211,14 +208,16 @@ const MarkAttendance = ({ students, courses }) => {
                     </td>
                   </tr>
                 );
-              })
-            )}
-          </tbody>
-        </table>
+              })}
+            </tbody>
+          </table>
+        ) : (
+          <p className="text-gray-500 mt-4">
+            No students are enrolled in the selected course.
+          </p>
+        )
       ) : (
-        <p className="text-gray-500">
-          Please select a course to mark attendance.
-        </p>
+        <p className="text-gray-500">Please select a course to mark attendance.</p>
       )}
     </div>
   );

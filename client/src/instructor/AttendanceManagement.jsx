@@ -4,7 +4,7 @@ import { BASE_URL } from "../config/api";
 
 const AttendanceManagement = () => {
   const [students, setStudents] = useState([]);
-  const [instructorCourses, setInstructorCourses] = useState([]); // added state
+  const [instructorCourses, setInstructorCourses] = useState([]);
 
   const getStudents = async () => {
     try {
@@ -32,7 +32,6 @@ const AttendanceManagement = () => {
       });
       if (response.ok) {
         const data = await response.json();
-        // Map only id and title
         const ids = data.data.map((course) => ({
           _id: course._id,
           title: course.title,
@@ -54,7 +53,6 @@ const AttendanceManagement = () => {
       <h1 className="text-3xl text-gray-700 font-bold mb-4 text-center">
         Attendance Management
       </h1>
-    
       <MarkAttendance students={students} courses={instructorCourses} />
     </div>
   );
