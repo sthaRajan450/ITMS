@@ -114,7 +114,7 @@ const CourseDetail = () => {
           </div>
 
           <div
-            className={`absolute ${isAuth ? "bottom-20" : "bottom-5"} left-10 flex gap-4 mt-6`}
+            className={`absolute bottom-5 left-10 flex gap-4 mt-6`}
           >
             <button
               onClick={() => {
