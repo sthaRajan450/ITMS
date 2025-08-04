@@ -43,6 +43,7 @@ const ApplicationManagement = () => {
 
       const data = await response.json();
       if (response.ok) {
+       
         toast.success(data.message);
         getApplications();
       } else {
@@ -93,7 +94,9 @@ const ApplicationManagement = () => {
       </div>
 
       {loading ? (
-        <div className="text-orange-600 text-center">Loading applications...</div>
+        <div className="text-orange-600 text-center">
+          Loading applications...
+        </div>
       ) : filteredApplications.length > 0 ? (
         <>
           <div className="overflow-x-auto shadow-lg">
@@ -129,15 +132,21 @@ const ApplicationManagement = () => {
                         }
                         className="text-blue-600 hover:underline"
                       >
-                        {previewUrl === app.coverLetter ? "📄 Hide CoverLetter" : "📄 View CoverLetter"}
+                        {previewUrl === app.coverLetter
+                          ? "📄 Hide CoverLetter"
+                          : "📄 View CoverLetter"}
                       </button>
                     </td>
                     <td className="py-3 px-4 text-sm">
                       <button
-                        onClick={() => handlePreview(app.resume, "Resume Preview")}
+                        onClick={() =>
+                          handlePreview(app.resume, "Resume Preview")
+                        }
                         className="text-blue-600 hover:underline"
                       >
-                        {previewUrl === app.resume ? "📄 Hide Resume" : "📄 View Resume"}
+                        {previewUrl === app.resume
+                          ? "📄 Hide Resume"
+                          : "📄 View Resume"}
                       </button>
                     </td>
                     <td className="py-3 px-4 text-sm">
@@ -146,8 +155,8 @@ const ApplicationManagement = () => {
                           app.status === "Accepted"
                             ? "bg-green-600"
                             : app.status === "Rejected"
-                            ? "bg-red-600"
-                            : "bg-yellow-500"
+                              ? "bg-red-600"
+                              : "bg-yellow-500"
                         }`}
                       >
                         {app.status || "Pending"}
@@ -174,7 +183,9 @@ const ApplicationManagement = () => {
                           </button>
                         </div>
                       ) : (
-                        <span className="text-gray-500 italic">No Action Available</span>
+                        <span className="text-gray-500 italic">
+                          No Action Available
+                        </span>
                       )}
                     </td>
                   </tr>
@@ -186,7 +197,9 @@ const ApplicationManagement = () => {
           {/* Preview iframe section */}
           {previewUrl && (
             <div className="mt-8 p-4 bg-white rounded shadow max-w-4xl mx-auto">
-              <h2 className="text-xl font-semibold mb-4 text-center">{previewTitle}</h2>
+              <h2 className="text-xl font-semibold mb-4 text-center">
+                {previewTitle}
+              </h2>
               <iframe
                 src={previewUrl}
                 title={previewTitle}
