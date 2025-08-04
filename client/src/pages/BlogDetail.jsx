@@ -8,13 +8,10 @@ const BlogDetail = () => {
 
   const getBlog = async () => {
     try {
-      const response = await fetch(
-        `${BASE_URL}/blog/${blogId}`,
-        {
-          method: "GET",
-          credentials: "include",
-        }
-      );
+      const response = await fetch(`${BASE_URL}/blog/${blogId}`, {
+        method: "GET",
+        credentials: "include",
+      });
       if (response.ok) {
         const data = await response.json();
         setBlog(data.data);
@@ -56,11 +53,6 @@ const BlogDetail = () => {
           <p className="text-gray-700 text-base whitespace-pre-line leading-relaxed mb-8">
             {blog.content}
           </p>
-          {!blog.isPublished && (
-            <p className="text-xs text-orange-500 font-semibold">
-              🔒 This blog is not yet published
-            </p>
-          )}
         </div>
       </div>
     </div>
