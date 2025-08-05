@@ -83,41 +83,47 @@ const AdminAttendanceManagement = () => {
   }, [selectedCourse, allStudents]);
 
   const getDateRange = () => {
-    const date = new Date(selectedDate);
-    let fromDate, toDate;
+    const d = new Date(selectedDate);
+    let from, to;
 
     switch (reportType) {
       case "daily":
-        fromDate = new Date(date.setHours(0, 0, 0, 0));
-        toDate = new Date(date.setHours(23, 59, 59, 999));
+        from = new Date(d.setHours(0, 0, 0, 0));
+        to = new Date(d.setHours(23, 59, 59, 999));
         break;
-      case "weekly":
-        const day = date.getDay();
-        fromDate = new Date(date);
-        fromDate.setDate(date.getDate() - day);
-        fromDate.setHours(0, 0, 0, 0);
-        toDate = new Date(fromDate);
-        toDate.setDate(fromDate.getDate() + 6);
-        toDate.setHours(23, 59, 59, 999);
+
+      case "weekly": {
+        const day = d.getDay(); // 0=Sun, 1=Mon...
+        const mondayOffset = day === 0 ? -6 : 1 - day;
+        from = new Date(d);
+        from.setDate(d.getDate() + mondayOffset);
+        from.setHours(0, 0, 0, 0);
+
+        to = new Date(from);
+        to.setDate(from.getDate() + 6);
+        to.setHours(23, 59, 59, 999);
         break;
+      }
+
       case "monthly":
-        fromDate = new Date(date.getFullYear(), date.getMonth(), 1);
-        toDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-        toDate.setHours(23, 59, 59, 999);
+        from = new Date(d.getFullYear(), d.getMonth(), 1);
+        to = new Date(d.getFullYear(), d.getMonth() + 1, 0);
+        to.setHours(23, 59, 59, 999);
         break;
+
       case "yearly":
-        fromDate = new Date(date.getFullYear(), 0, 1);
-        toDate = new Date(date.getFullYear(), 11, 31);
-        toDate.setHours(23, 59, 59, 999);
+        from = new Date(d.getFullYear(), 0, 1);
+        to = new Date(d.getFullYear(), 11, 31, 23, 59, 59, 999);
         break;
+
       default:
-        fromDate = new Date(date.setHours(0, 0, 0, 0));
-        toDate = new Date(date.setHours(23, 59, 59, 999));
+        from = new Date(d.setHours(0, 0, 0, 0));
+        to = new Date(d.setHours(23, 59, 59, 999));
     }
 
     return {
-      from: fromDate.toISOString(),
-      to: toDate.toISOString(),
+      from: from.toISOString(),
+      to: to.toISOString(),
     };
   };
 
